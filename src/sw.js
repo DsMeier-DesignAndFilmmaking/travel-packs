@@ -1,81 +1,83 @@
 /* global self */
 import { clientsClaim } from 'workbox-core';
-import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
+import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 
 const CITY_PACK_CACHE = 'city-pack-json-v1';
 
 // 1. PRECACHE SETUP
-// Note: Leave self.__WB_MANIFEST exactly like this. 
-// Vite's build process will replace this variable with the manifest array.
+// Vite's build process replaces self.__WB_MANIFEST with the asset list.
 precacheAndRoute(self.__WB_MANIFEST); 
 
 cleanupOutdatedCaches();
+self.skipWaiting();
 clientsClaim();
 
-// 2. SPA NAVIGATION
-// This ensures that deep-linked routes (e.g., /pack/antalya) still load the app shell
-const appShellHandler = createHandlerBoundToURL('/index.html');
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
-});
-
-// 3. FETCH STRATEGY
+// 2. FETCH STRATEGY
 self.addEventListener('fetch', (event) => {
   const { request } = event;
+  const url = new URL(request.url);
 
-  // SPA navigation handling
+  // --- SPA NAVIGATION FIX ---
+  // If the user refreshes on /city/antalya-turkiye, try the network first.
+  // This allows Vercel's vercel.json rewrites to work correctly.
   if (request.mode === 'navigate') {
-    event.respondWith(appShellHandler({ url: request.url }));
+    event.respondWith(
+      fetch(request).catch(() => {
+        // Only if network fails (Offline), serve the cached App Shell
+        return caches.match('/index.html');
+      })
+    );
     return;
   }
 
-  // City pack JSON caching (The "Offline-First" magic)
-  const url = new URL(request.url);
+  // --- CITY PACK JSON (OFFLINE-FIRST) ---
   const isCityPackJson = url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json');
 
   if (isCityPackJson) {
     event.respondWith(
       caches.open(CITY_PACK_CACHE).then(async (cache) => {
         const cachedResponse = await cache.match(request);
-        // Serve from cache if available, otherwise hit the network
-        if (cachedResponse) return cachedResponse;
-        return fetch(request);
+        // Serve from cache if we have it, otherwise fetch and don't block
+        return cachedResponse || fetch(request);
       })
     );
+    return;
   }
 });
 
-// 4. MESSAGE HANDLING (Download/Remove)
+// 3. MESSAGE HANDLING (Download/Remove)
 self.addEventListener('message', (event) => {
-  const message = event.data;
-  if (!message || !('type' in message)) return;
+  if (!event.data || !event.data.type) return;
 
   const cacheCityPack = async (cityId) => {
     try {
       const cache = await caches.open(CITY_PACK_CACHE);
-      // 'no-store' ensures we get a fresh version from the server when the user clicks download
+      // 'no-store' ensures a fresh fetch when the user clicks 'Get Pack'
       const response = await fetch(`/data/city-packs/${cityId}.json`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Unable to download city pack: ${cityId}`);
-      await cache.put(`/data/city-packs/${cityId}.json`, response.clone());
-      console.log(`Successfully cached pack: ${cityId}`);
+      if (!response.ok) throw new Error(`Download failed for ${cityId}`);
+      
+      await cache.put(`/data/city-packs/${cityId}.json`, response);
+      console.log(`[SW] Cached: ${cityId}`);
     } catch (error) {
-      console.error(`Cache failed for ${cityId}:`, error);
+      console.error(`[SW] Cache error for ${cityId}:`, error);
     }
   };
 
   const removeCityPack = async (cityId) => {
     const cache = await caches.open(CITY_PACK_CACHE);
     await cache.delete(`/data/city-packs/${cityId}.json`);
-    console.log(`Removed pack: ${cityId}`);
+    console.log(`[SW] Removed: ${cityId}`);
   };
 
-  switch (message.type) {
-    case 'DOWNLOAD_CITY_PACK':
-      event.waitUntil(cacheCityPack(message.payload.cityId));
-      break;
-    case 'REMOVE_CITY_PACK':
-      event.waitUntil(removeCityPack(message.payload.cityId));
-      break;
+  if (event.data.type === 'DOWNLOAD_CITY_PACK') {
+    event.waitUntil(cacheCityPack(event.data.payload.cityId));
+  }
+  
+  if (event.data.type === 'REMOVE_CITY_PACK') {
+    event.waitUntil(removeCityPack(event.data.payload.cityId));
+  }
+  
+  if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
 });
