@@ -3,22 +3,19 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  // Force absolute paths for all assets
+  base: '/', 
   plugins: [
     react(),
     VitePWA({
-      // 1. Point to your custom logic in src/sw.js
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.js', 
       registerType: 'autoUpdate',
-      
-      // 2. Fix the "SyntaxError: Cannot use import statement" error
       devOptions: { 
         enabled: true,
-        type: 'module' // This is the magic line for dev mode imports
+        type: 'module' 
       },
-
-      // 3. PWA Identity
       manifest: {
         name: 'Local City Travel Packs',
         short_name: 'Travel Packs',
@@ -43,16 +40,19 @@ export default defineConfig({
           }
         ]
       },
-
-      // 4. Configuration for the injection process
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
-        // Increase limit if your city-pack JSONs are large
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024 
       }
     })
   ],
   resolve: {
     alias: { '@': '/src' }
+  },
+  // Added: Ensure clean builds for Vercel
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true
   }
 });
