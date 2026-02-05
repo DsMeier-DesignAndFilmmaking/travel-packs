@@ -15,8 +15,13 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
+      // main.tsx or registerSW.ts
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js', { type: 'module' }) // <--- KEY FIX
+            .then(reg => console.log('SW registered!', reg))
+            .catch(err => console.error('SW registration failed', err));
+        });
       }
     </script>
     

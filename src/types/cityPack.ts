@@ -1,25 +1,51 @@
-// src/types/cityPack.ts
-
-// Summary info for city pack listings
+/**
+ * CITY PACK SUMMARY
+ * Used for high-level listing views (The "Catalog").
+ * Optimized for lightweight data fetching and editorial layout.
+ */
 export interface CityPackSummary {
   slug: string;
   city: string;
   country: string;
   region: string;
   languageCodes: string[];
-  heroImage?: string;
-  tags?: string[];
+  heroImage?: string; 
+  category?: string;      // e.g., "Coastal", "Urban", "Mountain"
+  tags?: string[];        // e.g., ["Direct Tram", "Budget-Friendly"]
   updatedAt: string;
+  priceLevel?: 1 | 2 | 3 | 4; 
+  distanceFromCenter?: string; // e.g., "0.5 km from Old Town"
 }
 
-// Optional generic for versioned payloads
-export interface VersionedSection<TPayload = unknown> {
-  updatedAt: string;
-  version: string;
+/**
+ * VERSIONED SECTION
+ * Narrative-first structure. The 'payload' is designed to be 
+ * rendered with Markdown for professional typography.
+ */
+export interface VersionedSection {
+  updatedAt?: string;
+  version?: string;
   sourceIds?: string[];
-  payload: TPayload;
+  payload: {
+    title: string;
+    description: string;
+    criticalAlert?: string; 
+    highlight?: boolean;     
+    
+    summaryStats?: Array<{ 
+      label: string; 
+      value: string;         // Supports Markdown for "Bold Anchors"
+      icon?: string; 
+    }>;
+    tips?: string[];         
+  };
 }
 
+/**
+ * FULL CITY PACK
+ * The deep-dive content structure.
+ * Standardized per Airbnb's "Listing Details" metadata requirements.
+ */
 export interface CityPack {
   packId: string;
   slug: string;
@@ -30,8 +56,18 @@ export interface CityPack {
   updatedAt: string;
   version: string;
   languages: string[];
-  currency: { code: string; symbol: string };
+  currency: { 
+    code: string; 
+    symbol: string 
+  };
   timezone: string;
-  coordinates: { lat: number; lng: number };
-  sections: Record<string, VersionedSection>; // <-- aligns with JSON schema
+  coordinates: { 
+    lat: number; 
+    lng: number 
+  };
+  /**
+   * Map of key-value pairs. 
+   * Common keys: 'arrival', 'money', 'safety', 'etiquette'
+   */
+  sections: Record<string, VersionedSection>;
 }

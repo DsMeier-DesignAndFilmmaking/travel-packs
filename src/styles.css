@@ -1,15 +1,13 @@
+/* Users/danielmeier/Desktop/Travel-Packs/src/styles.css */
+
 :root {
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.45;
-  font-weight: 400;
-  color: #0f172a;
-  background-color: #f2f5f7;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  line-height: 1.5;
-  font-weight: 400;
-  color: #0f172a;
-  background-color: #f8fafc;
+  --air-black: #222222;
+  --air-gray: #717171;
+  --air-border: #ebebeb;
+  --air-bg: #ffffff;
+  --air-accent: #FF385C; /* Airbnb Red */
+  --air-green: #22c55e;
+  --air-orange: #fb923c;
 }
 
 * {
@@ -17,249 +15,401 @@
 }
 
 body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--air-black);
+  background-color: var(--air-bg);
   margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #f8fafc 0%, #f2f5f7 45%, #eef2f5 100%);
+  -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  font: inherit;
-}
-
-.container {
-  width: min(1080px, 92%);
+/* --- Layout Containers --- */
+.home-view-container {
+  max-width: 1024px;
   margin: 0 auto;
+  padding: 40px 24px;
 }
 
-.app-root {
-  min-height: 100vh;
+.city-pack-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px;
 }
 
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(12px);
-  background: color-mix(in oklab, #ffffff 84%, transparent);
-  border-bottom: 1px solid #dbe4ea;
+/* --- Home Page: Editorial Header --- */
+.editorial-header {
+  border-bottom: 1px solid var(--air-border);
+  padding-bottom: 40px;
+  margin-bottom: 48px;
 }
 
-.app-header__inner {
-  min-height: 4rem;
+.editorial-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--air-black);
+  margin: 0 0 12px 0;
+}
+
+.editorial-header p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--air-gray);
+  max-width: 600px;
+  margin: 0;
+}
+
+.status-row {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.status-indicator {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.brand-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  letter-spacing: 0.01em;
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
-.brand-badge {
-  display: inline-grid;
-  place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  background: #dbeafe;
-  color: #1d4ed8;
-}
+.dot--brand { background-color: var(--air-accent); }
+.dot--online { background-color: var(--air-green); }
+.dot--offline { background-color: var(--air-orange); }
 
-.header-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.status-pill {
-  font-size: 0.8rem;
-  padding: 0.28rem 0.58rem;
-  border-radius: 999px;
-  border: 1px solid transparent;
-}
-
-.status-pill--online {
-  background: #ecfdf5;
-  color: #166534;
-  border-color: #bbf7d0;
-}
-
-.status-pill--offline {
-  background: #fff7ed;
-  color: #9a3412;
-  border-color: #fed7aa;
-}
-
-.offline-banner {
-  background: #fff7ed;
-  border-bottom: 1px solid #fed7aa;
-  color: #9a3412;
-  font-size: 0.9rem;
-  padding: 0.45rem 0;
-}
-
-.app-main {
-  padding: 1rem 0 2.5rem;
-}
-
-.section-stack {
+/* --- Home Page: Catalog Grid --- */
+.packs-grid {
   display: grid;
-  gap: 1rem;
+  grid-template-columns: repeat(1, 1fr);
+  column-gap: 24px;
+  row-gap: 40px;
 }
 
-.surface {
-  background: #ffffff;
-  border: 1px solid #dbe4ea;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+@media (min-width: 640px) {
+  .packs-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.hero-panel {
-  padding: 1rem;
+@media (min-width: 1024px) {
+  .packs-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.hero-title {
-  margin: 0;
-  font-size: clamp(1.3rem, 5vw, 1.9rem);
+/* --- City Pack Cards --- */
+.card-image-wrapper {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: #f7f7f7;
+  margin-bottom: 12px;
 }
 
-.hero-subtitle {
-  margin: 0.45rem 0 0;
-  color: #334155;
+.card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-cover: cover;
+  transition: transform 0.4s ease;
+}
+
+.card-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.badge-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- Detail View: Section Styling --- */
+.pack-section {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--air-border);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.description-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--air-gray);
+  margin-bottom: 24px;
+}
+
+.critical-alert-box {
+  background: #f7f7f7;
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
   font-size: 0.95rem;
 }
 
-.meta-row {
-  margin-top: 0.9rem;
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
 }
 
-.meta-chip {
+.stat-pill {
+  border-left: 1px solid var(--air-border);
+  padding-left: 12px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--air-gray);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* --- Typography Helpers --- */
+.markdown-content p {
+  margin: 0;
+  display: inline;
+}
+
+.markdown-content strong {
+  color: var(--air-black);
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 24px;
+}
+
+.tip-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tip-item::before {
+  content: "•";
+  color: var(--air-gray);
+}
+
+/* --- Interactive Elements --- */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.underline-link {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* --- Airbnb Action Buttons --- */
+.btn-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.22rem 0.55rem;
-  border-radius: 999px;
-  background: #f8fafc;
-  border: 1px solid #dbe4ea;
-  color: #334155;
-  font-size: 0.8rem;
+  justify-content: center;
+  padding: 10px 20px; /* Increased for better touch target */
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  font-family: inherit;
 }
 
-.packs-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
+/* The Solid Black "Get Pack" Button */
+.btn-pill--primary {
+  background-color: #222222;
+  color: #ffffff;
 }
 
-.card {
-  padding: 0.95rem;
+.btn-pill--primary:hover {
+  background-color: #000000;
+  transform: scale(1.04);
 }
 
-.card-title {
-  margin: 0;
-  font-size: 1.02rem;
+.btn-pill--primary:active {
+  transform: scale(0.96);
 }
 
-.card-subtext,
-.card-updated {
-  margin: 0.4rem 0 0;
-  color: #475569;
-  font-size: 0.87rem;
+/* The "Saving..." State */
+.btn-pill--loading {
+  background-color: #f7f7f7;
+  color: #717171;
+  border: 1px solid #ebebeb;
+  cursor: not-allowed;
 }
 
-.card-actions {
-  margin-top: 0.8rem;
+/* The Underlined "Remove" Link */
+.btn-ghost-sm {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  color: #717171;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.btn-ghost-sm:hover {
+  color: #222222;
+}
+
+/* Animated Pulse Dot */
+.dot-pulse {
+  width: 6px;
+  height: 6px;
+  background-color: #FF385C;
+  border-radius: 50%;
+  display: inline-block;
+  animation: air-pulse 1.2s infinite;
+}
+
+@keyframes air-pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.status-label--offline {
+  font-size: 12px;
+  color: #717171;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* --- Modern Navbar (Airbnb Style) --- */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  height: 80px;
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 1px solid var(--air-border);
+  /* Optional: Airbnb uses a subtle shadow on scroll */
+  transition: box-shadow 0.2s ease;
 }
 
-.button {
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 0.45rem 0.72rem;
-  background: #fff;
-  color: #0f172a;
-}
-
-.button:disabled {
-  opacity: 0.5;
-}
-
-.button--primary {
-  background: #0f172a;
-  color: #fff;
-  border-color: #0f172a;
-}
-
-.button--ghost {
-  background: #fff;
-}
-
-.feedback {
-  margin-top: 0.6rem;
-  font-size: 0.82rem;
-  color: #334155;
-}
-
-.feedback--error {
-  color: #b91c1c;
-}
-
-.pack-sections {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.pack-section {
-  padding: 0.9rem;
-}
-
-.payload {
-  margin: 0;
-  padding: 0.7rem;
-  border-radius: 10px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  white-space: pre-wrap;
-  font-size: 0.78rem;
-  overflow-x: auto;
-}
-
-@media (min-width: 768px) {
-  .app-main {
-    padding-top: 1.4rem;
-  }
-
-  .hero-panel,
-  .card,
-  .pack-section {
-    padding: 1.1rem;
-  }
-
-  .packs-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1080px) {
-  .packs-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-.container {
-  width: min(1100px, 92%);
+.nav-container {
+  max-width: 1024px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  font-size: 28px;
+  color: var(--air-accent);
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--air-black);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* --- Refined Status Pill --- */
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 1px solid var(--air-border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--air-black);
+  background-color: #ffffff;
+}
+
+/* --- Global Layout Layout --- */
+.content-wrapper {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0; /* Let children handle their own padding */
+}
+
+.system-banner {
+  background-color: var(--air-black);
+  color: #ffffff;
+  text-align: center;
+  font-size: 13px;
+  padding: 8px 0;
+  font-weight: 500;
+}
+
+/* --- Reusable Pill Button Variant --- */
+.btn-pill--outline {
+  background: white;
+  border: 1px solid var(--air-black);
+  color: var(--air-black);
+}
+
+.btn-pill--outline:hover {
+  background-color: #f7f7f7;
+}
+
+.main-footer {
+  margin-top: 80px;
+  border-top: 1px solid var(--air-border);
+  padding: 40px 0;
+  background-color: #f7f7f7;
+}
+
+.footer-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 24px;
+  color: var(--air-gray);
+  font-size: 14px;
 }

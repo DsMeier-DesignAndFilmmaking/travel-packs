@@ -4,13 +4,16 @@ import { AppProviders } from '@/app/providers/AppProviders';
 import { AppRouter } from '@/app/router/AppRouter';
 import '@/styles.css';
 
+// Look for this in main.tsx or registerServiceWorker.ts
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js') // ✅ served from /public
-      .then((reg) => console.log('SW registered:', reg))
-      .catch((err) => console.error('SW registration failed:', err));
-  });
+  navigator.serviceWorker
+    .register('/sw.js', { type: 'module' }) // Add this second argument
+    .then((registration) => {
+      console.log('SW registered:', registration);
+    })
+    .catch((error) => {
+      console.error('SW registration failed:', error);
+    });
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

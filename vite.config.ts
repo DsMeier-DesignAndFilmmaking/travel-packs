@@ -6,9 +6,19 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      strategies: 'generateSW', // Only app shell, SW is static in /public
+      // 1. Point to your custom logic in src/sw.js
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.js', 
       registerType: 'autoUpdate',
-      devOptions: { enabled: true },
+      
+      // 2. Fix the "SyntaxError: Cannot use import statement" error
+      devOptions: { 
+        enabled: true,
+        type: 'module' // This is the magic line for dev mode imports
+      },
+
+      // 3. PWA Identity
       manifest: {
         name: 'Local City Travel Packs',
         short_name: 'Travel Packs',
@@ -19,9 +29,26 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
-          { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' }
+          { 
+            src: '/pwa-192x192.png', 
+            sizes: '192x192', 
+            type: 'image/png',
+            purpose: 'any maskable' 
+          },
+          { 
+            src: '/pwa-512x512.png', 
+            sizes: '512x512', 
+            type: 'image/png',
+            purpose: 'any maskable'
+          }
         ]
+      },
+
+      // 4. Configuration for the injection process
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        // Increase limit if your city-pack JSONs are large
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024 
       }
     })
   ],

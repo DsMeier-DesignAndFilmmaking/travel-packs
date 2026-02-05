@@ -1,101 +1,95 @@
 import type { CityPack, VersionedSection } from '@/types/cityPack';
-
-interface CityPackDetailViewProps {
-  pack: CityPack;
-}
+import ReactMarkdown from 'react-markdown';
 
 /**
- * Safely render any payload.
- * If it's an array, list each item.
- * If it's an object, stringify it nicely.
+ * NARRATIVE COMPONENT: Airbnb Minimalist Edition
+ * Focuses on typography and vertical flow rather than "boxed" UI.
  */
-function renderPayload(payload: unknown) {
-  if (Array.isArray(payload)) {
-    return (
-      <ul className="payload-list">
-        {payload.map((item, idx) => (
-          <li key={idx}>
-            {typeof item === 'object' ? JSON.stringify(item, null, 2) : item}
-          </li>
-        ))}
-      </ul>
-    );
-  }
+function SectionCard({ section }: { section: VersionedSection }) {
+  const { title, description, criticalAlert, summaryStats, tips } = section.payload;
 
-  if (typeof payload === 'object' && payload !== null) {
-    return <pre className="payload">{JSON.stringify(payload, null, 2)}</pre>;
-  }
-
-  return <span>{String(payload)}</span>;
-}
-
-/**
- * Card for a single VersionedSection
- */
-function SectionCard({
-  sectionKey,
-  section,
-}: {
-  sectionKey: string;
-  section: VersionedSection;
-}) {
   return (
-    <section className="surface pack-section">
-      <h2 style={{ margin: 0, fontSize: '1rem', textTransform: 'capitalize' }}>
-        {sectionKey}
+    <section className="pack-section">
+      {/* 1. Typography Hierarchy */}
+      <h2 className="section-title text-[#222222]">
+        {title}
       </h2>
-      <p className="card-updated" style={{ marginTop: '0.35rem' }}>
-        v{section.version} · Updated{' '}
-        {new Date(section.updatedAt).toLocaleDateString()}
-      </p>
-
-      {section.sourceIds && section.sourceIds.length > 0 && (
-        <p className="feedback">Sources: {section.sourceIds.join(', ')}</p>
+      
+      {/* 2. Critical Alert: Soft editorial callout */}
+      {criticalAlert && (
+        <div className="critical-alert-box">
+          <div className="flex gap-3">
+            <span className="shrink-0">✨</span>
+            <div className="markdown-content font-medium">
+              <ReactMarkdown>{criticalAlert}</ReactMarkdown>
+            </div>
+          </div>
+        </div>
       )}
 
-      {renderPayload(section.payload)}
+      {/* 3. Description: Light editorial gray */}
+      <div className="description-text">
+        <ReactMarkdown>{description}</ReactMarkdown>
+      </div>
+
+      {/* 4. Stats Grid: Vertical Border Style */}
+      {summaryStats && (
+        <div className="stats-grid">
+          {summaryStats.map((stat, i) => (
+            <div key={i} className="stat-pill">
+              <span className="stat-label">{stat.label}</span>
+              <div className="stat-value">
+                <ReactMarkdown>{stat.value}</ReactMarkdown>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 5. Expert Tips: Minimalist Bullets */}
+      {tips && tips.length > 0 && (
+        <ul className="tips-list">
+          {tips.map((tip: string, i: number) => (
+            <li key={i} className="tip-item text-[#222222]">
+              <div className="markdown-content">
+                <ReactMarkdown>{tip}</ReactMarkdown>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
 
 /**
- * Full CityPack detail view
+ * MAIN VIEW: Editorial Style
  */
-export function CityPackDetailView({ pack }: CityPackDetailViewProps) {
-  // Make sure sections exist before mapping
-  const sectionEntries = pack.sections
-    ? Object.entries(pack.sections)
-    : [];
-
-  if (!sectionEntries.length) {
-    return (
-      <p className="feedback">
-        No sections available for {pack.city}, {pack.country}.
-      </p>
-    );
-  }
+export function CityPackDetailView({ pack }: { pack: CityPack }) {
+  const sections = pack.sections ? Object.values(pack.sections) : [];
 
   return (
-    <article className="section-stack">
-      {/* Hero / city header */}
-      <header className="surface hero-panel">
-        <h1 className="hero-title" style={{ marginBottom: '0.35rem' }}>
-          {pack.city}, {pack.country}
+    <article className="city-pack-container">
+      {/* Airbnb-style Editorial Header */}
+      <header className="hero-panel">
+        <h1 className="hero-title text-[#222222]">
+          {pack.city}
         </h1>
-        <p className="hero-subtitle">
-          {pack.region} · {pack.currency?.code} ({pack.currency?.symbol}) ·{' '}
-          {pack.timezone}
-        </p>
+        <div className="flex items-center gap-2 hero-subtitle">
+          <span>{pack.country}</span>
+          <span className="text-[#DDDDDD] font-light">/</span>
+          <span>{pack.region}</span>
+          <span className="text-[#DDDDDD] font-light">/</span>
+          <span className="font-semibold text-[#222222]">
+            {pack.currency.symbol} {pack.currency.code}
+          </span>
+        </div>
       </header>
 
-      {/* Render all sections */}
-      <div className="pack-sections">
-      {sectionEntries.map(([sectionKey, section]) => (
-          <SectionCard
-            key={sectionKey}
-            sectionKey={sectionKey}
-            section={section} // <- type now matches VersionedSection
-          />
+      {/* Sequential Scroll Content */}
+      <div className="flex flex-col">
+        {sections.map((section, idx) => (
+          <SectionCard key={idx} section={section} />
         ))}
       </div>
     </article>

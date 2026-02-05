@@ -7,7 +7,12 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 
 export function AppRouter() {
   return (
-    <BrowserRouter>
+    <BrowserRouter 
+      future={{ 
+        v7_startTransition: true, 
+        v7_relativeSplatPath: true 
+      }}
+    >
       <AppShell>
         <Routes>
           <Route path={ROUTES.home} element={<HomePage />} />

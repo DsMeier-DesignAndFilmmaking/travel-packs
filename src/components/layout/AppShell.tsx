@@ -14,7 +14,6 @@ export function AppShell({ children }: PropsWithChildren) {
     window.matchMedia('(display-mode: standalone)').matches
   );
 
-  // Track online/offline & PWA install events
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -40,8 +39,6 @@ export function AppShell({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const connectionLabel = useMemo(() => (isOnline ? 'Online' : 'Offline'), [isOnline]);
-
   const handleInstall = async () => {
     if (!installPrompt) return;
     await installPrompt.prompt();
@@ -50,22 +47,28 @@ export function AppShell({ children }: PropsWithChildren) {
   };
 
   return (
-    <div className="app-root">
-      <header className="app-header">
-        <div className="container app-header__inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 0' }}>
-          <Link to={ROUTES.home} className="brand-link" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
-            <span className="brand-badge" style={{ fontSize: '1.25rem' }}>✈︎</span>
-            <strong>Local City Travel Packs</strong>
+    <div className="app-layout">
+      <header className="main-nav">
+        <div className="nav-container">
+          {/* Brand Logo */}
+          <Link to={ROUTES.home} className="nav-logo">
+            <span className="logo-icon">✈︎</span>
+            <span className="logo-text">localcity</span>
           </Link>
 
-          <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span className={`status-pill ${isOnline ? 'status-pill--online' : 'status-pill--offline'}`}>
-              {connectionLabel}
-            </span>
+          {/* Navigation Actions */}
+          <div className="nav-actions">
+            {!isOnline && (
+              <div className="status-pill offline">
+                <span className="dot dot--offline"></span>
+                Offline
+              </div>
+            )}
+            
             {!isInstalled && installPrompt && (
               <button
                 type="button"
-                className="button button--ghost"
+                className="btn-pill btn-pill--outline"
                 onClick={() => void handleInstall()}
               >
                 Install App
@@ -76,14 +79,20 @@ export function AppShell({ children }: PropsWithChildren) {
       </header>
 
       {!isOnline && (
-        <div className="offline-banner" style={{ background: '#fffae6', padding: '0.5rem 0', textAlign: 'center' }}>
-          <div className="container">You are offline. Open previously downloaded city packs.</div>
+        <div className="system-banner">
+          Viewing downloaded city packs in offline mode
         </div>
       )}
 
-      <main className="container app-main" style={{ padding: '1.5rem 0 3rem' }}>
+      <main className="content-wrapper">
         {children}
       </main>
+
+      <footer className="main-footer">
+        <div className="footer-container">
+          <p>© 2026 Local City Travel Packs</p>
+        </div>
+      </footer>
     </div>
   );
 }

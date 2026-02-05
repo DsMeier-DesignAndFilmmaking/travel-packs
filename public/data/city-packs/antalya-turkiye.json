@@ -1,203 +1,45 @@
 {
   "packId": "tr-antalya-turkiye",
-  "slug": "antalya-turkiye",
   "city": "Antalya",
   "country": "Türkiye",
-  "countryCode": "TR",
-  "region": "Mediterranean",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "tr",
-    "en"
-  ],
-  "currency": {
-    "code": "TRY",
-    "symbol": "₺"
-  },
-  "timezone": "UTC+3",
-  "coordinates": {
-    "lat": 36.8969,
-    "lng": 30.7133
-  },
+  "region": "Turkish Riviera",
+  "currency": { "code": "TRY", "symbol": "₺" },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Tram",
-          "Bus",
-          "Taxi"
+        "title": "Arriving at AYT",
+        "description": "Antalya operates *two separate International Terminals* (T1 & T2) located 2.5km apart. They are not connected by foot, so knowing your terminal is essential.",
+        "criticalAlert": "If you land at **Terminal 2**, you cannot walk to the tram. You must board a taxi or the Havaş shuttle.",
+        "summaryStats": [
+          { "label": "Antray Tram", "value": "35–45 min" },
+          { "label": "Yellow Taxi", "value": "Fixed Rate (~750₺)" },
+          { "label": "Transfer", "value": "Bus 600 / Havaş" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**Terminal 1:** Follow the blue signage to the elevated walkway for the Antray tram station.",
+          "**Terminal 2:** Board the white Havaş shuttle or a taxi; there is no direct tram access here.",
+          "**Official Taxis:** Use only the managed outdoor stands. Ignore 'private' offers inside the terminal.",
+          "**Payment:** Most taxis accept contactless cards; confirm with the driver before departing."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "Money & Payments",
+        "description": "Antalya is highly digital, but street markets and local transit still run on the Turkish Lira.",
+        "criticalAlert": "Avoid **Euronet ATMs** (blue/yellow kiosks); they charge predatory conversion fees up to 15%.",
+        "summaryStats": [
+          { "label": "Bank ATMs", "value": "PTT or Ziraat" },
+          { "label": "Card Use", "value": "90% (Apple Pay)" },
+          { "label": "Tipping", "value": "10% in Cash" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Currency:** Always select **TRY** on card terminals to ensure your own bank handles the exchange.",
+          "**Small Cash:** Keep 20₺ or 50₺ notes for the Dolmuş minibuses and public restrooms.",
+          "**Bank ATMs:** Use PTT or Ziraat for the lowest fees and official exchange rates."
         ]
       }
-    },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Kaleiçi",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Düden Waterfalls",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Konyaaltı Beach",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
     }
   }
 }
