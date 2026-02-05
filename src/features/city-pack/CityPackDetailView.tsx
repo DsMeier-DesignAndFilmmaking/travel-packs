@@ -1,45 +1,38 @@
-import type { CityPack, VersionedSection } from '@/types/cityPack';
+import type { CityPack, CityPackSection } from '@/types/cityPack';
 
 interface CityPackDetailViewProps {
   pack: CityPack;
 }
 
-function renderPayload(payload: unknown) {
-  return <pre className="payload">{JSON.stringify(payload, null, 2)}</pre>;
+// Render payload or array blocks
+function renderContentBlocks(blocks: CityPackSection['contentBlocks']) {
+  return blocks.map((block, index) => (
+    <div key={index} style={{ marginTop: '0.5rem' }}>
+      {Array.isArray(block.value) ? (
+        <ul>
+          {block.value.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>{block.value}</p>
+      )}
+    </div>
+  ));
 }
 
-function SectionCard({
-  sectionKey,
-  section,
-}: {
-  sectionKey: string;
-  section: VersionedSection;
-}) {
+// Individual section card
+function SectionCard({ section }: { section: CityPackSection }) {
   return (
-    <section className="surface pack-section">
-      <h2
-        style={{
-          margin: 0,
-          fontSize: '1rem',
-          textTransform: 'capitalize',
-        }}
-      >
-        {sectionKey}
-      </h2>
-      <p className="card-updated" style={{ marginTop: '0.35rem' }}>
-        v{section.version} · Updated {new Date(section.updatedAt).toLocaleDateString()}
-      </p>
-      {section.sourceIds && section.sourceIds.length > 0 && (
-        <p className="feedback">Sources: {section.sourceIds.join(', ')}</p>
-      )}
-      {renderPayload(section.payload)}
+    <section className="surface pack-section" style={{ marginBottom: '1rem' }}>
+      <h2 style={{ margin: 0, fontSize: '1rem', textTransform: 'capitalize' }}>{section.title}</h2>
+      {renderContentBlocks(section.contentBlocks)}
     </section>
   );
 }
 
+// Main city pack detail view
 export function CityPackDetailView({ pack }: CityPackDetailViewProps) {
-  const sectionEntries = Object.entries(pack.sections);
-
   return (
     <article className="section-stack">
       {/* Hero / city header */}
@@ -48,14 +41,14 @@ export function CityPackDetailView({ pack }: CityPackDetailViewProps) {
           {pack.city}, {pack.country}
         </h1>
         <p className="hero-subtitle">
-          {pack.region} · {pack.currency.code} ({pack.currency.symbol}) · {pack.timezone}
+          {pack.region} · {pack.locale} · {pack.metadata.currency}
         </p>
       </header>
 
-      {/* Section cards for each section */}
+      {/* Section cards */}
       <div className="pack-sections">
-        {sectionEntries.map(([sectionKey, section]) => (
-          <SectionCard key={sectionKey} sectionKey={sectionKey} section={section} />
+        {pack.sections.map((section) => (
+          <SectionCard key={section.id} section={section} />
         ))}
       </div>
     </article>

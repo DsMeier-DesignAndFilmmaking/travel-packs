@@ -9,14 +9,13 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.ts',
+      // Auto update service worker
       registerType: 'autoUpdate',
       injectManifest: {
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024
       },
-      // PWA is intentionally disabled for now: this keeps the project ready for
-      // installability metadata while avoiding any offline caching behavior yet.
+      // PWA install metadata ready but offline caching disabled for now
       disable: true,
-      registerType: 'autoUpdate',
       manifest: {
         name: 'Local City Travel Packs',
         short_name: 'Travel Packs',
