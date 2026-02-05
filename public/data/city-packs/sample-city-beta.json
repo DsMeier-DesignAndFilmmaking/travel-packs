@@ -1,0 +1,29 @@
+{
+  "slug": "sample-city-beta",
+  "city": "Sample City Beta",
+  "country": "Sampleland",
+  "region": "South Region",
+  "languageCodes": ["en", "es"],
+  "heroImage": "/images/beta.jpg",
+  "tags": ["food", "nightlife"],
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "version": "1.0.0",
+  "locale": "en-US",
+  "metadata": {
+    "timezone": "UTC+1",
+    "currency": "USD",
+    "emergencyNumbers": ["911", "112"]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "contentBlocks": [
+        {
+          "type": "markdown",
+          "value": "Overview content placeholder"
+        }
+      ]
+    }
+  ]
+}

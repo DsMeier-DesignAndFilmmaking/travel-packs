@@ -1,0 +1,29 @@
+{
+  "slug": "sample-city-alpha",
+  "city": "Sample City Alpha",
+  "country": "Sampleland",
+  "region": "North Region",
+  "languageCodes": ["en"],
+  "heroImage": "/images/alpha.jpg",
+  "tags": ["family", "history"],
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "version": "1.0.0",
+  "locale": "en-US",
+  "metadata": {
+    "timezone": "UTC+0",
+    "currency": "USD",
+    "emergencyNumbers": ["112"]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "contentBlocks": [
+        {
+          "type": "markdown",
+          "value": "Overview content placeholder"
+        }
+      ]
+    }
+  ]
+}
