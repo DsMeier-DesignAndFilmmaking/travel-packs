@@ -36,4 +36,22 @@ export interface CityPack {
     lng: number;
   };
   sections: Record<string, VersionedSection>;
+export interface CityPackSection {
+  id: string;
+  title: string;
+  contentBlocks: Array<{
+    type: 'markdown' | 'tips' | 'highlights';
+    value: string | string[];
+  }>;
+}
+
+export interface CityPack extends CityPackSummary {
+  version: string;
+  locale: string;
+  sections: CityPackSection[];
+  metadata: {
+    timezone: string;
+    currency: string;
+    emergencyNumbers: string[];
+  };
 }

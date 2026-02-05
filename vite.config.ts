@@ -13,6 +13,10 @@ export default defineConfig({
       injectManifest: {
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024
       },
+      // PWA is intentionally disabled for now: this keeps the project ready for
+      // installability metadata while avoiding any offline caching behavior yet.
+      disable: true,
+      registerType: 'autoUpdate',
       manifest: {
         name: 'Local City Travel Packs',
         short_name: 'Travel Packs',

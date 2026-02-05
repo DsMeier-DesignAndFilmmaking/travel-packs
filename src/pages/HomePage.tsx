@@ -42,4 +42,8 @@ export function HomePage() {
       isOnline={isOnline}
     />
   );
+    return <p>Unable to load city packs: {error}</p>;
+  }
+
+  return <HomePageView packs={packs} />;
 }

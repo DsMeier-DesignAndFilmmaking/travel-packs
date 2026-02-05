@@ -6,6 +6,10 @@
   background-color: #f2f5f7;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #0f172a;
+  background-color: #f8fafc;
 }
 
 * {
@@ -254,4 +258,8 @@ button {
   .packs-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
 }

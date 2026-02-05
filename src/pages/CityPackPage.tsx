@@ -21,6 +21,7 @@ export function CityPackPage() {
 
   if (!slug) {
     return <p className="feedback feedback--error">Missing city pack id.</p>;
+    return <p>Missing city pack id.</p>;
   }
 
   if (error) {
@@ -33,12 +34,16 @@ export function CityPackPage() {
         <Link to={ROUTES.home} className="button button--ghost" style={{ display: 'inline-block', marginTop: '0.5rem' }}>
           Back to catalog
         </Link>
+      <div>
+        <p>Unable to load city pack: {error}</p>
+        <Link to={ROUTES.home}>Back to catalog</Link>
       </div>
     );
   }
 
   if (!pack) {
     return <p className="feedback">Loading city pack…</p>;
+    return <p>Loading city pack...</p>;
   }
 
   return <CityPackDetailView pack={pack} />;
