@@ -5,199 +5,74 @@
   "country": "China SAR",
   "countryCode": "HK",
   "region": "East Asia",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "zh-HK",
-    "en"
-  ],
-  "currency": {
-    "code": "HKD",
-    "symbol": "HK$"
-  },
+  "updatedAt": "2026-02-05T18:30:00Z",
+  "version": "1.1.0",
+  "languages": ["zh-HK", "en"],
+  "currency": { "code": "HKD", "symbol": "HK$" },
   "timezone": "UTC+8",
-  "coordinates": {
-    "lat": 22.3193,
-    "lng": 114.1694
-  },
+  "coordinates": { "lat": 22.3193, "lng": 114.1694 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["hong-kong-airport-hka"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "MTR",
-          "Tram",
-          "Ferry"
+        "title": "Arriving at HKG",
+        "description": "Hong Kong International (Chek Lap Kok) is one of the world's most efficient airports. The **Airport Express (AEL)** is the gold standard for getting into the city.",
+        "criticalAlert": "Do not wait in line for a physical Octopus card at the airport. You can add a **Mobile Octopus** to your iPhone or Android wallet instantly, or use Contactless (Visa/MC) for MTR gates.",
+        "summaryStats": [
+          { "label": "Airport Express", "value": "24 min to Central" },
+          { "label": "Urban Taxi (Red)", "value": "~HK$350 to Center" },
+          { "label": "Bus (A11/A21)", "value": "45–60 min (Cheaper)" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**In-Town Check-in:** On your departure day, you can check your luggage at the Hong Kong or Kowloon AEL stations up to 24 hours before your flight. You are then free to explore the city bag-free.",
+          "**Taxi Colors:** **Red taxis** go everywhere (including the city); **Green taxis** are for New Territories; **Blue taxis** are for Lantau Island only.",
+          "**Free WiFi:** 'HKAirport Free WiFi' is genuinely fast and available throughout the entire terminal.",
+          "**Airport Express Tickets:** Buying a 'Group Ticket' for 2-4 people at the customer service counter is significantly cheaper than buying individual tickets."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["hk-monetary-authority"],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "Payments & The Octopus",
+        "description": "Hong Kong is a dual-economy: ultra-digital (Apple Pay/AliPay) and ultra-analog (wet markets and small tea houses).",
+        "criticalAlert": "Many iconic 'Dai Pai Dongs' (open-air stalls) and local bakeries are **Cash Only**. Always keep at least HK$200–500 in your pocket for local eats.",
+        "summaryStats": [
+          { "label": "Card Acceptance", "value": "85% (Digital)" },
+          { "label": "Star Ferry", "value": "HK$5.00 (Octopus)" },
+          { "label": "Tipping", "value": "Not expected" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**The Octopus Card:** It’s not just for transport. You can use it at 7-Eleven, Starbucks, vending machines, and even many upscale restaurants.",
+          "**ATM Strategy:** Use HSBC or Hang Seng ATMs; they are everywhere and generally have the most reliable support for international cards (Plus/Cirrus).",
+          "**Service Charge:** Most restaurants add a 10% service charge to the bill. Extra tipping is not necessary, but leaving the small coin change is common."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Victoria Peak",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Tsim Sha Tsui Promenade",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Temple Street Night Market",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["hk-police-force"],
+      "payload": {
+        "title": "Safety & Etiquette",
+        "description": "Hong Kong is incredibly safe for solo travelers and families alike. The biggest 'danger' is usually just the humidity or a very steep hiking trail.",
+        "criticalAlert": "Smoking is strictly prohibited in all indoor public places, parks, and beaches. Fines are steep (HK$1,500) and enforced strictly.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "Dial 999" },
+          { "label": "HK Police", "value": "Very reliable" },
+          { "label": "Late Night", "value": "Extremely safe" }
+        ],
+        "tips": [
+          "**Stand on the Right:** On escalators, always stand on the right. The left side is for people walking/running.",
+          "**Temple Etiquette:** Photography is often allowed, but never take photos of the individual monks or worshippers without asking.",
+          "**Jaywalking:** Be careful—HK police occasionally run 'sting' operations on jaywalking. Use the pedestrian crossings to avoid a HK$2,000 fine."
+        ]
+      }
     }
   }
 }

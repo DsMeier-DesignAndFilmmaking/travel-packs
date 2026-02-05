@@ -5,199 +5,74 @@
   "country": "United Arab Emirates",
   "countryCode": "AE",
   "region": "Middle East",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "ar",
-    "en"
-  ],
-  "currency": {
-    "code": "AED",
-    "symbol": "د.إ"
-  },
+  "updatedAt": "2026-02-05T16:00:00Z",
+  "version": "1.1.0",
+  "languages": ["ar", "en"],
+  "currency": { "code": "AED", "symbol": "د.إ" },
   "timezone": "UTC+4",
-  "coordinates": {
-    "lat": 25.2048,
-    "lng": 55.2708
-  },
+  "coordinates": { "lat": 25.2048, "lng": 55.2708 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["dubaiairports-ae"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Metro",
-          "Tram",
-          "Taxi"
+        "title": "Arriving at DXB",
+        "description": "Dubai International (DXB) is divided into three terminals. **Terminal 3** is exclusively for Emirates; **Terminal 2** is across the runway and handles budget carriers like flydubai.",
+        "criticalAlert": "You cannot pay for the Metro with cash or a standard credit card at the gate. You **must** purchase a 'Nol Card' from the vending machines before entering the platform.",
+        "summaryStats": [
+          { "label": "Metro (T1/T3)", "value": "25–40 min" },
+          { "label": "Airport Taxi", "value": "Starts at 25د.إ" },
+          { "label": "Uber / Careem", "value": "Follow 'App Pickup'" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**Terminal 2 Users:** There is no Metro station at T2. You must take a taxi or a shuttle bus to the nearest station (Abu Hail).",
+          "**Taxi Surcharge:** Taxis originating from the airport have a mandatory 25د.إ base fare. This is normal.",
+          "**Nol Card:** Get the 'Silver Card' if staying more than 2 days; it's the most cost-effective for Metro and Buses.",
+          "**Smart Gates:** If your passport has a biometric chip, use the Smart Gates for 10-second immigration."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["centralbank-ae"],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "Money & Digital Pay",
+        "description": "Dubai is an ultra-modern digital economy. Apple Pay and Google Pay are accepted almost everywhere, from luxury malls to small shawarma shops.",
+        "criticalAlert": "While cards are king, you will need physical cash (AED) for the **Abra (Water Taxis)** in Old Dubai and some stalls in the Gold Souk.",
+        "summaryStats": [
+          { "label": "Card Acceptance", "value": "95% (Digital)" },
+          { "label": "Abra Crossing", "value": "2د.إ (Cash Only)" },
+          { "label": "Tipping", "value": "10–15% Optional" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Exchange:** Avoid exchanging money at the airport. Use the Al Ansari or UAE Exchange booths inside any major mall for better rates.",
+          "**VAT Refund:** Save your receipts! Tourists can claim a 5% VAT refund at 'Planet' kiosks in the airport before flying out.",
+          "**No Hidden Fees:** Most bank ATMs in Dubai (ADCB, Emirates NBD) do not charge local fees to foreign cards beyond your own bank's charges."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Burj Khalifa",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Dubai Mall",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Al Fahidi Historical District",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["dubai-police-hq"],
+      "payload": {
+        "title": "Laws & Local Etiquette",
+        "description": "Dubai is ranked as one of the safest cities globally. Common sense and respect for local customs will ensure a trouble-free trip.",
+        "criticalAlert": "Dubai has a **Strict Zero Tolerance** policy for drink-driving and public intoxication. Always use a taxi or Careem after visiting a lounge or brunch.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "Dial 999" },
+          { "label": "Tourist Police", "value": "800 4438" },
+          { "label": "Safety Rank", "value": "Top 10 Global" }
+        ],
+        "tips": [
+          "**The 'Lexus' Taxi:** In the Careem app, a standard 'Hala Taxi' is the cheapest. If you select 'Careem Kids' or 'Lexus,' you will pay a premium.",
+          "**Public Display of Affection:** Keep PDA minimal in public spaces (malls/metro) to avoid unwanted attention or fines.",
+          "**Photography:** Avoid taking photos of government buildings or people without their explicit permission."
+        ]
+      }
     }
   }
 }

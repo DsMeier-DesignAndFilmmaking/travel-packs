@@ -5,200 +5,75 @@
   "country": "China SAR",
   "countryCode": "MO",
   "region": "East Asia",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "zh-MO",
-    "pt",
-    "en"
-  ],
-  "currency": {
-    "code": "MOP",
-    "symbol": "MOP$"
-  },
+  "updatedAt": "2026-02-05T21:15:00Z",
+  "version": "1.1.0",
+  "languages": ["zh-MO", "pt", "en"],
+  "currency": { "code": "MOP", "symbol": "MOP$" },
   "timezone": "UTC+8",
-  "coordinates": {
-    "lat": 22.1987,
-    "lng": 113.5439
-  },
+  "coordinates": { "lat": 22.1987, "lng": 113.5439 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["macau-airport-mim", "dsat-gov-mo"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Public bus",
-          "Shuttle bus",
-          "Taxi"
+        "title": "Arriving in the 'Las Vegas of Asia'",
+        "description": "Whether arriving via Macau International (MFM) or the Hong Kong-Zhuhai-Macau Bridge (HZMB), the city's transport is dominated by a mix of ultra-modern LRT and free hotel shuttles.",
+        "criticalAlert": "As of early 2026, visitor numbers have hit record highs (40M+ annually). If arriving via the HZMB Bridge at peak times, expect 45+ minute wait times for taxis. Head straight for the **Casino Shuttle** or **Public Bus 101X/102X** lines instead.",
+        "summaryStats": [
+          { "label": "LRT Taipa Line", "value": "Direct from Airport" },
+          { "label": "HK-Macau Ferry", "value": "55 min (TurboJet)" },
+          { "label": "Bridge Shuttle", "value": "24/7 (Gold Bus)" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**The LRT Advantage:** The Light Rail (LRT) now connects the Airport directly to the Cotai Strip and the Barra district (Macau Peninsula). It is the fastest way to avoid Cotai's notorious evening traffic.",
+          "**Free Shuttles:** You do not need to be a hotel guest to use the 'Casino Shuttles.' They run from the Ferry Terminals, Airport, and Border Gates to all major resorts.",
+          "**HZMB Bridge:** If coming from Hong Kong Airport, the 'Direct' bus allows you to bypass HK immigration entirely, checking your bags straight through to Macau.",
+          "**The 'Barra' Connection:** The LRT now extends to Barra station, finally linking the Taipa island resorts to the historic Macau Peninsula via rail."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["amcm-gov-mo"],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "HKD vs. Pataca (MOP)",
+        "description": "Macau has its own currency (MOP), but the Hong Kong Dollar (HKD) is used interchangeably everywhere at a 1:1 rate.",
+        "criticalAlert": "While HKD is accepted, you will almost always receive change in MOP. **Note:** MOP is 'dead' currency outside of Macau; spend it or exchange it before you leave, as even HK banks won't take it.",
+        "summaryStats": [
+          { "label": "Bus Fare", "value": "MOP 6.00 (Flat)" },
+          { "label": "Digital Pay", "value": "High (Alipay/WeChat)" },
+          { "label": "Tipping", "value": "Not required" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Bus Payments:** Public buses now accept **Alipay (HK/Mainland)** and **WeChat Pay**. Just scan the 'Ride Code' on the reader. No more hunting for exact MOP 6 change!",
+          "**Macau Pass:** If staying more than 2 days, buy a Macau Pass (MOP 130). It halves the cost of bus/LRT fares and works at 7-Eleven and Vending Machines.",
+          "**Casino Currency:** Most casinos actually prefer (or exclusively use) **HKD** at the tables. If you plan to gamble, don't bother exchanging your HKD into MOP.",
+          "**The 'No Change' Rule:** If paying cash on a bus, the driver will not give change. If you pay with a HK$10 bill, you lose the difference."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Ruins of St. Paul's",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Senado Square",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Taipa Village",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["fsm-gov-mo"],
+      "payload": {
+        "title": "Safety & Crowd Etiquette",
+        "description": "Macau is one of the safest cities in Asia. The primary concerns are extreme humidity and the density of crowds in the Historic Centre.",
+        "criticalAlert": "The area around the **Ruins of St. Paul's** is subject to 'Crowd Control' measures during holidays. Police may enforce one-way walking paths—follow the fluorescent vests.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "999 / 112" },
+          { "label": "Tourist Police", "value": "High Presence" },
+          { "label": "Weather Alert", "value": "Typhoon Signal 8" }
+        ],
+        "tips": [
+          "**Taxi Surcharges:** There is a MOP 5.00 surcharge for trips starting at the Airport and a MOP 3.00 surcharge for luggage in the trunk. This is legal and metered.",
+          "**Pedestrian Rules:** Macau's streets are narrow. Stay on the sidewalks; the scooters in the old city are quiet and fast.",
+          "**Typhoon Season (May-Oct):** If a 'Signal 8' is hoisted, the city shuts down. Ferries stop, and the bridges to Taipa may close. Check the 'Macau Weather' app (SMG) religiously in summer."
+        ]
+      }
     }
   }
 }

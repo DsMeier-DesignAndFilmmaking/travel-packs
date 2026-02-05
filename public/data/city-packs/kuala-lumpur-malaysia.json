@@ -5,200 +5,74 @@
   "country": "Malaysia",
   "countryCode": "MY",
   "region": "Southeast Asia",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "ms",
-    "en",
-    "zh"
-  ],
-  "currency": {
-    "code": "MYR",
-    "symbol": "RM"
-  },
+  "updatedAt": "2026-02-05T22:45:00Z",
+  "version": "1.1.0",
+  "languages": ["ms", "en", "zh"],
+  "currency": { "code": "MYR", "symbol": "RM" },
   "timezone": "UTC+8",
-  "coordinates": {
-    "lat": 3.139,
-    "lng": 101.6869
-  },
+  "coordinates": { "lat": 3.139, "lng": 101.6869 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["malaysia-immigration-dept"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "MRT",
-          "LRT",
-          "Monorail"
+        "title": "Arriving at KLIA/KLIA2",
+        "description": "Kuala Lumpur has two main terminals: **KLIA (Terminal 1)** for full-service carriers and **KLIA2 (Terminal 2)** for budget airlines like AirAsia. Both are connected to the city via the high-speed rail.",
+        "criticalAlert": "You **must** complete the **Malaysia Digital Arrival Card (MDAC)** online within 3 days before your arrival. It is free, but mandatory for all foreigners (except Singaporeans).",
+        "summaryStats": [
+          { "label": "KLIA Ekspres", "value": "28–33 min (RM55)" },
+          { "label": "Grab / Taxi", "value": "60 min (~RM75+)" },
+          { "label": "Airport Bus", "value": "RM12–15 to KL Sentral" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**KLIA Ekspres:** The fastest way into the city. Use the app or website to buy tickets for a 10% discount compared to the counter.",
+          "**Grab Pickup:** Download the Grab app. At both terminals, you must head to the designated 'Transportation Hub' (Level 1) for app pickups.",
+          "**Tolls:** If taking a car, expect to pay around RM10 in tolls. Drivers will add this to your fare; it's standard procedure.",
+          "**Biometric Gates:** On your second visit to Malaysia, you can often use the automated 'E-Gates' if you registered your biometrics on the first trip."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["bank-negara-malaysia"],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "QR Codes & Touch 'n Go",
+        "description": "KL is a leader in QR payments (DuitNow). While Visa/Mastercard work in malls, the city's transit and small stalls require specialized payment methods.",
+        "criticalAlert": "You **cannot** tap your foreign credit card directly at LRT/MRT gates. You must buy a physical **Touch 'n Go (TNG) card** or a single-trip token (cash/card at machines).",
+        "summaryStats": [
+          { "label": "Digital Pay", "value": "90% (DuitNow/Grab)" },
+          { "label": "ATM Fee", "value": "Usually RM1–12" },
+          { "label": "Street Food", "value": "Cash or QR Only" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**TNG eWallet:** If you have an Asian phone number, setting up the Touch 'n Go eWallet is a superpower. It is accepted at almost every night market stall (Jalan Alor).",
+          "**DuitNow QR:** If you have a banking app from Singapore (PayLah!), Thailand, or Indonesia, you can scan Malaysian DuitNow QR codes directly.",
+          "**Cash Stash:** Keep RM50–100 in small notes (RM1, RM5) for 'Mamak' stalls and public restrooms."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Petronas Towers",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Batu Caves",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Central Market",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["royal-malaysian-police"],
+      "payload": {
+        "title": "Safety & Local Advice",
+        "description": "KL is safe, but traffic and humidity are your biggest enemies. Petty 'snatch theft' by motorbikes is the most common crime to watch for.",
+        "criticalAlert": "Avoid walking with your phone or bag on the 'roadside' of the sidewalk. Motorbike snatch thefts can happen quickly in busy areas like Bukit Bintang.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "Dial 999" },
+          { "label": "Tourist Police", "value": "Available in KLCC" },
+          { "label": "Safe Rating", "value": "Medium-High" }
+        ],
+        "tips": [
+          "**Taxi Meter Scam:** If a taxi driver at a tourist spot refuses the meter and quotes a flat price, use **Grab** instead. It's almost always cheaper and safer.",
+          "**Dress Code:** When visiting Batu Caves, both men and women must cover their knees. You can rent a sarong at the bottom for RM5.",
+          "**Monsoon Awareness:** Heavy rain usually hits in the late afternoon (3 PM–5 PM). Plan your indoor mall visits or museum trips for this window."
+        ]
+      }
     }
   }
 }

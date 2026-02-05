@@ -5,199 +5,74 @@
   "country": "France",
   "countryCode": "FR",
   "region": "Western Europe",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "fr",
-    "en"
-  ],
-  "currency": {
-    "code": "EUR",
-    "symbol": "€"
-  },
+  "updatedAt": "2026-02-05T16:45:00Z",
+  "version": "1.1.0",
+  "languages": ["fr", "en"],
+  "currency": { "code": "EUR", "symbol": "€" },
   "timezone": "UTC+1",
-  "coordinates": {
-    "lat": 48.8566,
-    "lng": 2.3522
-  },
+  "coordinates": { "lat": 48.8566, "lng": 2.3522 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["ratp-fr", "parisaeroport-fr"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
+        "title": "Arriving at CDG & Orly",
+        "description": "Paris transport has undergone a massive modernization. The 2024 Olympic legacy remains, most notably the direct rail links to Orly which have replaced older, slower bus routes.",
+        "criticalAlert": "The **Entry/Exit System (EES)** is now active for all non-EU travelers. Expect 15–30 minute delays at immigration for biometric registration (fingerprints/photo) on your first entry into the Schengen Area.",
+        "summaryStats": [
+          { "label": "Orly (ORY) to Center", "value": "25 min (Metro 14)" },
+          { "label": "CDG to Center", "value": "35–50 min (RER B)" },
+          { "label": "Taxi (CDG)", "value": "€56–€65 (Flat Rate)" }
+        ],
+        "tips": [
+          "**Metro 14 (Orly):** Forget the OrlyBus. Take Metro Line 14 directly to Châtelet or Gare de Lyon. It’s fully automated, runs every 2 minutes, and costs only €14 (or is included in a Navigo pass).",
+          "**RER B (CDG):** This remains the fastest way into town from CDG, but it is notorious for strikes and pickpockets. If you have heavy luggage, consider a flat-rate taxi or an app like G7.",
+          "**RoissyBus Warning:** As of March 2026, the RoissyBus from CDG to Opéra is being phased out. Check the RATP app for the latest bus alternatives or stick to the RER B.",
+          "**ETIAS:** If you are visiting in late 2026, check if the **ETIAS** (European Travel Information and Authorisation System) has officially launched. It will require a €7 pre-travel digital authorization."
+        ],
+        "highlight": true
       }
     },
     "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["iledefrance-mobilites-fr"],
       "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Metro",
-          "RER",
-          "Bus"
+        "title": "Digital Ticketing & Navigo",
+        "description": "The era of the 't+ cardboard ticket' is officially over. Everything is now digital via physical Navigo cards or your smartphone.",
+        "criticalAlert": "Do NOT attempt to use old paper tickets. They are no longer sold and may not work in turnstiles. You must use a **Navigo Easy** card or the **IDF Mobilités app**.",
+        "summaryStats": [
+          { "label": "Single Fare", "value": "€2.15 (Digital)" },
+          { "label": "Weekly Pass", "value": "~€30.75 (Mon-Sun)" },
+          { "label": "Navigo Easy Cost", "value": "€2.00 (Reusable)" }
         ],
-        "tapToPaySupport": true
-      }
-    },
-    "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
-      "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
-        ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Smartphone Entry:** Most Android and iPhones (iOS 17.5+) can now act as your Navigo card. You don't even need to wake your screen to tap in at the barriers.",
+          "**Validation:** You MUST validate your ticket/phone at every entry. Inspecting 'contrôleurs' are frequent on the Metro, and they do not accept 'I didn't know' as an excuse for an unvalidated ride (fines start at €50).",
+          "**Navigo Liberté+:** If staying for more than 3 days, this 'pay-as-you-go' digital system is the cheapest option for locals and frequent visitors, billing you at the end of the month."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Louvre Museum",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Eiffel Tower",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Le Marais",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["prefecturedepolice-interieur-gouv-fr"],
+      "payload": {
+        "title": "Scams & City Safety",
+        "description": "Paris remains very safe, but 'opportunistic' theft has shifted from pickpocketing to high-tech 'phone snatching' during the digital transition.",
+        "criticalAlert": "Phone snatchers on e-bikes often target tourists near Metro exits or café terraces. If you are using your phone for navigation, keep it firmly in both hands and away from the street-side of the sidewalk.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "112 / 17" },
+          { "label": "Safety Rating", "value": "High (Vigilance req.)" },
+          { "label": "Police Presence", "value": "Increased (Post-2024)" }
+        ],
+        "tips": [
+          "**The 'String' Scam:** Common near Sacré-Cœur. Men will try to tie a 'friendship bracelet' on your wrist to demand money. Keep your hands in your pockets and say a firm 'Non, merci' while walking.",
+          "**Metro Door Alert:** Do not use your phone near the Metro doors when they are about to close. Thieves often grab phones and hop off just as the doors shut.",
+          "**Restaurant Bills:** Service is always included (*service compris*). Tipping is not required, but leaving €1–€2 is a nice gesture for exceptional service."
+        ]
+      }
     }
   }
 }

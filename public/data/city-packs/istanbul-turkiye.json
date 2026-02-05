@@ -5,199 +5,74 @@
   "country": "Türkiye",
   "countryCode": "TR",
   "region": "Europe & Asia",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "tr",
-    "en"
-  ],
-  "currency": {
-    "code": "TRY",
-    "symbol": "₺"
-  },
+  "updatedAt": "2026-02-05T20:15:00Z",
+  "version": "1.1.0",
+  "languages": ["tr", "en"],
+  "currency": { "code": "TRY", "symbol": "₺" },
   "timezone": "UTC+3",
-  "coordinates": {
-    "lat": 41.0082,
-    "lng": 28.9784
-  },
+  "coordinates": { "lat": 41.0082, "lng": 28.9784 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["istanbul-airport-ig"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Metro",
-          "Tram",
-          "Ferry"
+        "title": "Arriving at IST",
+        "description": "Istanbul Airport (IST) is on the European side. The new **M11 Metro** is now fully operational, offering a fast, traffic-free link to the city center (Gayrettepe/Kağıthane).",
+        "criticalAlert": "Do not take a taxi for long distances during rush hour (08:00-10:00 & 17:00-20:00). You will sit in traffic for 2+ hours. The Metro or the **Havaist Shuttle** are significantly more reliable.",
+        "summaryStats": [
+          { "label": "M11 Metro", "value": "45–55 min (~35₺)" },
+          { "label": "Havaist Bus", "value": "60–90 min (~150₺)" },
+          { "label": "Yellow Taxi", "value": "~800–1,100₺ to Sultanahmet" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**Istanbulkart:** You need this card for the Metro and Ferries. Buy it at the yellow 'Biletmatik' machines in the airport transport floor (Level -2).",
+          "**BiTaksi / Uber:** Use these apps to hail yellow taxis. It ensures your route is tracked and provides a price estimate, reducing the chance of 'scenic route' overcharging.",
+          "**Sabiha Gökçen (SAW):** If landing at SAW (Asian side), use the M4 Metro line or the Havabus shuttle to Kadıköy.",
+          "**The Walk:** Note that the M11 Metro station at IST requires a 10-15 minute walk from the arrivals hall. Follow the 'U' (Ulaştırma) signs."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["tcmb-gov-tr"],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "Cash, Cards & Lira",
+        "description": "Due to high inflation, prices in Lira (₺) fluctuate rapidly. Cards are accepted in 95% of places, but 'Cash is King' for better bargaining in bazaars.",
+        "criticalAlert": "Avoid **Euronet ATMs** (blue/yellow kiosks) found in tourist areas. They charge extreme conversion fees. Only use official bank ATMs like **Ziraat Bankası, VakıfBank, or İş Bankası**.",
+        "summaryStats": [
+          { "label": "Card Use", "value": "Very High (Contactless)" },
+          { "label": "Amex", "value": "Limited Acceptance" },
+          { "label": "Tipping", "value": "10% (Cash preferred)" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Dual Pricing:** Many major sites (Hagia Sophia, Topkapi) now charge foreign tourists in **Euros (€)** or the Lira equivalent at a higher rate. Expect to pay ~€25-€30 for entry.",
+          "**Small Change:** Keep 5₺, 10₺, and 20₺ notes for tipping 'Bay' (public toilets) and street snacks like Simit.",
+          "**USD/EUR:** While some shops in the Grand Bazaar accept USD or EUR, you will always get a worse rate. Always pay in Lira."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Hagia Sophia",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Topkapı Palace",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Grand Bazaar",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["istanbul-police-dept"],
+      "payload": {
+        "title": "Safety & Common Scams",
+        "description": "Istanbul is generally safe, but its popularity makes it a hub for 'gentle' social engineering scams.",
+        "criticalAlert": "The 'Shoe Shine' Scam: A man will drop a brush in front of you. If you pick it up, he will offer a 'free' shine and then demand a high fee. Smile, keep walking, and do not pick it up.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "Dial 112" },
+          { "label": "Tourist Police", "value": "Blue Uniforms" },
+          { "label": "Late Night", "value": "Safe in busy areas" }
+        ],
+        "tips": [
+          "**The 'Let's Have a Drink' Scam:** Avoid solo men inviting you to a 'great bar' they know. You will end up with a bill for hundreds of dollars and a locked door.",
+          "**Mosque Etiquette:** Women must cover their heads and everyone must remove shoes. Most major mosques provide wraps for free at the entrance.",
+          "**Street Dogs/Cats:** They are community-owned and generally vaccinated. They are friendly but avoid getting too close to their faces while they sleep."
+        ]
+      }
     }
   }
 }

@@ -12,117 +12,67 @@
   "timezone": "UTC+7",
   "coordinates": { "lat": 13.7563, "lng": 100.5018 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
       "version": "1.1.0",
-      "sourceIds": ["gov-immigration"],
+      "sourceIds": ["suvarnabhumi-airport-aoit"],
       "payload": {
-        "title": "Entry Requirements",
-        "description": "Thailand has streamlined entry for most tourists. Ensure your passport is in good condition.",
-        "notes": [
-          "Apply for an e-Visa online if your stay exceeds 30 days.",
-          "Passport must be valid for 6 months from your date of entry."
+        "title": "Arriving at Suvarnabhumi (BKK)",
+        "description": "BKK is massive. After clearing immigration, you must descend to **Level B** for trains or **Level 1** for taxis. Avoid the touts on the arrival floor.",
+        "criticalAlert": "Only use the **Official Taxi Kiosks** on Level 1. Do not accept rides from 'limousine' touts inside the terminal; they cost 3x more.",
+        "summaryStats": [
+          { "label": "Airport Rail Link", "value": "35 min (45฿)" },
+          { "label": "Official Taxi", "value": "45–60 min (~400฿)" },
+          { "label": "Grab / Bolt", "value": "App Pickup Level 1" }
         ],
-        "data": {
-          "Visa Type": "e-Visa / Visa on Arrival",
-          "Validity Needed": "6 Months"
-        }
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.1.0",
-      "sourceIds": ["city-transport-authority"],
-      "payload": {
-        "title": "Getting Around the City",
-        "description": "Beat the famous Bangkok traffic by using the elevated Skytrain (BTS) or the underground MRT.",
-        "notes": [
-          "The Airport Rail Link is the fastest way to avoid highway gridlock.",
-          "Use Chao Phraya Express boats for a scenic route to the Grand Palace."
+        "tips": [
+          "**Airport Rail Link:** Follow signs to the basement (Level B). It connects directly to the MRT (Phetchaburi) and BTS (Phaya Thai).",
+          "**Taxi Kiosks:** Press the button for a ticket (Small/Large/Short distance) and go to the assigned lane number.",
+          "**Highway Tolls:** Drivers will ask for cash (25฿–50฿) at the toll booths. This is normal and expected.",
+          "**Sim Cards:** Buy your eSim or physical card at the AIS or DTAC booths *after* customs for the best local rates."
         ],
-        "data": {
-          "Airport to Center": "30–65 mins",
-          "Tap-to-Pay": "Supported on MRT and Buses"
-        },
         "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
+      "updatedAt": "2026-02-05T00:00:00Z",
       "version": "1.1.0",
-      "sourceIds": ["central-bank"],
+      "sourceIds": ["bank-of-thailand"],
       "payload": {
-        "title": "Payments & Tipping",
-        "description": "While cards are great for malls, Bangkok is still a city fueled by street food and cash.",
-        "notes": [
-          "Small change is vital for street vendors and 'Tuk-Tuks'.",
-          "Tipping isn't strictly expected, but rounding up the bill is common."
+        "title": "Cash & ATM Strategy",
+        "description": "Thailand is the land of the **flat 220฿ ATM fee**. Cards work in malls (7-Eleven has a 200฿ minimum), but street food is cash-only.",
+        "criticalAlert": "Every ATM withdrawal costs **220฿ (~$6)** regardless of the amount. Withdraw the maximum (usually 20,000฿–30,000฿) to minimize fees.",
+        "summaryStats": [
+          { "label": "ATM Fee", "value": "220฿ Fixed" },
+          { "label": "Exchange", "value": "SuperRich (Orange)" },
+          { "label": "QR Pay", "value": "Local Bank Only" }
         ],
-        "data": {
-          "Cash Reliance": "Medium - High",
-          "Tipping": "10% service often included"
-        }
+        "tips": [
+          "**SuperRich:** For the best rates, look for the 'Orange' or 'Green' SuperRich booths, especially the one in the Airport Rail Link basement.",
+          "**No DCC:** When using a card, always choose **'Pay in Local Currency (THB)'**. Never let the machine do the conversion.",
+          "**Coins:** Keep 10฿ coins for laundry machines and older bus conductors."
+        ]
       }
     },
     "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
+      "updatedAt": "2026-02-05T00:00:00Z",
       "version": "1.1.0",
-      "sourceIds": ["city-police"],
+      "sourceIds": ["thai-tourist-police"],
       "payload": {
-        "title": "Staying Safe",
-        "description": "Bangkok is very safe for solo travelers, though petty scams exist near major temples.",
-        "notes": [
-          "Always ask taxi drivers to turn on the 'Meter'.",
-          "Ignore anyone claiming the Grand Palace is 'closed for a holiday'—it's likely a scam."
+        "title": "Scams & Safety",
+        "description": "Bangkok is generally very safe, but 'The Grand Palace is closed' is the oldest trick in the book.",
+        "criticalAlert": "If a well-dressed local or tuk-tuk driver tells you a landmark is closed for a 'Buddhist Holiday,' **ignore them**. They are trying to take you to a jewelry store.",
+        "summaryStats": [
+          { "label": "Tourist Police", "value": "Dial 1155" },
+          { "label": "Taxi Meter", "value": "Mandatory" },
+          { "label": "Tuk-Tuks", "value": "Agree price first" }
         ],
-        "data": {
-          "Emergency Number": "1155 (Tourist Police)",
-          "Late Night Transit": "Reliable via Grab app"
-        }
+        "tips": [
+          "**Metered Taxis:** If the driver refuses the meter, get out. There are thousands of taxis; the next one will use it.",
+          "**Dress Code:** Temples require covered shoulders and knees. Carry a light sarong in your bag.",
+          "**Grab App:** Use Grab to see the 'fair price' for a route before negotiating with a street taxi or tuk-tuk."
+        ]
       }
-    },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.1.0",
-      "sourceIds": ["meteorological-agency"],
-      "payload": [
-        {
-          "period": "Cool Season (Peak)",
-          "months": [11, 12, 1, 2],
-          "notes": ["Perfect walking weather, but expect crowds and higher hotel prices."]
-        },
-        {
-          "period": "Hot Season",
-          "months": [3, 4, 5, 6],
-          "notes": ["Extremely high humidity. Songkran festival in April is a highlight."]
-        },
-        {
-          "period": "Rainy Season (Low)",
-          "months": [7, 8, 9, 10],
-          "notes": ["Short, heavy bursts of rain. Great for luxury hotel deals."]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.1.0",
-      "sourceIds": ["city-tourism-board"],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "The Grand Palace",
-          "category": "Landmark",
-          "description": "The former royal residence and home to the Emerald Buddha.",
-          "recommendedDurationHours": 3
-        },
-        {
-          "id": "p2",
-          "name": "Wat Arun",
-          "category": "Culture",
-          "description": "The 'Temple of Dawn' on the west bank of the river.",
-          "recommendedDurationHours": 1.5
-        }
-      ]
     }
   }
 }

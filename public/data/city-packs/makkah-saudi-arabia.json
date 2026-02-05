@@ -5,199 +5,74 @@
   "country": "Saudi Arabia",
   "countryCode": "SA",
   "region": "Middle East",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "ar",
-    "en"
-  ],
-  "currency": {
-    "code": "SAR",
-    "symbol": "﷼"
-  },
+  "updatedAt": "2026-02-05T14:20:00Z",
+  "version": "1.1.0",
+  "languages": ["ar", "en"],
+  "currency": { "code": "SAR", "symbol": "﷼" },
   "timezone": "UTC+3",
-  "coordinates": {
-    "lat": 21.3891,
-    "lng": 39.8579
-  },
+  "coordinates": { "lat": 21.3891, "lng": 39.8579 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["nusuk-sa", "hhr-sa"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
+        "title": "Arriving for Pilgrimage",
+        "description": "Makkah has no airport; most travelers land at Jeddah (JED). The **Haramain High-Speed Railway (HHR)** is the fastest link, reaching Makkah in under an hour.",
+        "criticalAlert": "You **must** download the **Nusuk App** before arrival. It is required to book your Umrah slot and enter the Rawdah in Madinah. Without a digital permit, you will be denied entry to the Haram courtyards.",
+        "summaryStats": [
+          { "label": "Haramain Train", "value": "54 min (SAR 34–78)" },
+          { "label": "Taxi (JED to Makkah)", "value": "SAR 250–350" },
+          { "label": "Umrah Visa", "value": "90-day stay (Nusuk)" }
+        ],
+        "tips": [
+          "**Haramain Train Booking:** Tickets sell out weeks in advance for Ramadan and Hajj. Book via the HHR website or app as soon as your visa is issued.",
+          "**Nusuk Card:** Upon arrival, you will receive a physical/digital Nusuk Card. Keep this on you at all times; it is your mandatory ID for all holy sites in 2026.",
+          "**Ihram Prep:** If arriving via JED airport and intending to perform Umrah immediately, it is most convenient to change into **Ihram** at the airport's dedicated Miqat zones before boarding the train or taxi.",
+          "**Free Shuttles:** Many hotels in the Aziziyah district offer free 24/7 shuttles to the Haram, but these stop running 1 hour before and after prayer times due to crowd control."
+        ],
+        "highlight": true
       }
     },
     "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["makkahtransit-sa"],
       "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Bus",
-          "Taxi",
-          "Ride-hailing"
+        "title": "Getting Around Makkah",
+        "description": "The **Makkah Bus Project** now covers the entire city with 12 main routes, significantly reducing the need for expensive taxis.",
+        "criticalAlert": "Avoid unlicensed private cars offering 'cheap' rides outside the Haram. Stick to official yellow taxis or ride-hailing apps like **Careem** or **Uber** to ensure tracked routes and fair pricing.",
+        "summaryStats": [
+          { "label": "Makkah Bus", "value": "SAR 4.00 (Flat)" },
+          { "label": "Careem/Uber", "value": "High availability" },
+          { "label": "Walking", "value": "Primary in Central Area" }
         ],
-        "tapToPaySupport": true
-      }
-    },
-    "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
-      "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
-        ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Makkah Bus App:** Use the app to top up your E-wallet. You can pay by scanning a QR code on the bus validator. Cash is generally not accepted on board.",
+          "**Peak Traffic:** During the last 10 days of Ramadan, the central area is restricted to pedestrians only. Expect to walk 15–30 minutes from your drop-off point to the Masjid al-Haram gates.",
+          "**The 'Z' Gates:** Major construction in 2026 may shift entry points. Follow the green 'Gate' signage on the Nusuk app for real-time crowd-flow directions."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "Masjid al-Haram",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Clock Tower Museum",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Mina",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "money": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["sama-gov-sa"],
+      "payload": {
+        "title": "Digital Payments & SAR",
+        "description": "Saudi Arabia has rapidly moved toward a cashless society. Mada (local debit), Visa, and Apple Pay are accepted even in small shops.",
+        "criticalAlert": "While digital pay is everywhere, keep some cash (SAR 100–200) for small charity (Sadaqah) or for 'Zamzam' water vendors outside official areas who may not have card terminals.",
+        "summaryStats": [
+          { "label": "Apple/Google Pay", "value": "Universal" },
+          { "label": "VAT", "value": "15% (Included)" },
+          { "label": "Tipping", "value": "Not expected" }
+        ],
+        "tips": [
+          "**Currency Exchange:** Avoid the small kiosks directly facing the Haram gates as they offer poor rates. Use the bank-affiliated exchange centers inside the Clock Tower (Abraj Al Bait) malls.",
+          "**ATM Safety:** Only use ATMs attached to major banks (SNB, Al Rajhi, Alinma) to avoid skimming and ensure lower transaction fees.",
+          "**Zamzam Water:** Official 5L bottles for departure can only be purchased at the airport with a valid Umrah/Hajj visa. Do not buy 'sealed' bottles from street vendors for flights; they will be confiscated."
+        ]
+      }
     }
   }
 }

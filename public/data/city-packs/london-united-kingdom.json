@@ -5,198 +5,75 @@
   "country": "United Kingdom",
   "countryCode": "GB",
   "region": "Western Europe",
-  "updatedAt": "2026-02-01T00:00:00Z",
-  "version": "1.0.0",
-  "languages": [
-    "en"
-  ],
-  "currency": {
-    "code": "GBP",
-    "symbol": "£"
-  },
+  "updatedAt": "2026-02-05T23:30:00Z",
+  "version": "1.1.0",
+  "languages": ["en"],
+  "currency": { "code": "GBP", "symbol": "£" },
   "timezone": "UTC+0",
-  "coordinates": {
-    "lat": 51.5072,
-    "lng": -0.1276
-  },
+  "coordinates": { "lat": 51.5072, "lng": -0.1276 },
   "sections": {
-    "entryRules": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "gov-immigration"
-      ],
+    "arrival": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["gov-uk-home-office", "tfl-gov-uk"],
       "payload": {
-        "visaFreeCountriesCount": null,
-        "eVisaAvailable": true,
-        "passportValidityMonths": 6
-      }
-    },
-    "transport": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-transport-authority"
-      ],
-      "payload": {
-        "airportToCenterMinutes": {
-          "min": 30,
-          "max": 65
-        },
-        "mainModes": [
-          "Tube",
-          "Bus",
-          "Elizabeth line"
+        "title": "Arriving at Heathrow (LHR)",
+        "description": "Heathrow is London's primary hub. The **Elizabeth Line** has revolutionized the arrival experience, offering a balance of speed and price that beats the old Tube lines.",
+        "criticalAlert": "As of Feb 25, 2026, the **UK ETA** is strictly mandatory for all visa-exempt nationals (US, Canada, EU, etc.). You will be denied boarding at your departure airport if you do not have this digital authorization.",
+        "summaryStats": [
+          { "label": "Elizabeth Line", "value": "35 min (£13.30)" },
+          { "label": "Heathrow Express", "value": "15 min (£25.00)" },
+          { "label": "Piccadilly Line", "value": "55 min (£5.60)" }
         ],
-        "tapToPaySupport": true
+        "tips": [
+          "**Elizabeth Line:** This is the best choice for most. It goes directly to the West End (Bond St) and the City (Farringdon/Liverpool St) without changing at Paddington.",
+          "**Heathrow Express:** Only take this if you are in a massive rush and your final destination is Paddington. It is the most expensive 'per mile' train in the UK.",
+          "**UK ETA:** Apply at least 3 days before travel via the official 'UK ETA' app. It costs £16 and is linked digitally to your passport.",
+          "**Terminal Transfer:** Transfers between T2/T3, T4, and T5 are free via the trains, but you must still tap a contactless card or Oyster (you won't be charged)."
+        ],
+        "highlight": true
       }
     },
     "money": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "central-bank"
-      ],
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["bankofengland-co-uk"],
       "payload": {
-        "cashUsageLevel": "medium",
-        "cardsAcceptanceLevel": "high",
-        "tipping": {
-          "expected": false,
-          "notes": [
-            "Service charge may apply"
-          ]
-        }
-      }
-    },
-    "connectivity": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "telecom-regulator"
-      ],
-      "payload": {
-        "simRequiredId": true,
-        "avg5GBPrepaidUsd": 12,
-        "wifiHotspotsLevel": "high"
-      }
-    },
-    "safety": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-police"
-      ],
-      "payload": {
-        "emergencyNumbers": [
-          "112",
-          "911"
+        "title": "Pay as You Go (PAYG)",
+        "description": "London is almost entirely cashless. From the Tube to street performers, 'Tap to Pay' is the universal language.",
+        "criticalAlert": "Do NOT buy an Oyster Card if you have a contactless bank card or Apple/Google Pay. You'll save the £10 non-refundable card fee and get the same daily fare caps.",
+        "summaryStats": [
+          { "label": "Contactless Use", "value": "99% (Everywhere)" },
+          { "label": "Daily Cap (Z1-2)", "value": "£8.50" },
+          { "label": "Cash Reliance", "value": "Ultra-Low" }
         ],
-        "lateNightTransitCoverage": "medium",
-        "commonScams": [
-          "Unofficial taxi pricing",
-          "Overpriced tours"
+        "tips": [
+          "**Daily Capping:** TfL automatically stops charging you once you hit the daily cap for the zones you've traveled in. Always use the *same* device/card all day to trigger this.",
+          "**Foreign Fees:** Check if your bank charges 'Foreign Transaction Fees.' If they do, an Oyster card might actually be cheaper to avoid 20+ small transaction fees daily.",
+          "**Weekly Cap:** If you arrive on a Monday, London's weekly cap (Monday–Sunday) offers the best value for long stays.",
+          "**Tipping:** A 12.5% 'Service Charge' is usually added to restaurant bills. You do not need to tip extra unless the service was exceptional."
         ]
       }
     },
-    "seasonality": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "meteorological-agency"
-      ],
-      "payload": [
-        {
-          "period": "peak",
-          "months": [
-            6,
-            7,
-            8
-          ],
-          "notes": [
-            "Higher room rates"
-          ]
-        },
-        {
-          "period": "shoulder",
-          "months": [
-            3,
-            4,
-            5,
-            9,
-            10
-          ],
-          "notes": [
-            "Balanced weather and price"
-          ]
-        },
-        {
-          "period": "low",
-          "months": [
-            1,
-            2,
-            11,
-            12
-          ],
-          "notes": [
-            "Lower crowds in many districts"
-          ]
-        }
-      ]
-    },
-    "poi": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "city-tourism-board"
-      ],
-      "payload": [
-        {
-          "id": "p1",
-          "name": "British Museum",
-          "category": "landmark",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p2",
-          "name": "Tower of London",
-          "category": "culture",
-          "recommendedDurationHours": 2
-        },
-        {
-          "id": "p3",
-          "name": "Borough Market",
-          "category": "market",
-          "recommendedDurationHours": 2
-        }
-      ]
-    },
-    "itineraries": {
-      "updatedAt": "2026-02-01T00:00:00Z",
-      "version": "1.0.0",
-      "sourceIds": [
-        "editorial-core"
-      ],
-      "payload": [
-        {
-          "id": "it-24h",
-          "durationHours": 24,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2"
-          ]
-        },
-        {
-          "id": "it-72h",
-          "durationHours": 72,
-          "pace": "moderate",
-          "stops": [
-            "p1",
-            "p2",
-            "p3"
-          ]
-        }
-      ]
+    "safety": {
+      "updatedAt": "2026-02-05T00:00:00Z",
+      "version": "1.1.0",
+      "sourceIds": ["met-police-uk"],
+      "payload": {
+        "title": "Safety & The 'Phone Snatch'",
+        "description": "London is safe, but high-value smartphone theft is the city's most frequent petty crime, often involving electric bikes or mopeds.",
+        "criticalAlert": "Never stand near the edge of the curb with your phone out. 'Bike-by' snatching is extremely common in areas like Soho, Shoreditch, and near major Tube exits.",
+        "summaryStats": [
+          { "label": "Emergency", "value": "Dial 999" },
+          { "label": "Non-Emergency", "value": "Dial 101" },
+          { "label": "Safe Rating", "value": "High" }
+        ],
+        "tips": [
+          "**Back to the Wall:** If you need to check a map, stop, put your back against a building wall, and keep both hands on the phone.",
+          "**Unlicensed Minicabs:** Never get into a car that 'looks' like a taxi but isn't a Black Cab or a booked Uber/Bolt. Only Black Cabs can be hailed on the street.",
+          "**Pedestrian Safety:** Look BOTH ways. Visitors frequently look the wrong way for oncoming traffic. Look for the 'Look Right' or 'Look Left' markings on the pavement."
+        ]
+      }
     }
   }
 }
