@@ -5,6 +5,7 @@ import { AppRouter } from '@/app/router/AppRouter';
 import '@/styles.css';
 import { registerServiceWorker } from '@/pwa/registerServiceWorker';
 
+// ✅ Render React app
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AppProviders>
@@ -13,4 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
-registerServiceWorker();
+// ✅ Register service worker once, safely
+if ('serviceWorker' in navigator) {
+  registerServiceWorker();
+}
