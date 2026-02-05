@@ -8,7 +8,7 @@
       "country": "Thailand",
       "region": "Southeast Asia",
       "languageCodes": ["th", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/13876494339229873472_0",
+      "heroImage": "https://images.unsplash.com/photo-1504214208698-ea1919a23562?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -18,7 +18,7 @@
       "country": "Türkiye",
       "region": "Europe & Asia",
       "languageCodes": ["tr", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/9822447083737996571_0",
+      "heroImage": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -28,7 +28,7 @@
       "country": "United Kingdom",
       "region": "Western Europe",
       "languageCodes": ["en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/12454104860791673354_0",
+      "heroImage": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -38,7 +38,7 @@
       "country": "China SAR",
       "region": "East Asia",
       "languageCodes": ["zh-HK", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/12740639622509700183_0",
+      "heroImage": "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -48,7 +48,7 @@
       "country": "Saudi Arabia",
       "region": "Middle East",
       "languageCodes": ["ar", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/16691033074603490765_0",
+      "heroImage": "https://images.unsplash.com/photo-1564769662533-4f00a87b4056?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -58,7 +58,7 @@
       "country": "Türkiye",
       "region": "Mediterranean",
       "languageCodes": ["tr", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/6502801411877763915_0",
+      "heroImage": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -68,7 +68,7 @@
       "country": "United Arab Emirates",
       "region": "Middle East",
       "languageCodes": ["ar", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/88071856832356750_0",
+      "heroImage": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -78,7 +78,7 @@
       "country": "China SAR",
       "region": "East Asia",
       "languageCodes": ["zh-MO", "pt", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/14500155351894689498_0",
+      "heroImage": "https://images.unsplash.com/photo-1590603740183-980e7f6920eb?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -88,7 +88,7 @@
       "country": "France",
       "region": "Western Europe",
       "languageCodes": ["fr", "en"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/12433741649790385505_0",
+      "heroImage": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     },
@@ -98,7 +98,7 @@
       "country": "Malaysia",
       "region": "Southeast Asia",
       "languageCodes": ["ms", "en", "zh"],
-      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/7038553694947332145_0",
+      "heroImage": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&q=80&w=1200",
       "tags": ["city-break", "culture", "food"],
       "updatedAt": "2026-02-05T00:00:00Z"
     }
