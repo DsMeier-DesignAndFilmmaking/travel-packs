@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-01T00:00:00Z",
+  "generatedAt": "2026-02-05T18:00:00Z",
   "total": 10,
   "items": [
     {
@@ -7,171 +7,100 @@
       "city": "Bangkok",
       "country": "Thailand",
       "region": "Southeast Asia",
-      "languageCodes": [
-        "th",
-        "en"
-      ],
-      "heroImage": "/images/bangkok-thailand.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["th", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/13876494339229873472_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "istanbul-turkiye",
       "city": "Istanbul",
       "country": "Türkiye",
       "region": "Europe & Asia",
-      "languageCodes": [
-        "tr",
-        "en"
-      ],
-      "heroImage": "/images/istanbul-turkiye.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["tr", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/9822447083737996571_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "london-united-kingdom",
       "city": "London",
       "country": "United Kingdom",
       "region": "Western Europe",
-      "languageCodes": [
-        "en"
-      ],
-      "heroImage": "/images/london-united-kingdom.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/12454104860791673354_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "hong-kong",
       "city": "Hong Kong",
       "country": "China SAR",
       "region": "East Asia",
-      "languageCodes": [
-        "zh-HK",
-        "en"
-      ],
-      "heroImage": "/images/hong-kong.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["zh-HK", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/12740639622509700183_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "makkah-saudi-arabia",
       "city": "Makkah",
       "country": "Saudi Arabia",
       "region": "Middle East",
-      "languageCodes": [
-        "ar",
-        "en"
-      ],
-      "heroImage": "/images/makkah-saudi-arabia.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["ar", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/16691033074603490765_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "antalya-turkiye",
       "city": "Antalya",
       "country": "Türkiye",
       "region": "Mediterranean",
-      "languageCodes": [
-        "tr",
-        "en"
-      ],
-      "heroImage": "/images/antalya-turkiye.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["tr", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/6502801411877763915_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "dubai-uae",
       "city": "Dubai",
       "country": "United Arab Emirates",
       "region": "Middle East",
-      "languageCodes": [
-        "ar",
-        "en"
-      ],
-      "heroImage": "/images/dubai-uae.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["ar", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/88071856832356750_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "macau",
       "city": "Macau",
       "country": "China SAR",
       "region": "East Asia",
-      "languageCodes": [
-        "zh-MO",
-        "pt",
-        "en"
-      ],
-      "heroImage": "/images/macau.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["zh-MO", "pt", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/14500155351894689498_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "paris-france",
       "city": "Paris",
       "country": "France",
       "region": "Western Europe",
-      "languageCodes": [
-        "fr",
-        "en"
-      ],
-      "heroImage": "/images/paris-france.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["fr", "en"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/12433741649790385505_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     },
     {
       "slug": "kuala-lumpur-malaysia",
       "city": "Kuala Lumpur",
       "country": "Malaysia",
       "region": "Southeast Asia",
-      "languageCodes": [
-        "ms",
-        "en",
-        "zh"
-      ],
-      "heroImage": "/images/kuala-lumpur-malaysia.jpg",
-      "tags": [
-        "city-break",
-        "culture",
-        "food"
-      ],
-      "updatedAt": "2026-02-01T00:00:00Z"
+      "languageCodes": ["ms", "en", "zh"],
+      "heroImage": "http://googleusercontent.com/image_collection/image_retrieval/7038553694947332145_0",
+      "tags": ["city-break", "culture", "food"],
+      "updatedAt": "2026-02-05T00:00:00Z"
     }
   ]
 }
