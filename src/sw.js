@@ -17,15 +17,22 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // --- SPA NAVIGATION FIX ---
-  // If the user refreshes on /city/antalya-turkiye, try the network first.
-  // This allows Vercel's vercel.json rewrites to work correctly.
+  // SPA NAVIGATION: Hard fix for the 404 loop
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() => {
-        // Only if network fails (Offline), serve the cached App Shell
-        return caches.match('/index.html');
-      })
+      fetch(request)
+        .then((response) => {
+          // If the network returns a 404, we don't want to cache it!
+          // This forces the SW to fallback to the cached index.html
+          if (response.status === 404) {
+            return caches.match('/index.html');
+          }
+          return response;
+        })
+        .catch(() => {
+          // Network failed (True Offline)
+          return caches.match('/index.html');
+        })
     );
     return;
   }

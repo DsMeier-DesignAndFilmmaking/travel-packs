@@ -2,19 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { AppProviders } from '@/app/providers/AppProviders';
 import { AppRouter } from '@/app/router/AppRouter';
+import { registerServiceWorker } from '@/pwa/registerServiceWorker'; // Import your logic
 import '@/styles.css';
 
-// Look for this in main.tsx or registerServiceWorker.ts
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('/sw.js', { type: 'module' }) // Add this second argument
-    .then((registration) => {
-      console.log('SW registered:', registration);
-    })
-    .catch((error) => {
-      console.error('SW registration failed:', error);
-    });
-}
+// 1. Clean registration using your robust TS helper
+registerServiceWorker();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
