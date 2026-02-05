@@ -19,11 +19,14 @@ export function CityPackPage() {
       .catch((err: Error) => setError(err.message));
   }, [slug]);
 
+  // Missing slug
   if (!slug) {
-    return <p className="feedback feedback--error">Missing city pack id.</p>;
-    return <p>Missing city pack id.</p>;
+    return (
+      <p className="feedback feedback--error">Missing city pack id.</p>
+    );
   }
 
+  // Error loading pack
   if (error) {
     return (
       <div className="surface hero-panel">
@@ -31,20 +34,22 @@ export function CityPackPage() {
           Unable to load this city pack. If you are offline, download it first from the catalog.
         </p>
         <p className="feedback">Error: {error}</p>
-        <Link to={ROUTES.home} className="button button--ghost" style={{ display: 'inline-block', marginTop: '0.5rem' }}>
+        <Link
+          to={ROUTES.home}
+          className="button button--ghost"
+          style={{ display: 'inline-block', marginTop: '0.5rem' }}
+        >
           Back to catalog
         </Link>
-      <div>
-        <p>Unable to load city pack: {error}</p>
-        <Link to={ROUTES.home}>Back to catalog</Link>
       </div>
     );
   }
 
+  // Loading state
   if (!pack) {
     return <p className="feedback">Loading city pack…</p>;
-    return <p>Loading city pack...</p>;
   }
 
+  // Render the city pack detail
   return <CityPackDetailView pack={pack} />;
 }
