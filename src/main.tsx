@@ -16,5 +16,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 // ✅ Register service worker once, safely
 if ('serviceWorker' in navigator) {
-  registerServiceWorker();
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => console.log('SW registered:', reg))
+      .catch((err) => console.error('SW registration failed:', err));
+  });
 }
+
