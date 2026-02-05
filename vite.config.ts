@@ -1,23 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import path from 'path';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   plugins: [
     react(),
-
-    // --- PWA ---
     VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'src',
-      filename: 'sw.js', // output sw.js to public
-      injectManifest: {
-        // Workbox injectManifest options
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
-      },
+      strategies: 'generateSW', // Only app shell, SW is static in /public
       registerType: 'autoUpdate',
+      devOptions: { enabled: true },
       manifest: {
         name: 'Local City Travel Packs',
         short_name: 'Travel Packs',
@@ -29,28 +20,12 @@ export default defineConfig({
         start_url: '/',
         icons: [
           { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/pwa-maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-        ],
-      },
-      devOptions: {
-        enabled: true,
-      },
-    }),
-
-    // --- Copy manifest + icons + favicon into /public ---
-    viteStaticCopy({
-      targets: [
-        { src: path.resolve(__dirname, 'src/pwa/manifest.webmanifest'), dest: '' },
-        { src: path.resolve(__dirname, 'src/pwa/*.png'), dest: '' },
-        { src: path.resolve(__dirname, 'src/pwa/favicon.ico'), dest: '' },
-      ],
-    }),
+          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      }
+    })
   ],
-
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
+    alias: { '@': '/src' }
+  }
 });
