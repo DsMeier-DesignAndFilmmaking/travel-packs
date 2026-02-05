@@ -20,43 +20,18 @@ export interface VersionedSection<TPayload = unknown> {
   payload: TPayload;
 }
 
-// Section content within a CityPack
-export interface CityPackSection {
-  id: string;
-  title: string;
-  contentBlocks: Array<{
-    type: 'markdown' | 'tips' | 'highlights';
-    value: string | string[];
-  }>;
-}
-
-// Full CityPack type
-export interface CityPack extends CityPackSummary {
+export interface CityPack {
   packId: string;
+  slug: string;
+  city: string;
+  country: string;
   countryCode: string;
-  languages: string[];
-  currency: {
-    code: string;
-    symbol: string;
-  };
-  timezone: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
+  region: string;
+  updatedAt: string;
   version: string;
-  locale: string;
-
-  // Sections as array for easy rendering
-  sections: CityPackSection[];
-
-  // Optional versioned sections map for API/AI integrations
-  versionedSections?: Record<string, VersionedSection>;
-
-  // Metadata such as emergency info
-  metadata: {
-    timezone: string;
-    currency: string;
-    emergencyNumbers: string[];
-  };
+  languages: string[];
+  currency: { code: string; symbol: string };
+  timezone: string;
+  coordinates: { lat: number; lng: number };
+  sections: Record<string, VersionedSection>; // <-- aligns with JSON schema
 }
