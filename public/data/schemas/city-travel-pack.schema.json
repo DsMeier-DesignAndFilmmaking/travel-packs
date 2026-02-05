@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localcitytravelpacks.dev/schemas/city-travel-pack.schema.json",
+  "title": "City Travel Pack",
+  "type": "object",
+  "required": [
+    "packId",
+    "slug",
+    "city",
+    "country",
+    "countryCode",
+    "region",
+    "updatedAt",
+    "version",
+    "languages",
+    "currency",
+    "timezone",
+    "coordinates",
+    "sections"
+  ],
+  "properties": {
+    "packId": { "type": "string" },
+    "slug": { "type": "string" },
+    "city": { "type": "string" },
+    "country": { "type": "string" },
+    "countryCode": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "region": { "type": "string" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "version": { "type": "string" },
+    "languages": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "currency": {
+      "type": "object",
+      "required": ["code", "symbol"],
+      "properties": {
+        "code": { "type": "string" },
+        "symbol": { "type": "string" }
+      }
+    },
+    "timezone": { "type": "string" },
+    "coordinates": {
+      "type": "object",
+      "required": ["lat", "lng"],
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "required": [
+        "entryRules",
+        "transport",
+        "money",
+        "connectivity",
+        "safety",
+        "seasonality",
+        "poi",
+        "itineraries"
+      ],
+      "properties": {
+        "entryRules": { "$ref": "#/$defs/versionedSection" },
+        "transport": { "$ref": "#/$defs/versionedSection" },
+        "money": { "$ref": "#/$defs/versionedSection" },
+        "connectivity": { "$ref": "#/$defs/versionedSection" },
+        "safety": { "$ref": "#/$defs/versionedSection" },
+        "seasonality": { "$ref": "#/$defs/versionedSection" },
+        "poi": { "$ref": "#/$defs/versionedSection" },
+        "itineraries": { "$ref": "#/$defs/versionedSection" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "versionedSection": {
+      "type": "object",
+      "required": ["updatedAt", "version", "payload"],
+      "properties": {
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "version": { "type": "string" },
+        "sourceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "payload": {
+          "oneOf": [
+            { "type": "object" },
+            { "type": "array" }
+          ]
+        }
+      }
+    }
+  }
+}
