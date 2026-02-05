@@ -18,24 +18,23 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // SPA NAVIGATION: Hard fix for the 404 loop
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          // If the network returns a 404, we don't want to cache it!
-          // This forces the SW to fallback to the cached index.html
-          if (response.status === 404) {
-            return caches.match('/index.html');
-          }
-          return response;
-        })
-        .catch(() => {
-          // Network failed (True Offline)
+if (request.mode === 'navigate') {
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        // IF VERCEL RETURNS A 404, FIX IT ON THE CLIENT
+        if (response.status === 404) {
           return caches.match('/index.html');
-        })
-    );
-    return;
-  }
+        }
+        return response;
+      })
+      .catch(() => {
+        // OFFLINE FALLBACK
+        return caches.match('/index.html');
+      })
+  );
+  return;
+}
 
   // --- CITY PACK JSON (OFFLINE-FIRST) ---
   const isCityPackJson = url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json');
