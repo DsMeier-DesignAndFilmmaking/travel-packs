@@ -21,36 +21,60 @@ function renderContentBlocks(blocks: CityPackSection['contentBlocks']) {
   ));
 }
 
-// Individual section card
-function SectionCard({ section }: { section: CityPackSection }) {
+interface SectionCardProps {
+  sectionKey: string;
+  section: CityPackSection;
+}
+
+function SectionCard({ sectionKey, section }: SectionCardProps) {
   return (
-    <section className="surface pack-section" style={{ marginBottom: '1rem' }}>
-      <h2 style={{ margin: 0, fontSize: '1rem', textTransform: 'capitalize' }}>{section.title}</h2>
-      {renderContentBlocks(section.contentBlocks)}
+    <section className="surface pack-section">
+      <h2 style={{ margin: 0, fontSize: '1rem', textTransform: 'capitalize' }}>
+        {sectionKey}
+      </h2>
+      {section.contentBlocks.map((block, idx) => (
+        <div key={idx}>
+          {Array.isArray(block.value) ? (
+            <ul>
+              {block.value.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>{block.value}</p>
+          )}
+        </div>
+      ))}
     </section>
   );
 }
 
+
 // Main city pack detail view
 export function CityPackDetailView({ pack }: CityPackDetailViewProps) {
+  if (!pack) {
+    return <p>Loading city pack…</p>;
+  }
+
+  const { city, country, region, timezone, currency } = pack;
+
   return (
     <article className="section-stack">
-      {/* Hero / city header */}
       <header className="surface hero-panel">
         <h1 className="hero-title" style={{ marginBottom: '0.35rem' }}>
-          {pack.city}, {pack.country}
+          {city}, {country}
         </h1>
         <p className="hero-subtitle">
-          {pack.region} · {pack.locale} · {pack.metadata.currency}
+          {region} · {currency?.code ?? 'N/A'} ({currency?.symbol ?? '-'}) · {timezone}
         </p>
       </header>
 
-      {/* Section cards */}
       <div className="pack-sections">
-        {pack.sections.map((section) => (
-          <SectionCard key={section.id} section={section} />
+        {Object.entries(pack.sections).map(([sectionKey, section]) => (
+          <SectionCard key={sectionKey} sectionKey={sectionKey} section={section} />
         ))}
       </div>
     </article>
   );
 }
+
