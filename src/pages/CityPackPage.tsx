@@ -20,11 +20,20 @@ export function CityPackPage() {
   }, [slug]);
 
   if (!slug) {
+    return <p className="feedback feedback--error">Missing city pack id.</p>;
     return <p>Missing city pack id.</p>;
   }
 
   if (error) {
     return (
+      <div className="surface hero-panel">
+        <p className="feedback feedback--error" style={{ marginTop: 0 }}>
+          Unable to load this city pack. If you are offline, download it first from the catalog.
+        </p>
+        <p className="feedback">Error: {error}</p>
+        <Link to={ROUTES.home} className="button button--ghost" style={{ display: 'inline-block', marginTop: '0.5rem' }}>
+          Back to catalog
+        </Link>
       <div>
         <p>Unable to load city pack: {error}</p>
         <Link to={ROUTES.home}>Back to catalog</Link>
@@ -33,6 +42,7 @@ export function CityPackPage() {
   }
 
   if (!pack) {
+    return <p className="feedback">Loading city pack…</p>;
     return <p>Loading city pack...</p>;
   }
 

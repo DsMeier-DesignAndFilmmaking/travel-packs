@@ -6,6 +6,13 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
+      registerType: 'autoUpdate',
+      injectManifest: {
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024
+      },
       // PWA is intentionally disabled for now: this keeps the project ready for
       // installability metadata while avoiding any offline caching behavior yet.
       disable: true,
@@ -31,6 +38,10 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module'
       }
     })
   ],

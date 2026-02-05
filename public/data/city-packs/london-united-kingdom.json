@@ -1,0 +1,202 @@
+{
+  "packId": "gb-london-united-kingdom",
+  "slug": "london-united-kingdom",
+  "city": "London",
+  "country": "United Kingdom",
+  "countryCode": "GB",
+  "region": "Western Europe",
+  "updatedAt": "2026-02-01T00:00:00Z",
+  "version": "1.0.0",
+  "languages": [
+    "en"
+  ],
+  "currency": {
+    "code": "GBP",
+    "symbol": "£"
+  },
+  "timezone": "UTC+0",
+  "coordinates": {
+    "lat": 51.5072,
+    "lng": -0.1276
+  },
+  "sections": {
+    "entryRules": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "gov-immigration"
+      ],
+      "payload": {
+        "visaFreeCountriesCount": null,
+        "eVisaAvailable": true,
+        "passportValidityMonths": 6
+      }
+    },
+    "transport": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "city-transport-authority"
+      ],
+      "payload": {
+        "airportToCenterMinutes": {
+          "min": 30,
+          "max": 65
+        },
+        "mainModes": [
+          "Tube",
+          "Bus",
+          "Elizabeth line"
+        ],
+        "tapToPaySupport": true
+      }
+    },
+    "money": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "central-bank"
+      ],
+      "payload": {
+        "cashUsageLevel": "medium",
+        "cardsAcceptanceLevel": "high",
+        "tipping": {
+          "expected": false,
+          "notes": [
+            "Service charge may apply"
+          ]
+        }
+      }
+    },
+    "connectivity": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "telecom-regulator"
+      ],
+      "payload": {
+        "simRequiredId": true,
+        "avg5GBPrepaidUsd": 12,
+        "wifiHotspotsLevel": "high"
+      }
+    },
+    "safety": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "city-police"
+      ],
+      "payload": {
+        "emergencyNumbers": [
+          "112",
+          "911"
+        ],
+        "lateNightTransitCoverage": "medium",
+        "commonScams": [
+          "Unofficial taxi pricing",
+          "Overpriced tours"
+        ]
+      }
+    },
+    "seasonality": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "meteorological-agency"
+      ],
+      "payload": [
+        {
+          "period": "peak",
+          "months": [
+            6,
+            7,
+            8
+          ],
+          "notes": [
+            "Higher room rates"
+          ]
+        },
+        {
+          "period": "shoulder",
+          "months": [
+            3,
+            4,
+            5,
+            9,
+            10
+          ],
+          "notes": [
+            "Balanced weather and price"
+          ]
+        },
+        {
+          "period": "low",
+          "months": [
+            1,
+            2,
+            11,
+            12
+          ],
+          "notes": [
+            "Lower crowds in many districts"
+          ]
+        }
+      ]
+    },
+    "poi": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "city-tourism-board"
+      ],
+      "payload": [
+        {
+          "id": "p1",
+          "name": "British Museum",
+          "category": "landmark",
+          "recommendedDurationHours": 2
+        },
+        {
+          "id": "p2",
+          "name": "Tower of London",
+          "category": "culture",
+          "recommendedDurationHours": 2
+        },
+        {
+          "id": "p3",
+          "name": "Borough Market",
+          "category": "market",
+          "recommendedDurationHours": 2
+        }
+      ]
+    },
+    "itineraries": {
+      "updatedAt": "2026-02-01T00:00:00Z",
+      "version": "1.0.0",
+      "sourceIds": [
+        "editorial-core"
+      ],
+      "payload": [
+        {
+          "id": "it-24h",
+          "durationHours": 24,
+          "pace": "moderate",
+          "stops": [
+            "p1",
+            "p2"
+          ]
+        },
+        {
+          "id": "it-72h",
+          "durationHours": 72,
+          "pace": "moderate",
+          "stops": [
+            "p1",
+            "p2",
+            "p3"
+          ]
+        }
+      ]
+    }
+  }
+}
