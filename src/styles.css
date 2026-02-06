@@ -83,11 +83,14 @@ body {
 .dot--offline { background-color: var(--air-orange); }
 
 /* --- Home Page: Catalog Grid --- */
+/* --- Home Page: Catalog Grid --- */
 .packs-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  column-gap: 24px;
-  row-gap: 40px;
+  grid-template-columns: 1fr; /* Mobile default */
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 @media (min-width: 640px) {
@@ -95,24 +98,39 @@ body {
 }
 
 @media (min-width: 1024px) {
+  /* This creates the 3-wide layout */
   .packs-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Ensure the card itself doesn't let content leak */
+.packs-grid article {
+  width: 100%;
+  min-width: 0; /* Prevents image from pushing the grid wider */
+  overflow: hidden;
 }
 
 /* --- City Pack Cards --- */
 .card-image-wrapper {
   position: relative;
-  aspect-ratio: 1 / 1;
+  /* aspect-ratio: 1 / 1; // You can keep 1/1 or change to 4/3 */
+  aspect-ratio: 4 / 3; 
   overflow: hidden;
   border-radius: 12px;
   background-color: #f7f7f7;
   margin-bottom: 12px;
+  /* Add this to be safe */
+  width: 100%;
 }
 
 .card-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-cover: cover;
-  transition: transform 0.4s ease;
+/* THE FIXES: */
+position: absolute; /* 1. Pins image to wrapper edges */
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover; /* 2. Fixed the typo from 'object-cover' */
+transition: transform 0.4s ease;
 }
 
 .card-image-wrapper:hover img {

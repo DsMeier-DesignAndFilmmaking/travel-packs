@@ -16,104 +16,93 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline }: C
   const hasError = status === 'error';
 
   return (
-    <article className="group flex flex-col cursor-pointer bg-white">
-      {/* 1. Image Container: Fixed Aspect Ratio */}
-      <div className="relative aspect-square mb-3 overflow-hidden rounded-2xl bg-[#F7F7F7]">
-        <Link to={`/city/${pack.slug}`}>
+    <article className="group flex flex-col w-full bg-white">
+      {/* 1. Image Container: Linked to your .card-image-wrapper in CSS */}
+      <div className="card-image-wrapper">
+        <Link to={`/city/${pack.slug}`} className="block w-full h-full">
           <img 
-            src={pack.heroImage || '/api/placeholder/400/400'} 
+            src={pack.heroImage || '/api/placeholder/400/300'} 
             alt={pack.city}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
           />
         </Link>
 
-        {/* 2. Status Badge Overlay: Airbnb "Guest Favorite" style */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {isDownloaded && (
-            <span className="bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] font-bold text-[#222222] shadow-sm flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#FF385C]"></span>
-              Offline Ready
-            </span>
-          )}
-          {isDownloading && (
-            <span className="bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] font-bold text-[#222222] animate-pulse">
-              Saving…
-            </span>
-          )}
-        </div>
+        {/* 2. Status Badge Overlay: Linked to .badge-overlay in CSS */}
+        {(isDownloaded || isDownloading) && (
+          <div className="badge-overlay pointer-events-none">
+            {isDownloaded && (
+              <>
+                <span className="dot dot--brand"></span>
+                <span>Offline Ready</span>
+              </>
+            )}
+            {isDownloading && (
+              <span className="animate-pulse">Saving…</span>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* 3. Text Content: Clean Vertical Stack */}
-      <div className="flex justify-between items-start">
-        <div className="flex flex-col">
+      {/* 3. Text Content & Actions */}
+      <div className="flex justify-between items-start gap-2 px-0.5">
+        <div className="flex flex-col min-w-0 flex-1">
           <Link to={`/city/${pack.slug}`} className="no-underline">
-            <h3 className="text-[15px] font-semibold text-[#222222] leading-tight">
+            <h3 className="text-[15px] font-semibold text-[#222222] leading-tight truncate">
               {pack.city}, {pack.country}
             </h3>
           </Link>
-          <p className="text-[15px] text-[#717171] font-normal leading-tight">
+          <p className="text-[14px] text-[#717171] font-normal leading-tight truncate">
             {pack.category || pack.region}
           </p>
-          <p className="text-[14px] text-[#717171] mt-1 font-normal">
+          <p className="text-[13px] text-[#717171] mt-1 font-normal">
              {pack.priceLevel ? '₺'.repeat(pack.priceLevel) : '₺'} • {new Date(pack.updatedAt).getFullYear()} Guide
           </p>
         </div>
 
-        {/* 4. Minimalist Action Toggle: Clean "Save/Remove" circle */}
-        {/* 4. Airbnb-Style Action Toggle */}
+        {/* 4. Action Section */}
+        <div className="flex flex-col items-end justify-start min-h-[40px] flex-shrink-0">
+          {!isDownloaded && isOnline && (
+            <button
+              onClick={(e) => {
+                e.preventDefault(); 
+                e.stopPropagation();
+                void onDownload(pack.slug);
+              }}
+              disabled={isDownloading}
+              className={`btn-pill ${isDownloading ? 'btn-pill--loading' : 'btn-pill--primary'}`}
+            >
+              {isDownloading ? (
+                <span className="dot-pulse"></span>
+              ) : (
+                'Get'
+              )}
+            </button>
+          )}
 
-<div className="flex flex-col items-end justify-center min-h-[40px]">
-  {/* Scenario A: Pack is available to download */}
-  {!isDownloaded && isOnline && (
-    <button
-      onClick={(e) => {
-        e.stopPropagation(); // Stop click from triggering the parent Link
-        e.preventDefault(); 
-        void onDownload(pack.slug);
-      }}
-      disabled={isDownloading}
-      className={`btn-pill ${isDownloading ? 'btn-pill--loading' : 'btn-pill--primary'}`}
-    >
-      {isDownloading ? (
-        <span className="flex items-center gap-2">
-          <span className="dot-pulse"></span> Saving
-        </span>
-      ) : (
-        'Get Pack'
-      )}
-    </button>
-  )}
+          {isDownloaded && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                void onRemove(pack.slug);
+              }}
+              className="btn-ghost-sm"
+            >
+              Remove
+            </button>
+          )}
 
-  {/* Scenario B: Pack is already offline */}
-  {isDownloaded && (
-    <div className="flex flex-col items-end gap-1">
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          void onRemove(pack.slug);
-        }}
-        className="btn-ghost-sm group/remove"
-      >
-        <span className="flex items-center gap-1">
-          Remove Pack
-        </span>
-      </button>
-    </div>
-  )}
-
-  {/* Scenario C: Offline and not downloaded (Edge case) */}
-{!isDownloaded && !isOnline && (
-  <span className="status-label--offline">
-    Connect to download
-  </span>
-)}
-</div>
+          {!isDownloaded && !isOnline && (
+            <span className="status-label--offline">
+              Offline
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* 5. Error Feedback: Minimalist and targeted */}
+      {/* 5. Error Feedback */}
       {hasError && (
-        <p className="text-[11px] text-red-600 mt-2 font-medium">
+        <p className="text-[11px] text-red-600 mt-2 font-medium px-0.5">
           Download failed. Try again?
         </p>
       )}
