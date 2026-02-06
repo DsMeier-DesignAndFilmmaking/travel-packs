@@ -111,10 +111,11 @@ export function HomePageView({
       {/* 3. Responsive Editorial Grid */}
       <main className="packs-grid mt-12">
         {packs.length > 0 ? (
-          packs.map((pack: CityPackSummary) => (
+          packs.map((pack, index) => (
             <CityPackCard
-              key={pack.slug}
-              pack={pack}
+            key={pack.slug}
+            index={index} // Pass the index here
+            pack={pack}
               status={getPackStatus(pack.slug)}
               onDownload={onDownloadPack}
               onRemove={onRemovePack}

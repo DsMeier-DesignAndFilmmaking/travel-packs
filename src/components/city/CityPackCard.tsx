@@ -8,6 +8,7 @@ interface CityPackCardProps {
   onDownload: (cityId: string) => Promise<void>;
   onRemove: (cityId: string) => Promise<void>;
   isOnline: boolean;
+  index: number; // <--- Add this line here
 }
 
 /**
@@ -15,7 +16,9 @@ interface CityPackCardProps {
  * Optimized for the auto-fill grid layout in the Home view.
  * Uses CSS classes for the Airbnb-style image hover and badge overlay.
  */
-export function CityPackCard({ pack, status, onDownload, onRemove, isOnline }: CityPackCardProps) {
+export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, index }: CityPackCardProps) {
+  // We want to prioritize the first 3-6 images (the first row or two)
+  const isPriority = index < 4;
   const isDownloading = status === 'downloading';
   const isDownloaded = status === 'downloaded';
   const hasError = status === 'error';
@@ -23,15 +26,17 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline }: C
   return (
     <article className="group flex flex-col w-full bg-white transition-opacity duration-300">
       {/* 1. Image Container: Handled by .card-image-wrapper in styles.css */}
-      <div className="card-image-wrapper">
-        <Link to={`/city/${pack.slug}`} className="block w-full h-full">
+      <div className="card-image-wrapper aspect-[4/3] bg-gray-100">
+      <Link to={`/city/${pack.slug}`} className="block w-full h-full">
           <img 
             src={pack.heroImage || '/api/placeholder/400/300'} 
             alt={`${pack.city} travel guide`}
-            loading="lazy"
-            className="select-none"
+            // High priority for the first few cards, lazy for the rest
+            loading={isPriority ? "eager" : "lazy"}
+            fetchPriority={isPriority ? "high" : "low"}
+            className="select-none object-cover w-full h-full"
           />
-        </Link>
+      </Link>
 
         {/* 2. Status Badge Overlay: Absolute positioning from CSS */}
         {(isDownloaded || isDownloading) && (
@@ -65,11 +70,13 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline }: C
           </p>
           
           <p className="text-[13px] text-[#717171] mt-0.5 font-medium">
-             {/* Map PriceLevel to symbols and keep updated date minimal */}
-             {pack.priceLevel ? pack.currencySymbol?.repeat(pack.priceLevel) || '$'.repeat(pack.priceLevel) : '$'} 
-             <span className="mx-1 text-[#EBEBEB]">•</span>
-             {new Date(pack.updatedAt).getFullYear()} Edition
-          </p>
+          {/* Safely repeat the symbol, defaulting to '$' if currencySymbol is null/missing */}
+          {pack.priceLevel 
+            ? (pack.currencySymbol || '$').repeat(pack.priceLevel) 
+            : (pack.currencySymbol || '$')} 
+          <span className="mx-1 text-[#EBEBEB]">•</span>
+          {new Date(pack.updatedAt).getFullYear()} Edition
+        </p>
         </div>
 
         {/* 4. Action Section: Pill buttons and status indicators */}
