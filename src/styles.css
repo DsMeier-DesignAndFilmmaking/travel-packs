@@ -289,3 +289,19 @@ body {
     -webkit-font-smoothing: auto;
   }
 }
+
+/* Add this to index.css to globally allow list-none to work inside prose */
+.prose ul > li::marker, 
+.prose ol > li::marker {
+  display: none !important;
+  content: "" !important;
+}
+
+.prose li {
+  padding-left: 0 !important; /* Removes the gap prose leaves for the bullet */
+}
+
+.main-footer {
+  width: 100%;
+  background-color: var(--air-bg);
+}

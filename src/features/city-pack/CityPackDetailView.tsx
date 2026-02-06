@@ -56,8 +56,13 @@ function SectionCard({ section }: { section: VersionedSection }) {
         <div className="text-[15px] md:text-[16px] font-medium text-[#222222] prose-inline leading-snug">
           <ReactMarkdown 
             components={{
-              p: ({children}) => <p className="m-0">{children}</p>,
-              strong: ({children}) => <span className="font-black text-black">{children}</span>
+              // Disable the paragraph wrapper to keep alignment clean
+              p: ({children}) => <p className="m-0 mb-1">{children}</p>,
+              // FORCE bullets to disappear if the markdown happens to contain a list
+              ul: ({children}) => <div className="list-none p-0 m-0">{children}</div>,
+              li: ({children}) => <div className="list-none p-0 m-0">{children}</div>,
+              // Keep your bold override
+              strong: ({children}) => <strong className="font-black text-[#222222]">{children}</strong>
             }}
           >
             {stat.value}
@@ -67,8 +72,10 @@ function SectionCard({ section }: { section: VersionedSection }) {
     ))}
   </div>
 )}
+
 <br></br>
-      {/* 5. Expert Tips: Modern "Checklist" Style */}
+
+{/* 5. Expert Tips: Modern "Checklist" Style */}
 {tips && tips.length > 0 && (
   <div className="mt-16 bg-[#FAFAFA] rounded-[32px] overflow-hidden">
     {/* Internal Container with 24px vertical padding (py-6) */}
@@ -76,50 +83,57 @@ function SectionCard({ section }: { section: VersionedSection }) {
       
       {/* 1. Enhanced Bold Header */}
       <h4 
-        className="text-[12px] uppercase tracking-[0.3em] mb-12 flex items-center gap-3"
-        style={{ 
-          fontWeight: 900, 
-          WebkitTextStroke: '0.6px #222222', 
-          WebkitFontSmoothing: 'auto',
-          color: '#222222'
-        }}
-      >
-        <span className="w-2 h-2 rounded-full bg-[#FF385C]" />
-        Local Perspective
-      </h4>
+      className="text-[12px] uppercase tracking-[0.3em] mb-12 flex items-center gap-3 italic"
+      style={{ 
+        fontWeight: 700, 
+        WebkitTextStroke: '0.1px #484848', 
+        WebkitFontSmoothing: 'auto',
+        color: '#484848',
+        fontStyle: 'italic' // Ensures the italic property is applied directly to the inline style
+      }}
+    >
+      <span className="w-2 h-2 rounded-full bg-[#484848] not-italic" /> {/* not-italic prevents the dot from skewing */}
+      Local Perspective
+    </h4>
 
-      {/* 2. Optimized List Grid */}
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+      {/* 2. Optimized List Grid - Added list-none, m-0, p-0 */}
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 list-none m-0 p-0 [&_li::marker]:content-none [&_li]:before:hidden">
         {tips.map((tip: string, i: number) => (
-          <li key={i} className="flex gap-6 items-start group">
-            {/* 3. Refined Numerical Marker */}
-            <div className="flex flex-col items-center">
-              <span 
-                className="text-[10px] font-black text-[#FF385C] opacity-80"
-                style={{ WebkitFontSmoothing: 'auto' }}
-              >
-                {i < 9 ? `0${i + 1}` : i + 1}
-              </span>
-              <div className="w-[1px] h-full bg-[#EBEBEB] mt-2 group-last:hidden" />
-            </div>
-
-            {/* 4. Markdown Content */}
-            <div className="prose prose-sm text-[#484848] font-medium leading-relaxed -mt-1">
-              <ReactMarkdown
-                components={{
-                  p: ({children}) => <p className="m-0 mb-1">{children}</p>,
-                  strong: ({children}) => <strong className="font-black text-[#222222]">{children}</strong>
-                }}
-              >
-                {tip}
-              </ReactMarkdown>
-            </div>
-          </li>
+          <li 
+          key={i} 
+          className="flex gap-6 items-start group" 
+          style={{ display: 'flex', listStyleType: 'none' }} // Inline styles beat global CSS
+        >
+          {/* 3. Refined Numerical Marker */}
+          <div className="flex flex-col items-center">
+            
+            <div className="w-[1px] h-full bg-[#EBEBEB] mt-2 group-last:hidden" />
+          </div>
+        
+          {/* 4. Markdown Content */}
+          <div className="text-[14px] md:text-[15px] text-[#484848] font-medium leading-relaxed -mt-1"><br></br>
+            <ReactMarkdown
+              components={{
+                p: ({children}) => <div className="mb-2">{children}</div>,
+                // Map lists to divs just in case the markdown tries to recreate them
+                ul: ({children}) => <div className="m-0 p-0">{children}</div>,
+                li: ({children}) => <div className="m-0 p-0">{children}</div>,
+                strong: ({children}) => (
+                  <strong className="text-[#222222]" style={{ fontWeight: 900 }}>
+                    {children}
+                  </strong>
+                )
+              }}
+            >
+              {tip}
+            </ReactMarkdown>
+          </div>
+        </li>
         ))}
       </ul>
     </div>
   </div>
-      )}
+)}
     </section>
   );
 }
@@ -171,52 +185,58 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </h1>
         
         <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-  {/* Destination */}
-  <div className="flex flex-col">
-    <span 
-      className="block text-[10px] uppercase tracking-[0.2em] text-[#717171] mb-1"
-      style={{ 
-        fontWeight: 900, 
-        WebkitTextStroke: '0.5px #717171', // The "Boldness" hack
-        WebkitFontSmoothing: 'auto' 
-      }}
-    >
-      Destination:
-    </span>
-    <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.country}</span>
-  </div>
+
+{/* Destination */}
+<div className="inline-flex items-baseline whitespace-nowrap">
+  <span 
+    className="text-[10px] uppercase tracking-[0.2em] text-[#717171]" 
+    style={{ 
+      fontWeight: 900, 
+      WebkitTextStroke: '0.5px #717171',
+      WebkitFontSmoothing: 'auto',
+      marginRight: '12px' // This creates the physical space after the colon
+    }}
+  >
+    Destination:
+  </span>
+  <span className="text-sm font-black text-[#222222] uppercase tracking-tight">
+    {pack.country}
+  </span>
+</div>
 
   <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
 
-  {/* Currency */}
-  <div className="flex flex-col">
-    <span 
-      className="block text-[10px] uppercase tracking-[0.2em] text-[#717171] mb-1"
-      style={{ 
-        fontWeight: 900, 
-        WebkitTextStroke: '0.5px #717171',
-        WebkitFontSmoothing: 'auto' 
-      }}
-    >
-      Currency:
-    </span>
-    <span className="text-sm font-black text-[#222222] uppercase tracking-tight">
-      {pack.currency.symbol} {pack.currency.code}
-    </span>
-  </div>
+{/* Currency */}
+<div className="inline-flex items-baseline whitespace-nowrap">
+  <span 
+    className="text-[10px] uppercase tracking-[0.2em] text-[#717171]" 
+    style={{ 
+      fontWeight: 900, 
+      WebkitTextStroke: '0.5px #717171',
+      WebkitFontSmoothing: 'auto',
+      marginRight: '12px' // This creates the physical space after the colon
+    }}
+  >
+    Currency:
+  </span>
+  <span className="text-sm font-black text-[#222222] uppercase tracking-tight">
+    {pack.currency.symbol} {pack.currency.code}
+  </span>
+</div>
 
   <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
 
   {/* Region */}
-  <div className="flex flex-col">
-    <span 
-      className="block text-[10px] uppercase tracking-[0.2em] text-[#717171] mb-1"
-      style={{ 
-        fontWeight: 900, 
-        WebkitTextStroke: '0.5px #717171',
-        WebkitFontSmoothing: 'auto' 
-      }}
-    >
+  <div className="inline-flex items-baseline whitespace-nowrap">
+  <span 
+    className="text-[10px] uppercase tracking-[0.2em] text-[#717171]" 
+    style={{ 
+      fontWeight: 900, 
+      WebkitTextStroke: '0.5px #717171',
+      WebkitFontSmoothing: 'auto',
+      marginRight: '12px' // This creates the physical space after the colon
+    }}
+  >
       Region:
     </span>
     <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.region}</span>

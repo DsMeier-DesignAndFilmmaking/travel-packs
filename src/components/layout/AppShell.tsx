@@ -103,18 +103,59 @@ export function AppShell({ children }: PropsWithChildren) {
         {children}
       </main>
 
-      <footer className="main-footer">
-        <div className="footer-container">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <p className="font-semibold text-[#222222]">© 2026 Local City Travel Packs</p>
-            <div className="flex gap-6 text-[12px] font-medium text-[#717171]">
-              <span className="hover:underline cursor-pointer">Privacy</span>
-              <span className="hover:underline cursor-pointer">Terms</span>
-              <span className="hover:underline cursor-pointer">Sitemap</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+
+      <footer className="main-footer border-t border-[#F0F0F0] py-16 w-full" style={{ display: 'flex', justifyContent: 'center' }}>
+  <div className="footer-container px-6" style={{ width: '100%', maxWidth: '1280px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%', gap: '24px' }}>
+      
+      {/* 1. Brand Copyright */}
+      <p 
+        style={{ 
+          fontSize: '13px',
+          color: '#222222',
+          fontWeight: 900, 
+          WebkitTextStroke: '0.4px #222222', 
+          WebkitFontSmoothing: 'auto',
+          letterSpacing: '-0.02em',
+          margin: 0
+        }}
+      >
+        © 2026 LOCAL CITY TRAVEL PACKS
+      </p>
+
+      {/* 2. Navigation Links - Forced Center */}
+      <div style={{ 
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: '32px', 
+        width: '100%' 
+      }}>
+        {['Privacy', 'Terms', 'Sitemap'].map((link) => (
+          <span 
+            key={link}
+            className="hover:text-[#222222] cursor-pointer transition-colors"
+            style={{
+              fontSize: '11px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              color: '#717171'
+            }}
+          >
+            {link}
+          </span>
+        ))}
+      </div>
+
+      {/* 3. Decorative Divider */}
+      <div style={{ width: '32px', height: '1px', backgroundColor: '#EBEBEB', marginTop: '8px' }} />
+      
+    </div>
+  </div>
+</footer>
     </div>
   );
 }
