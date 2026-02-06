@@ -1,42 +1,52 @@
 /**
  * CITY PACK SUMMARY
  * Used for high-level listing views (The "Catalog").
- * Optimized for lightweight data fetching and editorial layout.
+ * Optimized for lightweight data fetching and the 3-column Airbnb grid.
  */
 export interface CityPackSummary {
+  id: string;
   slug: string;
   city: string;
   country: string;
   region: string;
-  languageCodes: string[];
   heroImage?: string; 
-  category?: string;      // e.g., "Coastal", "Urban", "Mountain"
-  tags?: string[];        // e.g., ["Direct Tram", "Budget-Friendly"]
+  category?: string;      // e.g., "Metropolis", "Island", "Alpine"
+  tags?: string[];        // e.g., ["QR Payments", "Walkable"]
   updatedAt: string;
   priceLevel?: 1 | 2 | 3 | 4; 
-  distanceFromCenter?: string; // e.g., "0.5 km from Old Town"
+  languageCodes: string[];
+  currencySymbol?: string; // <--- Add this line here  
+
 }
 
 /**
  * VERSIONED SECTION
- * Narrative-first structure. The 'payload' is designed to be 
- * rendered with Markdown for professional typography.
+ * Narrative-first structure. The 'payload' is the core content 
+ * mapped to the SectionCard component.
  */
 export interface VersionedSection {
   updatedAt?: string;
   version?: string;
   sourceIds?: string[];
   payload: {
-    title: string;
-    description: string;
-    criticalAlert?: string; 
-    highlight?: boolean;     
+    title: string;          // e.g., "Arriving at KLIA"
+    description: string;    // Main markdown content
+    criticalAlert?: string; // Highlighted callout text
+    highlight?: boolean;    // UI flag for visual emphasis
     
+    /**
+     * Editorial Grid Data
+     * e.g., { label: "Taxi", value: "RM75 (60 min)" }
+     */
     summaryStats?: Array<{ 
       label: string; 
-      value: string;         // Supports Markdown for "Bold Anchors"
+      value: string;        // Markdown-ready
       icon?: string; 
     }>;
+    
+    /**
+     * Bulleted expert advice
+     */
     tips?: string[];         
   };
 }
@@ -44,16 +54,15 @@ export interface VersionedSection {
 /**
  * FULL CITY PACK
  * The deep-dive content structure.
- * Standardized per Airbnb's "Listing Details" metadata requirements.
- */
-/**
- * FULL CITY PACK
- * The deep-dive content structure.
+ * Maps 1:1 with the detail view's editorial layout.
  */
 export interface CityPack {
-  id: string;              // Added to resolve ts(2339)
-  packId: string;          // Keep for legacy/backend compatibility
+  // Identification
+  id: string;              
+  packId: string;          
   slug: string;
+
+  // Geography & Metadata
   city: string;
   country: string;
   countryCode: string;
@@ -61,6 +70,8 @@ export interface CityPack {
   updatedAt: string;
   version: string;
   languages: string[];
+
+  // Logistics
   currency: { 
     code: string; 
     symbol: string 
@@ -70,9 +81,10 @@ export interface CityPack {
     lat: number; 
     lng: number 
   };
+
   /**
-   * Map of key-value pairs. 
-   * Common keys: 'arrival', 'money', 'safety', 'etiquette'
+   * Section Content
+   * Use Record to allow for dynamic keys like 'arrival', 'money', 'safety', etc.
    */
   sections: Record<string, VersionedSection>;
 }

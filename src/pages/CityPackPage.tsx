@@ -12,6 +12,7 @@ export function CityPackPage() {
 
   useEffect(() => {
     if (!slug) return;
+
     setPack(null); 
     setError(null);
 
@@ -31,34 +32,51 @@ export function CityPackPage() {
       });
   }, [slug]);
 
+  // 1. Missing Slug State - Branded Minimalist
   if (!slug) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Location Required</h2>
-        <Link to={ROUTES.home} className="text-sm font-bold underline underline-offset-4">Catalog</Link>
+      <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center">
+        <h2 className="text-2xl font-black tracking-tight text-[#222222] mb-3">Location Required</h2>
+        <p className="text-[#717171] mb-8 max-w-xs">Select a destination from our catalog to unlock local insights.</p>
+        <Link to={ROUTES.home} className="btn-pill btn-pill--outline px-8">
+          View Catalog
+        </Link>
       </div>
     );
   }
 
+  // 2. Error State - Editorial Callout Style
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center bg-white">
-        <div className="w-12 h-[1px] bg-red-500 mb-8"></div>
-        <h2 className="text-2xl font-black tracking-tight text-gray-900 mb-4">Pack Not Found</h2>
-        <Link to={ROUTES.home} className="px-8 py-3 bg-gray-900 text-white text-xs font-bold uppercase tracking-widest rounded-full">Return</Link>
+      <div className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center bg-white">
+        <div className="h-[1px] w-16 bg-[#FF385C] mb-12"></div>
+        <h2 className="text-4xl font-black tracking-tighter text-[#222222] mb-6">Guide Unavailable</h2>
+        <p className="max-w-md text-[#717171] leading-relaxed mb-10 text-lg">
+          We couldn't locate the travel guide for <span className="text-[#222222] font-bold italic">{slug}</span>. 
+          It may be under maintenance or currently offline.
+        </p>
+        <Link to={ROUTES.home} className="btn-pill btn-pill--primary px-10 py-4 shadow-xl">
+          Back to Home
+        </Link>
       </div>
     );
   }
 
+  // 3. Loading State - Minimalist PWA Transition
   if (!pack) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-        <div className="w-8 h-8 border-2 border-gray-100 border-t-gray-900 rounded-full animate-spin mb-4"></div>
-        <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold">Initializing</p>
+        <div className="relative flex items-center justify-center mb-8">
+          <div className="w-14 h-14 border-[2px] border-[#F7F7F7] border-t-[#222222] rounded-full animate-spin"></div>
+          <span className="absolute text-sm font-bold">✈︎</span>
+        </div>
+        <p className="text-[10px] uppercase tracking-[0.5em] text-[#717171] font-black">
+          Curating Your Guide
+        </p>
       </div>
     );
   }
 
-  // NOTE: Ensure this is NOT wrapped in any div here.
+  // 4. Final Render - Direct pass-through to Editorial View
   return <CityPackDetailView pack={pack} />;
 }

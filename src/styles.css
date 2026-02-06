@@ -1,321 +1,22 @@
-/* Users/danielmeier/Desktop/Travel-Packs/src/styles.css */
-
 :root {
   --air-black: #222222;
   --air-gray: #717171;
   --air-border: #ebebeb;
   --air-bg: #ffffff;
-  --air-accent: #FF385C; /* Airbnb Red */
-  --air-green: #22c55e;
-  --air-orange: #fb923c;
+  --air-accent: #FF385C; 
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   color: var(--air-black);
   background-color: var(--air-bg);
-  line-height: 1.5;
-}
-
-/* Ensure images in the markdown don't break the layout */
-.prose img {
-  border-radius: 12px;
-  margin: 2rem 0;
-}
-
-/* ADD THIS: 
-   This ensures the Home Page still looks centered since we 
-   removed the wrapper from the AppShell. */
-   .home-page-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 40px 24px;
-  }
-
-
-/* --- Home Page: Editorial Header --- */
-.editorial-header {
-  border-bottom: 1px solid var(--air-border);
-  padding-bottom: 40px;
-  margin-bottom: 48px;
-}
-
-.editorial-header h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  color: var(--air-black);
-  margin: 0 0 12px 0;
-}
-
-.editorial-header p {
-  font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--air-gray);
-  max-width: 600px;
-  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
-.status-row {
-  display: flex;
-  gap: 24px;
-  margin-top: 24px;
-}
-
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.dot--brand { background-color: var(--air-accent); }
-.dot--online { background-color: var(--air-green); }
-.dot--offline { background-color: var(--air-orange); }
-
-/* --- Home Page: Catalog Grid --- */
-/* --- Home Page: Catalog Grid --- */
-.packs-grid {
-  display: grid;
-  grid-template-columns: 1fr; /* Mobile default */
-  gap: 24px;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-@media (min-width: 640px) {
-  .packs-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1024px) {
-  /* This creates the 3-wide layout */
-  .packs-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* Ensure the card itself doesn't let content leak */
-.packs-grid article {
-  width: 100%;
-  min-width: 0; /* Prevents image from pushing the grid wider */
-  overflow: hidden;
-}
-
-/* --- City Pack Cards --- */
-.card-image-wrapper {
-  position: relative;
-  /* aspect-ratio: 1 / 1; // You can keep 1/1 or change to 4/3 */
-  aspect-ratio: 4 / 3; 
-  overflow: hidden;
-  border-radius: 12px;
-  background-color: #f7f7f7;
-  margin-bottom: 12px;
-  /* Add this to be safe */
-  width: 100%;
-}
-
-.card-image-wrapper img {
-/* THE FIXES: */
-position: absolute; /* 1. Pins image to wrapper edges */
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-object-fit: cover; /* 2. Fixed the typo from 'object-cover' */
-transition: transform 0.4s ease;
-}
-
-.card-image-wrapper:hover img {
-  transform: scale(1.05);
-}
-
-.badge-overlay {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-
-
-/* Ensure typography doesn't have default browser margins that break the grid */
-.prose :where(p):not(:where([class~="not-prose"] *)) {
-  margin-top: 0;
-  margin-bottom: 1.25em;
-}
-
-/* --- Detail View: Clean Foundation --- */
-/* We keep these as fallback, but remove rigid paddings/borders 
-   that interfere with the new "Bleed" design */
-.pack-section {
-  width: 100%;
-  /* Removed border-bottom and padding-32px to let Tailwind handle spacing */
-}
-
-/* Ensure ReactMarkdown renders consistently with Airbnb spacing */
-.prose p {
-  margin-bottom: 1.25em;
-  line-height: 1.6;
-}
-
-.prose strong {
-  color: var(--air-black);
-  font-weight: 600;
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  color: var(--air-gray);
-  margin-bottom: 4px;
-}
-
-.stat-value {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-/* --- Typography Helpers --- */
-.markdown-content p {
-  margin: 0;
-  display: inline;
-}
-
-.markdown-content strong {
-  color: var(--air-black);
-}
-
-.tips-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 24px;
-}
-
-.tip-item {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.tip-item::before {
-  content: "•";
-  color: var(--air-gray);
-}
-
-/* --- Interactive Elements --- */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.underline-link {
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: underline;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-/* --- Airbnb Action Buttons --- */
-.btn-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px; /* Increased for better touch target */
-  border-radius: 24px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-  border: 1px solid transparent;
-  white-space: nowrap;
-  font-family: inherit;
-}
-
-/* The Solid Black "Get Pack" Button */
-.btn-pill--primary {
-  background-color: #222222;
-  color: #ffffff;
-}
-
-.btn-pill--primary:hover {
-  background-color: #000000;
-  transform: scale(1.04);
-}
-
-.btn-pill--primary:active {
-  transform: scale(0.96);
-}
-
-/* The "Saving..." State */
-.btn-pill--loading {
-  background-color: #f7f7f7;
-  color: #717171;
-  border: 1px solid #ebebeb;
-  cursor: not-allowed;
-}
-
-/* The Underlined "Remove" Link */
-.btn-ghost-sm {
-  background: none;
-  border: none;
-  padding: 4px 0;
-  color: #717171;
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.btn-ghost-sm:hover {
-  color: #222222;
-}
-
-/* Animated Pulse Dot */
-.dot-pulse {
-  width: 6px;
-  height: 6px;
-  background-color: #FF385C;
-  border-radius: 50%;
-  display: inline-block;
-  animation: air-pulse 1.2s infinite;
-}
-
-@keyframes air-pulse {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-.status-label--offline {
-  font-size: 12px;
-  color: #717171;
-  font-style: italic;
-  font-weight: 500;
-}
-
-/* --- Modern Navbar (Airbnb Style) --- */
+/* --- Modern Navbar (Airbnb Style Restoration) --- */
 .main-nav {
   position: sticky;
   top: 0;
@@ -325,12 +26,11 @@ a {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--air-border);
-  /* Optional: Airbnb uses a subtle shadow on scroll */
   transition: box-shadow 0.2s ease;
 }
 
 .nav-container {
-  max-width: 1024px;
+  max-width: 1280px; /* Matched to home container for alignment */
   width: 100%;
   margin: 0 auto;
   padding: 0 24px;
@@ -342,19 +42,25 @@ a {
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.nav-logo:hover {
+  opacity: 0.8;
 }
 
 .logo-icon {
-  font-size: 28px;
+  font-size: 32px;
   color: var(--air-accent);
+  line-height: 1;
 }
 
 .logo-text {
   font-size: 20px;
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   color: var(--air-black);
 }
 
@@ -376,41 +82,188 @@ a {
   font-weight: 600;
   color: var(--air-black);
   background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-
-
+/* --- Global System Banner --- */
 .system-banner {
   background-color: var(--air-black);
   color: #ffffff;
   text-align: center;
   font-size: 13px;
-  padding: 8px 0;
+  padding: 10px 0;
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-/* --- Reusable Pill Button Variant --- */
-.btn-pill--outline {
-  background: white;
-  border: 1px solid var(--air-black);
-  color: var(--air-black);
-}
-
-.btn-pill--outline:hover {
-  background-color: #f7f7f7;
-}
-
-.main-footer {
-  margin-top: 80px;
-  border-top: 1px solid var(--air-border);
-  padding: 40px 0;
-  background-color: #f7f7f7;
-}
-
-.footer-container {
+/* --- Layout Strategy --- */
+/* The Detail View needs its own wrapper to avoid being squashed */
+.city-detail-wrapper {
   max-width: 1024px;
   margin: 0 auto;
-  padding: 0 24px;
-  color: var(--air-gray);
+  padding: 80px 24px;
+}
+
+.detail-header-rule {
+  height: 2px;
+  width: 60px;
+  background: var(--air-black);
+  margin-bottom: 40px;
+}
+
+.detail-title {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+  margin-bottom: 48px;
+}
+
+.detail-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #B0B0B0;
+}
+
+.detail-metadata .active {
+  color: var(--air-black);
+  border-bottom: 2px solid var(--air-black);
+  padding-bottom: 2px;
+}
+
+/* --- Sections --- */
+.pack-section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--air-border);
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 32px;
+}
+
+/* --- Grid & Cards --- */
+.home-view-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.packs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px 24px;
+}
+
+.card-image-wrapper {
+  position: relative;
+  aspect-ratio: 4 / 3; 
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: #f7f7f7;
+  margin-bottom: 14px;
+}
+
+.card-image-wrapper img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.card-image-wrapper:hover img { transform: scale(1.05); }
+
+/* --- Buttons --- */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 30px;
   font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-pill--primary {
+  background: var(--air-black);
+  color: white;
+}
+
+.btn-pill--primary:hover { background: #000; transform: scale(1.02); }
+
+.btn-pill--outline {
+  background: white;
+  border-color: var(--air-black);
+}
+
+/* --- Navigation --- */
+.main-nav {
+  position: sticky;
+  top: 0; z-index: 1000;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid var(--air-border);
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- Optimized Status Indicators --- */
+/* We remove the .status-pill box styles and replace with raw typographic layouts */
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot--brand { background-color: var(--air-accent); }
+.dot--online { background-color: #22c55e; }
+.dot--offline { background-color: #fb923c; }
+
+/* Subtle fade-in for the whole header area to feel high-end */
+.editorial-header {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Clean Typography Polish --- */
+.logo-text {
+  font-size: 18px; /* Slightly smaller for elegance */
+  font-weight: 900;
+  letter-spacing: -0.06em; /* Tighter tracking for modern look */
+  color: var(--air-black);
+  text-transform: lowercase; /* Optional: adds a modern tech-minimalist vibe */
+}
+
+/* Ensure the grid doesn't feel crowded by increasing the gap */
+.packs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 48px 32px; /* Increased vertical gap for more "air" */
 }
