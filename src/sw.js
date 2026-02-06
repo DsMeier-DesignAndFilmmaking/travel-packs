@@ -1,89 +1,92 @@
 /* global self */
 import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { registerRoute } from 'workbox-routing';
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
-const CITY_PACK_CACHE = 'city-pack-json-v1';
+// Separate cache names for clarity
+const CITY_PACK_CACHE = 'city-pack-data-v1';
+const IMAGE_CACHE = 'city-assets-images-v1';
 
-// 1. PRECACHE SETUP
-// Vite's build process replaces self.__WB_MANIFEST with the asset list.
+// 1. PRECACHE SETUP (The "App Shell")
+// This only caches common UI (JS, CSS, Icons). 
+// It does NOT include city-specific JSON from your /data folder.
 precacheAndRoute(self.__WB_MANIFEST); 
 
 cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// 2. FETCH STRATEGY
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
-
-  // SPA NAVIGATION: Hard fix for the 404 loop
-if (request.mode === 'navigate') {
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        // IF VERCEL RETURNS A 404, FIX IT ON THE CLIENT
-        if (response.status === 404) {
-          return caches.match('/index.html');
-        }
-        return response;
-      })
-      .catch(() => {
-        // OFFLINE FALLBACK
+// 2. SMART NAVIGATION (SPA Support)
+registerRoute(
+  ({ request }) => request.mode === 'navigate',
+  async ({ event }) => {
+    try {
+      const networkResponse = await fetch(event.request);
+      if (networkResponse.status === 404) {
         return caches.match('/index.html');
-      })
-  );
-  return;
-}
-
-  // --- CITY PACK JSON (OFFLINE-FIRST) ---
-  const isCityPackJson = url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json');
-
-  if (isCityPackJson) {
-    event.respondWith(
-      caches.open(CITY_PACK_CACHE).then(async (cache) => {
-        const cachedResponse = await cache.match(request);
-        // Serve from cache if we have it, otherwise fetch and don't block
-        return cachedResponse || fetch(request);
-      })
-    );
-    return;
+      }
+      return networkResponse;
+    } catch (error) {
+      return caches.match('/index.html');
+    }
   }
-});
+);
 
-// 3. MESSAGE HANDLING (Download/Remove)
+// 3. SELECTIVE CITY DATA CACHING
+// We use a CacheFirst strategy for city JSON files.
+registerRoute(
+  ({ url }) => url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json'),
+  new CacheFirst({
+    cacheName: CITY_PACK_CACHE,
+  })
+);
+
+// 4. CITY IMAGES (Selective)
+registerRoute(
+  ({ url }) => url.pathname.includes('/assets/cities/'),
+  new CacheFirst({
+    cacheName: IMAGE_CACHE,
+  })
+);
+
+// 5. MESSAGE HANDLING (Manual Trigger from "Get" Button)
 self.addEventListener('message', (event) => {
   if (!event.data || !event.data.type) return;
 
-  const cacheCityPack = async (cityId) => {
+  // Logic to "pre-warm" a specific city pack
+  const cacheCityPack = async (cityId, assets = []) => {
     try {
-      const cache = await caches.open(CITY_PACK_CACHE);
-      // 'no-store' ensures a fresh fetch when the user clicks 'Get Pack'
-      const response = await fetch(`/data/city-packs/${cityId}.json`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Download failed for ${cityId}`);
+      const dataCache = await caches.open(CITY_PACK_CACHE);
+      const assetCache = await caches.open(IMAGE_CACHE);
       
-      await cache.put(`/data/city-packs/${cityId}.json`, response);
-      console.log(`[SW] Cached: ${cityId}`);
+      // Fetch the JSON pack
+      const jsonUrl = `/data/city-packs/${cityId}.json`;
+      const response = await fetch(jsonUrl, { cache: 'reload' });
+      
+      if (response.ok) {
+        await dataCache.put(jsonUrl, response.clone());
+        
+        // OPTIONAL: If the JSON contains a list of image URLs, 
+        // you could iterate and add them to assetCache here.
+        if (assets.length > 0) {
+          await assetCache.addAll(assets);
+        }
+      }
+      
+      console.log(`[SW] ${cityId} Pack is now available offline.`);
     } catch (error) {
-      console.error(`[SW] Cache error for ${cityId}:`, error);
+      console.error(`[SW] Failed to store ${cityId}:`, error);
     }
   };
 
-  const removeCityPack = async (cityId) => {
-    const cache = await caches.open(CITY_PACK_CACHE);
-    await cache.delete(`/data/city-packs/${cityId}.json`);
-    console.log(`[SW] Removed: ${cityId}`);
-  };
-
   if (event.data.type === 'DOWNLOAD_CITY_PACK') {
-    event.waitUntil(cacheCityPack(event.data.payload.cityId));
+    event.waitUntil(cacheCityPack(event.data.payload.cityId, event.data.payload.assets));
   }
   
   if (event.data.type === 'REMOVE_CITY_PACK') {
-    event.waitUntil(removeCityPack(event.data.payload.cityId));
-  }
-  
-  if (event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
+    event.waitUntil(
+      caches.open(CITY_PACK_CACHE).then(cache => cache.delete(`/data/city-packs/${event.data.payload.cityId}.json`))
+    );
   }
 });

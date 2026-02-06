@@ -46,8 +46,13 @@ export interface VersionedSection {
  * The deep-dive content structure.
  * Standardized per Airbnb's "Listing Details" metadata requirements.
  */
+/**
+ * FULL CITY PACK
+ * The deep-dive content structure.
+ */
 export interface CityPack {
-  packId: string;
+  id: string;              // Added to resolve ts(2339)
+  packId: string;          // Keep for legacy/backend compatibility
   slug: string;
   city: string;
   country: string;

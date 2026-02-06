@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  // Force absolute paths for all assets
   base: '/', 
   plugins: [
     react(),
@@ -24,7 +23,7 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         scope: '/',
-        start_url: '/',
+        start_url: '/', // Note: We will override this dynamically in the UI
         icons: [
           { 
             src: '/pwa-192x192.png', 
@@ -41,7 +40,10 @@ export default defineConfig({
         ]
       },
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        // PRE-CACHE ONLY THE CORE APP SHELL
+        // We exclude specific city JSON/Images so they aren't downloaded on home page load
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024 
       }
     })
@@ -49,7 +51,6 @@ export default defineConfig({
   resolve: {
     alias: { '@': '/src' }
   },
-  // Added: Ensure clean builds for Vercel
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
