@@ -15,25 +15,27 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--air-black);
   background-color: var(--air-bg);
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
 }
 
-/* --- Layout Containers --- */
-.home-view-container {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 40px 24px;
+/* Ensure images in the markdown don't break the layout */
+.prose img {
+  border-radius: 12px;
+  margin: 2rem 0;
 }
 
-.city-pack-container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 24px;
-}
+/* ADD THIS: 
+   This ensures the Home Page still looks centered since we 
+   removed the wrapper from the AppShell. */
+   .home-page-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
 
 /* --- Home Page: Editorial Header --- */
 .editorial-header {
@@ -152,54 +154,12 @@ transition: transform 0.4s ease;
   gap: 6px;
 }
 
-/* --- Detail View: Section Styling --- */
-.pack-section {
-  padding: 32px 0;
-  border-bottom: 1px solid var(--air-border);
-}
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  letter-spacing: -0.01em;
-}
 
-.description-text {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--air-gray);
-  margin-bottom: 24px;
-}
-
-.critical-alert-box {
-  background: #f7f7f7;
-  border: 1px solid #dddddd;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 24px;
-  font-size: 0.95rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin: 24px 0;
-}
-
-/* --- UPDATED Layout Containers --- */
-.home-view-container {
-  max-width: 1200px; /* Wider for the 3-column catalog */
-  margin: 0 auto;
-  padding: 40px 24px;
-}
-
-/* REMOVE OR COMMENT OUT the fixed width for city-pack-container */
-/* We want the Tailwind 'max-w-4xl' in the component to handle this now */
-.city-pack-container {
-  width: 100%;
-  margin: 0 auto;
+/* Ensure typography doesn't have default browser margins that break the grid */
+.prose :where(p):not(:where([class~="not-prose"] *)) {
+  margin-top: 0;
+  margin-bottom: 1.25em;
 }
 
 /* --- Detail View: Clean Foundation --- */
@@ -219,15 +179,6 @@ transition: transform 0.4s ease;
 .prose strong {
   color: var(--air-black);
   font-weight: 600;
-}
-
-/* --- Updated Stats Grid for Detail View --- */
-/* This ensures the 'stat-pill' from your SectionCard doesn't look like a button */
-.stat-pill {
-  border-left: 1px solid var(--air-border);
-  padding-left: 16px;
-  display: flex;
-  flex-col: column;
 }
 
 .stat-label {
@@ -427,12 +378,7 @@ a {
   background-color: #ffffff;
 }
 
-/* --- Global Layout Layout --- */
-.content-wrapper {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 0; /* Let children handle their own padding */
-}
+
 
 .system-banner {
   background-color: var(--air-black);

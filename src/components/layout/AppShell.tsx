@@ -47,7 +47,7 @@ export function AppShell({ children }: PropsWithChildren) {
   };
 
   return (
-    <div className="app-layout">
+    <div className="app-layout min-h-screen flex flex-col bg-white">
       <header className="main-nav">
         <div className="nav-container">
           {/* Brand Logo */}
@@ -59,7 +59,7 @@ export function AppShell({ children }: PropsWithChildren) {
           {/* Navigation Actions */}
           <div className="nav-actions">
             {!isOnline && (
-              <div className="status-pill offline">
+              <div className="system-banner">
                 <span className="dot dot--offline"></span>
                 Offline
               </div>
@@ -84,7 +84,7 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       )}
 
-      <main className="content-wrapper">
+      <main className="flex-1">
         {children}
       </main>
 
