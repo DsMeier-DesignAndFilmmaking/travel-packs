@@ -188,9 +188,46 @@ transition: transform 0.4s ease;
   margin: 24px 0;
 }
 
+/* --- UPDATED Layout Containers --- */
+.home-view-container {
+  max-width: 1200px; /* Wider for the 3-column catalog */
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* REMOVE OR COMMENT OUT the fixed width for city-pack-container */
+/* We want the Tailwind 'max-w-4xl' in the component to handle this now */
+.city-pack-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --- Detail View: Clean Foundation --- */
+/* We keep these as fallback, but remove rigid paddings/borders 
+   that interfere with the new "Bleed" design */
+.pack-section {
+  width: 100%;
+  /* Removed border-bottom and padding-32px to let Tailwind handle spacing */
+}
+
+/* Ensure ReactMarkdown renders consistently with Airbnb spacing */
+.prose p {
+  margin-bottom: 1.25em;
+  line-height: 1.6;
+}
+
+.prose strong {
+  color: var(--air-black);
+  font-weight: 600;
+}
+
+/* --- Updated Stats Grid for Detail View --- */
+/* This ensures the 'stat-pill' from your SectionCard doesn't look like a button */
 .stat-pill {
   border-left: 1px solid var(--air-border);
-  padding-left: 12px;
+  padding-left: 16px;
+  display: flex;
+  flex-col: column;
 }
 
 .stat-label {

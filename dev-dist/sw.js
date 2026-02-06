@@ -1,92 +1,63 @@
-/**
- * Copyright 2018 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import { clientsClaim } from 'workbox-core';
+import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
+import { registerRoute, NavigationRoute } from 'workbox-routing';
+import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import { ExpirationPlugin } from 'workbox-expiration';
 
-// If the loader is already loaded, just stop.
-if (!self.define) {
-  let registry = {};
+self.skipWaiting();
+clientsClaim();
 
-  // Used for `eval` and `importScripts` where we can't get script URL by other means.
-  // In both cases, it's safe to use a global var because those functions are synchronous.
-  let nextDefineUri;
+// 1. PRECACHE CORE ASSETS
+// This is replaced by Vite with the list of JS/CSS/HTML files needed for the app shell.
+precacheAndRoute(self.__WB_MANIFEST);
 
-  const singleRequire = (uri, parentUri) => {
-    uri = new URL(uri + ".js", parentUri).href;
-    return registry[uri] || (
-      
-        new Promise(resolve => {
-          if ("document" in self) {
-            const script = document.createElement("script");
-            script.src = uri;
-            script.onload = resolve;
-            document.head.appendChild(script);
-          } else {
-            nextDefineUri = uri;
-            importScripts(uri);
-            resolve();
+cleanupOutdatedCaches();
+
+// 2. STYLING & FONTS (Your Request)
+// Ensures the Airbnb-inspired look works offline even if not explicitly pre-cached.
+registerRoute(
+  ({ request }) => request.destination === 'style' || request.destination === 'font',
+  new StaleWhileRevalidate({
+    cacheName: 'ui-assets-cache',
+  })
+);
+
+// 3. SELECTIVE CITY PACK DATA (The Goal)
+// Caches only the JSON for the city the user is currently viewing.
+registerRoute(
+  ({ url }) => url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json'),
+  new CacheFirst({
+    cacheName: 'city-pack-data',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 5, // Keep the last 5 cities visited
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+      }),
+    ],
+  })
+);
+
+// 4. SPA NAVIGATION FALLBACK
+// Ensures that refreshing the page on /city/london works while offline.
+const handler = createHandlerBoundToURL('/index.html');
+const navigationRoute = new NavigationRoute(handler);
+registerRoute(navigationRoute);
+
+// 5. MANUAL MESSAGE LISTENER
+// This allows your React components to trigger a "Download" for a specific city.
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'DOWNLOAD_CITY_PACK') {
+    const { cityId } = event.data.payload;
+    const urlToCache = `/data/city-packs/${cityId}.json`;
+    
+    event.waitUntil(
+      caches.open('city-pack-data').then((cache) => {
+        return fetch(urlToCache).then((response) => {
+          if (response.ok) {
+            return cache.put(urlToCache, response);
           }
-        })
-      
-      .then(() => {
-        let promise = registry[uri];
-        if (!promise) {
-          throw new Error(`Module ${uri} didn’t register its module`);
-        }
-        return promise;
+        });
       })
     );
-  };
-
-  self.define = (depsNames, factory) => {
-    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
-    if (registry[uri]) {
-      // Module is already loading or loaded.
-      return;
-    }
-    let exports = {};
-    const require = depUri => singleRequire(depUri, uri);
-    const specialDeps = {
-      module: { uri },
-      exports,
-      require
-    };
-    registry[uri] = Promise.all(depsNames.map(
-      depName => specialDeps[depName] || require(depName)
-    )).then(deps => {
-      factory(...deps);
-      return exports;
-    });
-  };
-}
-define(['./workbox-5a5d9309'], (function (workbox) { 'use strict';
-
-  self.skipWaiting();
-  workbox.clientsClaim();
-
-  /**
-   * The precacheAndRoute() method efficiently caches and responds to
-   * requests for URLs in the manifest.
-   * See https://goo.gl/S9QRab
-   */
-  workbox.precacheAndRoute([{
-    "url": "registerSW.js",
-    "revision": "3ca0b8505b4bec776b69afdba2768812"
-  }, {
-    "url": "index.html",
-    "revision": "0.01tp2f5832o"
-  }], {});
-  workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
-    allowlist: [/^\/$/]
-  }));
-
-}));
+  }
+});
