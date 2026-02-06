@@ -267,3 +267,25 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 48px 32px; /* Increased vertical gap for more "air" */
 }
+
+/* Add this to your CSS file */
+.tiny-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800 !important; /* Force the heavy weight */
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--air-gray);
+  
+  /* The "Secret Sauce" for small bold text */
+  -webkit-font-smoothing: auto; /* Disables the thinning effect for small text */
+  -moz-osx-font-smoothing: auto;
+}
+
+@layer components {
+  .label-editorial-bold {
+    @apply block text-[10px] uppercase tracking-[0.2em] text-[#717171] font-black mb-1;
+    -webkit-text-stroke: 0.5px #717171;
+    -webkit-font-smoothing: auto;
+  }
+}

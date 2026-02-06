@@ -72,31 +72,44 @@ export function useCityPacks(): UseCityPacksResult {
   const downloadCityPack = useCallback(
     async (cityId: string): Promise<void> => {
       setTransientStatus((prev) => ({ ...prev, [cityId]: 'downloading' }));
-
+  
       try {
+        // 1. Fetch the JSON data
         const response = await fetch(`/data/city-packs/${cityId}.json`, { cache: 'no-store' });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch pack ${cityId}`);
-        }
-
+        if (!response.ok) throw new Error(`Failed to fetch pack ${cityId}`);
+  
+        // Clone response to parse it AND cache it
+        const data = await response.clone().json();
         const cache = await caches.open(CACHE_NAME);
-        await cache.put(`/data/city-packs/${cityId}.json`, response.clone());
+  
+        // 2. EXCELLENCE STEP: Pre-cache the hero image immediately
+        // This ensures the "Home Page" and "Detail Page" images are ready instantly
+        if (data.heroImage) {
+          // We use { mode: 'no-cors' } if images are on a different CDN, 
+          // but since yours are in /images/ (local), a standard fetch is fine.
+          const imgResponse = await fetch(data.heroImage);
+          if (imgResponse.ok) {
+            await cache.put(data.heroImage, imgResponse);
+          }
+        }
+  
+        // 3. Store the JSON in cache
+        await cache.put(`/data/city-packs/${cityId}.json`, response);
+        
+        // 4. Notify Service Worker and Update State
         sendSwMessage({ type: 'DOWNLOAD_CITY_PACK', payload: { cityId } });
-
+  
         const downloadedAt = new Date().toISOString();
         setStored((prev) => ({
           downloaded: {
             ...prev.downloaded,
-            [cityId]: {
-              cityId,
-              downloadedAt
-            }
+            [cityId]: { cityId, downloadedAt }
           }
         }));
-
+  
         setTransientStatus((prev) => ({ ...prev, [cityId]: 'downloaded' }));
-      } catch {
+      } catch (error) {
+        console.error("Download Error:", error);
         setTransientStatus((prev) => ({ ...prev, [cityId]: 'error' }));
       }
     },

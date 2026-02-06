@@ -22,7 +22,7 @@ function SectionCard({ section }: { section: VersionedSection }) {
       {/* 2. Critical Alert: Now looks like a premium "Editor's Note" */}
       {criticalAlert && (
         <div className="relative overflow-hidden bg-[#F9F9F9] border-l-4 border-[#222222] p-8 rounded-r-xl mb-12">
-          <div className="absolute top-[-10px] right-[-10px] text-6xl opacity-5 select-none font-serif">“</div>
+          <div className="absolute top-[-10px] right-[-10px] text-6xl opacity-5 select-none font-serif"></div>
           <div className="prose prose-sm font-medium italic text-[#484848] leading-relaxed relative z-10">
             <ReactMarkdown>{criticalAlert}</ReactMarkdown>
           </div>
@@ -33,41 +33,92 @@ function SectionCard({ section }: { section: VersionedSection }) {
       <div className="prose prose-lg max-w-none text-[#484848] leading-[1.8] mb-12">
         <ReactMarkdown>{description}</ReactMarkdown>
       </div>
+<br></br>
+{/* 4. Stats: 2-Column Grid for a "Table of Contents" feel */}
+{summaryStats && (
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 py-12 my-12 border-y border-[#F0F0F0]">
+    {summaryStats.map((stat, i) => (
+      /* Added py-6 for 24px top and 24px bottom padding */
+      <div key={i} className="flex flex-col py-6"> 
+        {/* 1. Optimized Editorial Label */}
+        <span 
+          className="block text-[10px] uppercase tracking-[0.25em] text-[#717171] mb-1.5"
+          style={{ 
+            fontWeight: 900, 
+            WebkitTextStroke: '0.5px #717171', 
+            WebkitFontSmoothing: 'auto' 
+          }}
+        >
+          {stat.label}
+        </span>
 
-      {/* 4. Stats: 2-Column Grid for a "Table of Contents" feel */}
-      {summaryStats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 py-12 my-12 border-y border-[#F0F0F0]">
-          {summaryStats.map((stat, i) => (
-            <div key={i} className="flex flex-col">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#717171] font-bold mb-3">
-                {stat.label}
-              </span>
-              <div className="text-[15px] md:text-[16px] font-bold text-[#222222] prose-inline">
-                <ReactMarkdown>{stat.value}</ReactMarkdown>
-              </div>
-            </div>
-          ))}
+        {/* 2. Markdown Value Container */}
+        <div className="text-[15px] md:text-[16px] font-medium text-[#222222] prose-inline leading-snug">
+          <ReactMarkdown 
+            components={{
+              p: ({children}) => <p className="m-0">{children}</p>,
+              strong: ({children}) => <span className="font-black text-black">{children}</span>
+            }}
+          >
+            {stat.value}
+          </ReactMarkdown>
         </div>
-      )}
-
+      </div>
+    ))}
+  </div>
+)}
+<br></br>
       {/* 5. Expert Tips: Modern "Checklist" Style */}
-      {tips && tips.length > 0 && (
-        <div className="mt-16 bg-[#FAFAFA] p-8 md:p-12 rounded-[32px]">
-          <h4 className="text-[12px] uppercase tracking-[0.3em] font-black text-[#222222] mb-10 flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-[#FF385C]" />
-            Local Perspective
-          </h4>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-            {tips.map((tip: string, i: number) => (
-              <li key={i} className="flex gap-5 items-start">
-                <span className="text-[12px] font-black text-[#FF385C] mt-1">0{i + 1}</span>
-                <div className="prose prose-sm text-[#484848] font-medium leading-relaxed">
-                  <ReactMarkdown>{tip}</ReactMarkdown>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+{tips && tips.length > 0 && (
+  <div className="mt-16 bg-[#FAFAFA] rounded-[32px] overflow-hidden">
+    {/* Internal Container with 24px vertical padding (py-6) */}
+    <div className="p-8 md:p-12 py-10 md:py-14"> 
+      
+      {/* 1. Enhanced Bold Header */}
+      <h4 
+        className="text-[12px] uppercase tracking-[0.3em] mb-12 flex items-center gap-3"
+        style={{ 
+          fontWeight: 900, 
+          WebkitTextStroke: '0.6px #222222', 
+          WebkitFontSmoothing: 'auto',
+          color: '#222222'
+        }}
+      >
+        <span className="w-2 h-2 rounded-full bg-[#FF385C]" />
+        Local Perspective
+      </h4>
+
+      {/* 2. Optimized List Grid */}
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+        {tips.map((tip: string, i: number) => (
+          <li key={i} className="flex gap-6 items-start group">
+            {/* 3. Refined Numerical Marker */}
+            <div className="flex flex-col items-center">
+              <span 
+                className="text-[10px] font-black text-[#FF385C] opacity-80"
+                style={{ WebkitFontSmoothing: 'auto' }}
+              >
+                {i < 9 ? `0${i + 1}` : i + 1}
+              </span>
+              <div className="w-[1px] h-full bg-[#EBEBEB] mt-2 group-last:hidden" />
+            </div>
+
+            {/* 4. Markdown Content */}
+            <div className="prose prose-sm text-[#484848] font-medium leading-relaxed -mt-1">
+              <ReactMarkdown
+                components={{
+                  p: ({children}) => <p className="m-0 mb-1">{children}</p>,
+                  strong: ({children}) => <strong className="font-black text-[#222222]">{children}</strong>
+                }}
+              >
+                {tip}
+              </ReactMarkdown>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
       )}
     </section>
   );
@@ -120,21 +171,57 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </h1>
         
         <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-widest text-[#717171] font-bold mb-1">Destination</span>
-            <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.country}</span>
-          </div>
-          <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-widest text-[#717171] font-bold mb-1">Currency</span>
-            <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.currency.symbol} {pack.currency.code}</span>
-          </div>
-          <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-widest text-[#717171] font-bold mb-1">Region</span>
-            <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.region}</span>
-          </div>
-        </div>
+  {/* Destination */}
+  <div className="flex flex-col">
+    <span 
+      className="block text-[10px] uppercase tracking-[0.2em] text-[#717171] mb-1"
+      style={{ 
+        fontWeight: 900, 
+        WebkitTextStroke: '0.5px #717171', // The "Boldness" hack
+        WebkitFontSmoothing: 'auto' 
+      }}
+    >
+      Destination:
+    </span>
+    <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.country}</span>
+  </div>
+
+  <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
+
+  {/* Currency */}
+  <div className="flex flex-col">
+    <span 
+      className="block text-[10px] uppercase tracking-[0.2em] text-[#717171] mb-1"
+      style={{ 
+        fontWeight: 900, 
+        WebkitTextStroke: '0.5px #717171',
+        WebkitFontSmoothing: 'auto' 
+      }}
+    >
+      Currency:
+    </span>
+    <span className="text-sm font-black text-[#222222] uppercase tracking-tight">
+      {pack.currency.symbol} {pack.currency.code}
+    </span>
+  </div>
+
+  <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
+
+  {/* Region */}
+  <div className="flex flex-col">
+    <span 
+      className="block text-[10px] uppercase tracking-[0.2em] text-[#717171] mb-1"
+      style={{ 
+        fontWeight: 900, 
+        WebkitTextStroke: '0.5px #717171',
+        WebkitFontSmoothing: 'auto' 
+      }}
+    >
+      Region:
+    </span>
+    <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.region}</span>
+  </div>
+</div>
       </header>
 
       {/* Main Content Sections */}
