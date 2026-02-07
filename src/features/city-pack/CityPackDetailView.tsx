@@ -106,51 +106,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
   
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 
-  useEffect(() => {
-    // Point to the server-side dynamic manifest endpoint
-    const manifestUrl = `/api/manifest/${pack.slug}`;
-    
-    // CRITICAL: Remove ALL existing manifest links to prevent conflicts
-    const existingManifests = document.querySelectorAll('link[rel="manifest"]');
-    existingManifests.forEach(tag => tag.remove());
-  
-    // Add the city-specific manifest with cache-busting timestamp
-    const manifestTag = document.createElement('link');
-    manifestTag.rel = 'manifest';
-    // Add timestamp to force fresh fetch and prevent browser caching
-    manifestTag.href = `${manifestUrl}?v=${Date.now()}`;
-    manifestTag.id = 'city-manifest';
-    
-    // Insert at the beginning of head to ensure it's processed first
-    if (document.head.firstChild) {
-      document.head.insertBefore(manifestTag, document.head.firstChild);
-    } else {
-      document.head.appendChild(manifestTag);
-    }
-    
-    // Force browser to recognize the new manifest
-    // Dispatch event to trigger beforeinstallprompt re-evaluation
-    window.dispatchEvent(new Event('DOMContentLoaded'));
-  
-    return () => {
-      // On unmount, restore the main app manifest
-      const cityTag = document.getElementById('city-manifest');
-      if (cityTag) {
-        cityTag.remove();
-      }
-      
-      // Restore main manifest
-      const mainManifest = document.createElement('link');
-      mainManifest.rel = 'manifest';
-      mainManifest.href = '/manifest.webmanifest';
-      if (document.head.firstChild) {
-        document.head.insertBefore(mainManifest, document.head.firstChild);
-      } else {
-        document.head.appendChild(mainManifest);
-      }
-    };
-  }, [pack.slug]);
-
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
       <header className="pt-24 md:pt-32 pb-16 relative overflow-hidden">
@@ -196,7 +151,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
                 onClick={() => setShowMobileOverlay(true)}
                 className="btn-pill btn-pill--primary px-10 py-5 shadow-2xl shadow-air-accent/20"
               >
-                Download Travel Pack
+                Download Pack
               </button>
               
               {!isInstalled && installPrompt && (
