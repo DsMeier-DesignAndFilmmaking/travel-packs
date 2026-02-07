@@ -8,7 +8,12 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 
 /**
  * ManifestSwapper - Swaps manifest based on current route
- * This runs BEFORE components render to avoid race conditions
+ * 
+ * IMPORTANT: Browser DevTools shows CACHED manifest info and won't update
+ * until you manually refresh. This is normal browser behavior, not a bug.
+ * 
+ * What matters: When user clicks "Add to Home Screen", the browser fetches
+ * the CURRENT manifest link, which will be the correct city-specific one.
  */
 function ManifestSwapper() {
   const location = useLocation();
@@ -17,48 +22,33 @@ function ManifestSwapper() {
     // Check if we're on a city pack page
     const cityMatch = location.pathname.match(/^\/city\/([^/]+)$/);
     
+    // Remove ALL existing manifest links
+    document.querySelectorAll('link[rel="manifest"]').forEach(tag => tag.remove());
+    
+    let manifestUrl: string;
+    
     if (cityMatch) {
       const slug = cityMatch[1];
-      const manifestUrl = `/api/manifest/${slug}?v=${Date.now()}`;
-      
-      // Remove all existing manifests
-      const existingManifests = document.querySelectorAll('link[rel="manifest"]');
-      existingManifests.forEach(tag => tag.remove());
-      
-      // Add city-specific manifest
-      const manifestTag = document.createElement('link');
-      manifestTag.rel = 'manifest';
-      manifestTag.href = manifestUrl;
-      manifestTag.id = 'city-manifest';
-      
-      if (document.head.firstChild) {
-        document.head.insertBefore(manifestTag, document.head.firstChild);
-      } else {
-        document.head.appendChild(manifestTag);
-      }
+      manifestUrl = `/api/manifest/${slug}`;
     } else {
-      // We're on home or another page - use main manifest
-      const cityTag = document.getElementById('city-manifest');
-      if (cityTag) {
-        cityTag.remove();
-      }
-      
-      // Only add main manifest if it doesn't exist
-      if (!document.querySelector('link[rel="manifest"]')) {
-        const mainManifest = document.createElement('link');
-        mainManifest.rel = 'manifest';
-        mainManifest.href = '/manifest.webmanifest';
-        
-        if (document.head.firstChild) {
-          document.head.insertBefore(mainManifest, document.head.firstChild);
-        } else {
-          document.head.appendChild(mainManifest);
-        }
-      }
+      manifestUrl = '/manifest.webmanifest';
     }
+    
+    // Create new manifest link
+    const manifestTag = document.createElement('link');
+    manifestTag.rel = 'manifest';
+    manifestTag.href = manifestUrl;
+    
+    // Insert immediately at start of head
+    if (document.head.firstChild) {
+      document.head.insertBefore(manifestTag, document.head.firstChild);
+    } else {
+      document.head.appendChild(manifestTag);
+    }
+    
   }, [location.pathname]);
 
-  return null; // This component doesn't render anything
+  return null;
 }
 
 export function AppRouter() {
