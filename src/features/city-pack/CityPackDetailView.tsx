@@ -196,7 +196,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
                 onClick={() => setShowMobileOverlay(true)}
                 className="btn-pill btn-pill--primary px-10 py-5 shadow-2xl shadow-air-accent/20"
               >
-                Download Pack
+                Download Travel Pack
               </button>
               
               {!isInstalled && installPrompt && (
