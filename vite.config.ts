@@ -22,35 +22,14 @@ export default defineConfig({
         enabled: true,
         type: 'module' 
       },
-      manifest: {
-        name: 'Local City Travel Packs',
-        short_name: 'Travel Packs',
-        description: 'Offline-first city travel packs platform.',
-        theme_color: '#0f172a',
-        background_color: '#ffffff',
-        start_url: '.',
-        display: 'standalone',
-        scope: '/',
-        
-        icons: [
-          { 
-            src: '/pwa-192x192.png', 
-            sizes: '192x192', 
-            type: 'image/png',
-            purpose: 'any maskable' 
-          },
-          { 
-            src: '/pwa-512x512.png', 
-            sizes: '512x512', 
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
-      },
+      // Set to false to use your static /public/manifest.webmanifest file
+      // This allows dynamic manifest swapping for city-specific PWA installs
+      manifest: false,
+      
       injectManifest: {
         // PRE-CACHE ONLY THE CORE APP SHELL
         // We exclude specific city JSON/Images so they aren't downloaded on home page load
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
         globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024 
       }
