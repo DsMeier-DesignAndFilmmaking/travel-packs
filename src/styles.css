@@ -1,3 +1,4 @@
+/* --- 1. CORE TOKENS & TAILWIND --- */
 :root {
   --air-black: #222222;
   --air-gray: #717171;
@@ -10,8 +11,7 @@
 @tailwind components;
 @tailwind utilities;
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+/* --- 2. GLOBAL & HOMEPAGE STYLES --- */
 body {
   font-family: 'Inter', -apple-system, sans-serif;
   color: var(--air-black);
@@ -20,11 +20,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-main {
-  flex: 1 0 auto;
+main { flex: 1 0 auto; }
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* --- Modern Navbar (Airbnb Style) --- */
+/* Navbar */
 .main-nav {
   position: sticky;
   top: 0;
@@ -34,7 +38,6 @@ main {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--air-border);
-  transition: box-shadow 0.2s ease;
 }
 
 .nav-container {
@@ -47,24 +50,6 @@ main {
   align-items: center;
 }
 
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-
-.nav-logo:hover {
-  opacity: 0.8;
-}
-
-.logo-icon {
-  font-size: 32px;
-  color: var(--air-accent);
-  line-height: 1;
-}
-
 .logo-text {
   font-size: 18px;
   font-weight: 900;
@@ -72,39 +57,7 @@ main {
   color: var(--air-black);
 }
 
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-/* --- Status Pill --- */
-.status-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 24px;
-  border: 1px solid var(--air-border);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--air-black);
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-/* --- Global System Banner --- */
-.system-banner {
-  background-color: var(--air-black);
-  color: #ffffff;
-  text-align: center;
-  font-size: 13px;
-  padding: 10px 0;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-/* --- Home View Grid --- */
+/* Home Grid & Cards */
 .home-view-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -134,11 +87,9 @@ main {
   transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.card-image-wrapper:hover img { 
-  transform: scale(1.05); 
-}
+.card-image-wrapper:hover img { transform: scale(1.05); }
 
-/* --- Buttons --- */
+/* Buttons & UI */
 .btn-pill {
   display: inline-flex;
   align-items: center;
@@ -150,7 +101,6 @@ main {
   transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
   cursor: pointer;
   border: 2px solid transparent;
-  letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
@@ -160,60 +110,15 @@ main {
   border-color: #222222;
 }
 
-.btn-pill--primary:hover { 
-  background: linear-gradient(135deg, #000000 0%, #222222 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-}
-
 .btn-pill--outline {
   background: white;
   border-color: #222222;
   color: #222222;
 }
 
-.btn-pill--outline:hover {
-  background: #222222;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
-.btn-pill:active {
-  transform: scale(0.98);
-}
-
-
-/* --- Status Indicators --- */
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .dot--brand { background-color: var(--air-accent); }
-.dot--online { background-color: #22c55e; }
-.dot--offline { background-color: #fb923c; }
 
-/* --- Animations --- */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* --- Fix for App Layout to push footer down --- */
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* --- Typography Utilities --- */
 @layer components {
   .label-editorial-bold {
     display: block;
@@ -226,110 +131,97 @@ main {
   }
 }
 
-/* --- Remove list markers inside prose --- */
-.prose ul > li::marker, 
-.prose ol > li::marker {
-  display: none !important;
-  content: "" !important;
+
+
+/* --- 3. DETAIL PAGE (EDITORIAL VIEW) STYLES --- */
+
+.editorial-view {
+  --pack-bg: #FDFDFD;
+  --pack-accent-soft: rgba(255, 56, 92, 0.08);
 }
 
-.prose li {
-  padding-left: 0 !important;
+.editorial-view .hero-header {
+  position: relative;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
 
-/* --- Enhanced Prose Styles for Editorial Content --- */
-.prose {
+.editorial-view .hero-title {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  line-height: 0.85;
+  color: var(--air-black);
+  /* Reduce the spacing specifically below the title */
+  margin-bottom: 1.5rem !important; 
+}
+
+/* Vertical Spacing - REMOVED BORDERS */
+.editorial-view .section-card {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background: transparent; /* Removed white bg/borders */
+  border: none;
+}
+
+/* Specific Fix for the Critical Alert Box */
+.editorial-view .alert-banner {
+  background-color: #FFF8F0;
+  border-left: 4px solid var(--air-accent);
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 3rem;
+  /* Use fixed padding here to override any prose conflicts */
+  padding: 2rem 2rem 2rem 3.5rem !important; 
+}
+
+
+
+/* Content Typography */
+.editorial-view .prose-description p {
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
+  line-height: 1.8;
   color: #484848;
 }
 
-.prose p {
-  margin-bottom: 1.5em;
-  line-height: 1.8;
+/* Metadata Grid */
+.editorial-view .metadata-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.5rem;
+  margin-top: 3rem;
+  margin-bottom: 2.5rem;
 }
 
-.prose strong,
-.prose b {
-  color: #222222;
-  font-weight: 900;
-}
-
-.prose ul,
-.prose ol {
-  margin-left: 0;
-  padding-left: 1.5em;
-  list-style-position: outside;
-}
-
-.prose ul {
-  list-style-type: none;
-}
-
-.prose ul > li {
+/* Download Progress Bar */
+.editorial-view .download-ready-bar {
+  height: 2px;
+  width: 100%;
+  background: var(--air-border);
   position: relative;
-  padding-left: 1.5em;
+  overflow: hidden;
 }
 
-.prose ul > li::before {
-  content: "•";
+.editorial-view .download-ready-bar::after {
+  content: "";
   position: absolute;
-  left: 0;
-  color: #FF385C;
-  font-weight: bold;
+  left: 0; top: 0; bottom: 0;
+  width: 100%;
+  background: var(--air-accent);
 }
 
-.prose a {
-  color: #FF385C;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.2s ease;
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.prose a:hover {
-  opacity: 0.7;
+.editorial-view .animate-fadeIn {
+  animation: fadeIn 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
-.prose h3 {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: #222222;
-  margin-top: 2em;
-  margin-bottom: 1em;
-  letter-spacing: -0.02em;
-}
-
-.prose h4 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #222222;
-  margin-top: 1.5em;
-  margin-bottom: 0.75em;
-}
-
-/* --- Smooth Scroll Behavior --- */
-html {
-  scroll-behavior: smooth;
-}
-
-/* --- Better Focus States for Accessibility --- */
-button:focus-visible,
-a:focus-visible {
-  outline: 3px solid #FF385C;
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-
-/* --- Responsive Adjustments --- */
-@media (max-width: 640px) {
-  .logo-text {
-    font-size: 16px;
-  }
-  
-  .nav-container {
-    padding: 0 16px;
-  }
-  
-  .home-view-container {
-    padding: 32px 16px;
-  }
+/* Ensure the Safety Advisory text specifically respects the gutter */
+.editorial-view .alert-banner .prose p {
+  padding-left: 0 !important;
+  margin-bottom: 1rem;
 }

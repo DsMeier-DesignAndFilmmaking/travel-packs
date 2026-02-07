@@ -1,3 +1,4 @@
+// /src/components/layout/AppShell.tsx
 import { useEffect, useState, type PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
@@ -10,7 +11,7 @@ export function AppShell({ children }: PropsWithChildren) {
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
-    
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
@@ -39,7 +40,7 @@ export function AppShell({ children }: PropsWithChildren) {
                 </span>
               </div>
             )}
-            
+
             {!isInstalled && installPrompt && (
               <button
                 type="button"
@@ -53,45 +54,46 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       </header>
 
+      {/* Offline Banner */}
       {!isOnline && (
         <div className="system-banner sticky top-[80px] z-[999]">
           Viewing downloaded city packs in offline mode
         </div>
       )}
 
-      <main className="flex-1">
+      {/* Main Content */}
+      <main className="flex-1 pt-24 md:pt-28 pb-12 md:pb-16">
         {children}
       </main>
 
-      {/* --- FOOTER REWRITE --- */}
-      <footer className="w-full border-t border-[#F0F0F0] pt-24 pb-16 bg-white">
-      <div className="max-w-[1280px] mx-auto px-6 flex flex-col items-center">
-        
-        {/* 1. Primary Branding/Copyright */}
-        <div className="mb-12 text-center">
-          <p className="text-[13px] font-black tracking-tighter uppercase text-[#222]">
-            © 2026 LOCAL CITY TRAVEL PACKS
-          </p>
+      {/* Footer */}
+      <footer className="w-full border-t border-[#F0F0F0] pt-16 md:pt-24 pb-12 md:pb-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-6 flex flex-col items-center">
+
+          {/* 1. Branding */}
+          <div className="mb-12 text-center">
+            <p className="text-[13px] font-black tracking-tighter uppercase text-[#222]">
+              © 2026 LOCAL CITY TRAVEL PACKS
+            </p>
+          </div>
+
+          {/* 2. Navigation */}
+          <nav className="flex flex-wrap justify-center gap-x-10 gap-y-4 mb-12">
+            {['Privacy', 'Terms', 'Sitemap'].map((link) => (
+              <a 
+                key={link}
+                href="#"
+                className="text-[10px] font-black uppercase tracking-[0.2em] text-[#717171] hover:text-black transition-colors"
+              >
+                {link}
+              </a>
+            ))}
+          </nav>
+
+          {/* 3. Divider */}
+          <div className="w-8 h-[2px] bg-black" />
         </div>
-
-        {/* 2. Navigation - Increased Gap for touch targets */}
-        <nav className="flex flex-wrap justify-center gap-x-10 gap-y-4 mb-12">
-          {['Privacy', 'Terms', 'Sitemap'].map((link) => (
-            <a 
-              key={link}
-              href="#"
-              className="text-[10px] font-black uppercase tracking-[0.2em] text-[#717171] hover:text-black transition-colors"
-            >
-              {link}
-            </a>
-          ))}
-        </nav>
-
-        {/* 3. Minimalist Divider */}
-        <div className="w-8 h-[2px] bg-black" />
-        
-      </div>
-    </footer>
+      </footer>
     </div>
   );
 }
