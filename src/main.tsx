@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { AppProviders } from '@/app/providers/AppProviders';
 import { AppRouter } from '@/app/router/AppRouter';
 import { registerServiceWorker } from '@/pwa/registerServiceWorker'; // Import your logic
-import '@/styles.css';
+import './styles.css';
 
 // 1. Clean registration using your robust TS helper
 registerServiceWorker();

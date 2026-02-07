@@ -6,6 +6,10 @@
   --air-accent: #FF385C; 
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -16,7 +20,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- Modern Navbar (Airbnb Style Restoration) --- */
+main {
+  flex: 1 0 auto;
+}
+
+/* --- Modern Navbar (Airbnb Style) --- */
 .main-nav {
   position: sticky;
   top: 0;
@@ -30,7 +38,7 @@ body {
 }
 
 .nav-container {
-  max-width: 1280px; /* Matched to home container for alignment */
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   padding: 0 24px;
@@ -58,9 +66,9 @@ body {
 }
 
 .logo-text {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.05em;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.06em;
   color: var(--air-black);
 }
 
@@ -70,7 +78,7 @@ body {
   gap: 16px;
 }
 
-/* --- Refined Status Pill --- */
+/* --- Status Pill --- */
 .status-pill {
   display: flex;
   align-items: center;
@@ -96,60 +104,7 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* --- Layout Strategy --- */
-/* The Detail View needs its own wrapper to avoid being squashed */
-.city-detail-wrapper {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 80px 24px;
-}
-
-.detail-header-rule {
-  height: 2px;
-  width: 60px;
-  background: var(--air-black);
-  margin-bottom: 40px;
-}
-
-.detail-title {
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  line-height: 0.85;
-  margin-bottom: 48px;
-}
-
-.detail-metadata {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #B0B0B0;
-}
-
-.detail-metadata .active {
-  color: var(--air-black);
-  border-bottom: 2px solid var(--air-black);
-  padding-bottom: 2px;
-}
-
-/* --- Sections --- */
-.pack-section {
-  padding: 64px 0;
-  border-bottom: 1px solid var(--air-border);
-}
-
-.section-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 32px;
-}
-
-/* --- Grid & Cards --- */
+/* --- Home View Grid --- */
 .home-view-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -158,8 +113,8 @@ body {
 
 .packs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px 24px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 48px 32px;
 }
 
 .card-image-wrapper {
@@ -179,7 +134,9 @@ body {
   transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.card-image-wrapper:hover img { transform: scale(1.05); }
+.card-image-wrapper:hover img { 
+  transform: scale(1.05); 
+}
 
 /* --- Buttons --- */
 .btn-pill {
@@ -190,47 +147,44 @@ body {
   border-radius: 30px;
   font-size: 14px;
   font-weight: 700;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .btn-pill--primary {
-  background: var(--air-black);
+  background: linear-gradient(135deg, #222222 0%, #000000 100%);
   color: white;
+  border-color: #222222;
 }
 
-.btn-pill--primary:hover { background: #000; transform: scale(1.02); }
+.btn-pill--primary:hover { 
+  background: linear-gradient(135deg, #000000 0%, #222222 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
 
 .btn-pill--outline {
   background: white;
-  border-color: var(--air-black);
+  border-color: #222222;
+  color: #222222;
 }
 
-/* --- Navigation --- */
-.main-nav {
-  position: sticky;
-  top: 0; z-index: 1000;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.98);
-  border-bottom: 1px solid var(--air-border);
-  display: flex;
-  align-items: center;
+.btn-pill--outline:hover {
+  background: #222222;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
-.nav-container {
-  max-width: 1280px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.btn-pill:active {
+  transform: scale(0.98);
 }
 
-/* --- Optimized Status Indicators --- */
-/* We remove the .status-pill box styles and replace with raw typographic layouts */
 
+/* --- Status Indicators --- */
 .dot {
   width: 6px;
   height: 6px;
@@ -242,55 +196,37 @@ body {
 .dot--online { background-color: #22c55e; }
 .dot--offline { background-color: #fb923c; }
 
-/* Subtle fade-in for the whole header area to feel high-end */
-.editorial-header {
-  animation: fadeIn 0.8s ease-out;
-}
-
+/* --- Animations --- */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Clean Typography Polish --- */
-.logo-text {
-  font-size: 18px; /* Slightly smaller for elegance */
-  font-weight: 900;
-  letter-spacing: -0.06em; /* Tighter tracking for modern look */
-  color: var(--air-black);
-  text-transform: lowercase; /* Optional: adds a modern tech-minimalist vibe */
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Ensure the grid doesn't feel crowded by increasing the gap */
-.packs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 48px 32px; /* Increased vertical gap for more "air" */
+/* --- Fix for App Layout to push footer down --- */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Add this to your CSS file */
-.tiny-label {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800 !important; /* Force the heavy weight */
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--air-gray);
-  
-  /* The "Secret Sauce" for small bold text */
-  -webkit-font-smoothing: auto; /* Disables the thinning effect for small text */
-  -moz-osx-font-smoothing: auto;
-}
-
+/* --- Typography Utilities --- */
 @layer components {
   .label-editorial-bold {
-    @apply block text-[10px] uppercase tracking-[0.2em] text-[#717171] font-black mb-1;
-    -webkit-text-stroke: 0.5px #717171;
-    -webkit-font-smoothing: auto;
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em; 
+    color: var(--air-gray);
+    font-weight: 800;
+    margin-bottom: 4px;
   }
 }
 
-/* Add this to index.css to globally allow list-none to work inside prose */
+/* --- Remove list markers inside prose --- */
 .prose ul > li::marker, 
 .prose ol > li::marker {
   display: none !important;
@@ -298,10 +234,102 @@ body {
 }
 
 .prose li {
-  padding-left: 0 !important; /* Removes the gap prose leaves for the bullet */
+  padding-left: 0 !important;
 }
 
-.main-footer {
-  width: 100%;
-  background-color: var(--air-bg);
+/* --- Enhanced Prose Styles for Editorial Content --- */
+.prose {
+  color: #484848;
+}
+
+.prose p {
+  margin-bottom: 1.5em;
+  line-height: 1.8;
+}
+
+.prose strong,
+.prose b {
+  color: #222222;
+  font-weight: 900;
+}
+
+.prose ul,
+.prose ol {
+  margin-left: 0;
+  padding-left: 1.5em;
+  list-style-position: outside;
+}
+
+.prose ul {
+  list-style-type: none;
+}
+
+.prose ul > li {
+  position: relative;
+  padding-left: 1.5em;
+}
+
+.prose ul > li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #FF385C;
+  font-weight: bold;
+}
+
+.prose a {
+  color: #FF385C;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.prose a:hover {
+  opacity: 0.7;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #222222;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  letter-spacing: -0.02em;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #222222;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+/* --- Smooth Scroll Behavior --- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- Better Focus States for Accessibility --- */
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #FF385C;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 640px) {
+  .logo-text {
+    font-size: 16px;
+  }
+  
+  .nav-container {
+    padding: 0 16px;
+  }
+  
+  .home-view-container {
+    padding: 32px 16px;
+  }
 }

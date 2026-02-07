@@ -1,265 +1,206 @@
-import type { CityPack, VersionedSection } from '@/types/cityPack';
+// /src/features/city-pack/CityPackDetailView.tsx
+import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { useEffect } from 'react';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { InstallOverlay } from '@/components/city/InstallOverlay';
+import type { CityPack, VersionedSection } from '@/types/cityPack';
 
 /**
- * SectionCard - The "Magazine Article" Layout
- * Uses a mix of CSS Grid and Flex to break the vertical "monotony".
+ * SectionCard - Airbnb Editorial Style with Maximum Breathing Room
  */
 function SectionCard({ section }: { section: VersionedSection }) {
   const { title, description, criticalAlert, summaryStats, tips } = section.payload;
 
   return (
-    <section className="pack-section group">
-      {/* 1. Section Header: Minimalist with a focus on Title */}
-      <div className="mb-10">
-        <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#222222] mb-4">
+    <section className="py-20 md:py-24 first:pt-24 md:first:pt-32 animate-fadeIn">
+      {/* 1. Section Header - Large & Bold */}
+      <div className="mb-16 md:mb-20">
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-[#222222] leading-[1.1] mb-6">
           {title}
         </h2>
-        <div className="h-1 w-12 bg-[#FF385C] transition-all group-hover:w-24 duration-500" />
+        <div className="h-1.5 w-20 bg-[#FF385C] rounded-full" />
       </div>
       
-      {/* 2. Critical Alert: Now looks like a premium "Editor's Note" */}
+      {/* 2. Critical Alert - Prominent Warning */}
       {criticalAlert && (
-        <div className="relative overflow-hidden bg-[#F9F9F9] border-l-4 border-[#222222] p-8 rounded-r-xl mb-12">
-          <div className="absolute top-[-10px] right-[-10px] text-6xl opacity-5 select-none font-serif"></div>
-          <div className="prose prose-sm font-medium italic text-[#484848] leading-relaxed relative z-10">
+        <div className="bg-gradient-to-r from-[#FFF8F0] to-[#FAFAFA] border-l-4 border-[#FF385C] p-10 md:p-12 mb-16 md:mb-20 rounded-r-2xl shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">⚠️</span>
+            <p className="text-xs uppercase tracking-[0.25em] font-black text-[#FF385C]">
+              Safety Advisory
+            </p>
+          </div>
+          <div className="prose prose-lg max-w-none text-[#484848] leading-relaxed">
             <ReactMarkdown>{criticalAlert}</ReactMarkdown>
           </div>
         </div>
       )}
 
-      {/* 3. Main Content: Increased line-height for readability */}
-      <div className="prose prose-lg max-w-none text-[#484848] leading-[1.8] mb-12">
-        <ReactMarkdown>{description}</ReactMarkdown>
-      </div>
-<br></br>
-{/* 4. Stats: 2-Column Grid for a "Table of Contents" feel */}
-{summaryStats && (
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 py-12 my-12 border-y border-[#F0F0F0]">
-    {summaryStats.map((stat, i) => (
-      /* Added py-6 for 24px top and 24px bottom padding */
-      <div key={i} className="flex flex-col py-6"> 
-        {/* 1. Optimized Editorial Label */}
-        <span 
-          className="block text-[10px] uppercase tracking-[0.25em] text-[#717171] mb-1.5"
-          style={{ 
-            fontWeight: 900, 
-            WebkitTextStroke: '0.5px #717171', 
-            WebkitFontSmoothing: 'auto' 
+      {/* 3. Main Content - Editorial Prose */}
+      <div className="prose prose-xl max-w-none text-[#484848] leading-[1.8] mb-16 md:mb-20">
+        <ReactMarkdown 
+          components={{
+            p: ({children}) => <p className="mb-6 text-lg md:text-xl">{children}</p>,
+            ul: ({children}) => <ul className="space-y-3 mb-6">{children}</ul>,
+            li: ({children}) => <li className="text-lg md:text-xl leading-relaxed">{children}</li>,
           }}
         >
-          {stat.label}
-        </span>
-
-        {/* 2. Markdown Value Container */}
-        <div className="text-[15px] md:text-[16px] font-medium text-[#222222] prose-inline leading-snug">
-          <ReactMarkdown 
-            components={{
-              // Disable the paragraph wrapper to keep alignment clean
-              p: ({children}) => <p className="m-0 mb-1">{children}</p>,
-              // FORCE bullets to disappear if the markdown happens to contain a list
-              ul: ({children}) => <div className="list-none p-0 m-0">{children}</div>,
-              li: ({children}) => <div className="list-none p-0 m-0">{children}</div>,
-              // Keep your bold override
-              strong: ({children}) => <strong className="font-black text-[#222222]">{children}</strong>
-            }}
-          >
-            {stat.value}
-          </ReactMarkdown>
-        </div>
+          {description}
+        </ReactMarkdown>
       </div>
-    ))}
-  </div>
-)}
 
-<br></br>
+      {/* 4. Stats Grid - Clean Data Display */}
+      {summaryStats && summaryStats.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 py-16 md:py-20 my-16 md:my-20 border-y-2 border-[#F0F0F0]">
+          {summaryStats.map((stat, i) => (
+            <div key={i} className="flex flex-col gap-3 group"> 
+              <p className="text-[11px] uppercase tracking-[0.2em] font-black text-[#717171] mb-1">
+                {stat.label}
+              </p>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-[#222222] group-hover:text-[#FF385C] transition-colors">
+                <ReactMarkdown components={{ p: ({children}) => <>{children}</> }}>
+                  {stat.value}
+                </ReactMarkdown>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-{/* 5. Expert Tips: Modern "Checklist" Style */}
-{tips && tips.length > 0 && (
-  <div className="mt-16 bg-[#FAFAFA] rounded-[32px] overflow-hidden">
-    {/* Internal Container with 24px vertical padding (py-6) */}
-    <div className="p-8 md:p-12 py-10 md:py-14"> 
-      
-      {/* 1. Enhanced Bold Header */}
-      <h4 
-      className="text-[12px] uppercase tracking-[0.3em] mb-12 flex items-center gap-3 italic"
-      style={{ 
-        fontWeight: 700, 
-        WebkitTextStroke: '0.1px #484848', 
-        WebkitFontSmoothing: 'auto',
-        color: '#484848',
-        fontStyle: 'italic' // Ensures the italic property is applied directly to the inline style
-      }}
-    >
-      <span className="w-2 h-2 rounded-full bg-[#484848] not-italic" /> {/* not-italic prevents the dot from skewing */}
-      Local Perspective
-    </h4>
-
-      {/* 2. Optimized List Grid - Added list-none, m-0, p-0 */}
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 list-none m-0 p-0 [&_li::marker]:content-none [&_li]:before:hidden">
-        {tips.map((tip: string, i: number) => (
-          <li 
-          key={i} 
-          className="flex gap-6 items-start group" 
-          style={{ display: 'flex', listStyleType: 'none' }} // Inline styles beat global CSS
-        >
-          {/* 3. Refined Numerical Marker */}
-          <div className="flex flex-col items-center">
-            
-            <div className="w-[1px] h-full bg-[#EBEBEB] mt-2 group-last:hidden" />
+      {/* 5. Expert Tips - Local Insights */}
+      {tips && tips.length > 0 && (
+        <div className="mt-20 md:mt-24 bg-[#F9F9F9] rounded-[32px] p-10 md:p-16 lg:p-20 border border-[#F0F0F0]">
+          <div className="flex items-center gap-3 mb-10 md:mb-12">
+            <span className="text-2xl">💡</span>
+            <p className="text-xs uppercase tracking-[0.25em] font-black text-[#222222]">
+              Local Perspective
+            </p>
           </div>
-        
-          {/* 4. Markdown Content */}
-          <div className="text-[14px] md:text-[15px] text-[#484848] font-medium leading-relaxed -mt-1"><br></br>
-            <ReactMarkdown
-              components={{
-                p: ({children}) => <div className="mb-2">{children}</div>,
-                // Map lists to divs just in case the markdown tries to recreate them
-                ul: ({children}) => <div className="m-0 p-0">{children}</div>,
-                li: ({children}) => <div className="m-0 p-0">{children}</div>,
-                strong: ({children}) => (
-                  <strong className="text-[#222222]" style={{ fontWeight: 900 }}>
-                    {children}
-                  </strong>
-                )
-              }}
-            >
-              {tip}
-            </ReactMarkdown>
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-10">
+            {tips.map((tip, i) => (
+              <div key={i} className="text-base md:text-lg text-[#484848] leading-[1.8]">
+                <ReactMarkdown 
+                  components={{ 
+                    strong: ({children}) => <strong className="text-[#222222] font-black">{children}</strong>,
+                    p: ({children}) => <p className="mb-0">{children}</p>,
+                  }}
+                >
+                  {tip}
+                </ReactMarkdown>
+              </div>
+            ))}
           </div>
-        </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-)}
+        </div>
+      )}
     </section>
   );
 }
 
+/**
+ * CityPackDetailView - Airbnb-Style Editorial Experience
+ */
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
-  if (!pack || !pack.id) return null;
+  const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
+  const [showMobileOverlay, setShowMobileOverlay] = useState(false);
 
-  const { city: cityName, id: cityId } = pack;
-  const sections = pack.sections ? Object.values(pack.sections) : [];
-
-  // PWA & Service Worker Logic (Preserved)
-  useEffect(() => {
-    const dynamicManifest = {
-      "name": `Local City: ${cityName}`,
-      "short_name": cityName,
-      "start_url": window.location.pathname,
-      "display": "standalone",
-      "background_color": "#ffffff",
-      "theme_color": "#ffffff",
-      "icons": [
-        { "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" },
-        { "src": "/pwa-512x512.png", "sizes": "512x512", "type": "image/png" }
-      ]
-    };
-    const blob = new Blob([JSON.stringify(dynamicManifest)], { type: 'application/manifest+json' });
-    const manifestURL = URL.createObjectURL(blob);
-    const manifestTag = document.querySelector('#main-manifest');
-    if (manifestTag) manifestTag.setAttribute('href', manifestURL);
-    return () => {
-      if (manifestTag) {
-        manifestTag.setAttribute('href', '/manifest.webmanifest');
-        URL.revokeObjectURL(manifestURL);
-      }
-    };
-  }, [cityId, cityName]);
+  if (!pack) return null;
 
   return (
-    <article className="city-detail-wrapper pb-32">
-      {/* Editorial Hero Header */}
-      <header className="pt-20 mb-32 relative">
-        <div className="absolute top-0 left-0 text-[18vw] font-black text-[#F7F7F7] -z-10 select-none leading-none -ml-4">
-          {pack.city.substring(0, 3)}
+    <article className="w-full bg-white">
+      {/* Hero Header Section - Dramatic & Spacious */}
+      <header className="w-full border-b-2 border-[#F0F0F0] bg-gradient-to-b from-white to-[#FAFAFA]">
+        <div className="max-w-[1120px] mx-auto px-6 md:px-10 lg:px-12 pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-32 relative overflow-hidden">
+          {/* Background Ghost Text - Subtle Branding */}
+          <div className="absolute -top-8 -left-4 text-[28vw] md:text-[24vw] lg:text-[20vw] font-black text-[#F7F7F7] leading-none pointer-events-none select-none tracking-tighter">
+            {pack.city.substring(0, 2).toUpperCase()}
+          </div>
+
+          {/* Content Layer */}
+          <div className="relative z-10">
+            {/* Eyebrow - Breadcrumb Style */}
+            <div className="flex items-center gap-2 mb-8">
+              <p className="text-[11px] uppercase tracking-[0.25em] font-black text-[#717171]">
+                {pack.country}
+              </p>
+              <span className="text-[#DDDDDD]">•</span>
+              <p className="text-[11px] uppercase tracking-[0.25em] font-black text-[#717171]">
+                {pack.region}
+              </p>
+            </div>
+            
+            {/* Hero Title - Maximum Impact */}
+            <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-[-0.04em] text-[#222222] leading-[0.9] mb-16 md:mb-20">
+              {pack.city}<span className="text-[#FF385C]">.</span>
+            </h1>
+
+            {/* Action Buttons - Clear CTAs */}
+            {!isInstalled && (
+              <div className="flex flex-wrap gap-4 mb-20 md:mb-24">
+                {installPrompt && (
+                  <button 
+                    onClick={() => void handleInstall()} 
+                    className="btn-pill btn-pill--outline px-8 py-4 text-sm font-bold"
+                  >
+                    <span className="tracking-wide">📥 Install Desktop App</span>
+                  </button>
+                )}
+                <button 
+                  onClick={() => setShowMobileOverlay(true)} 
+                  className="btn-pill btn-pill--primary px-8 py-4 text-sm font-bold shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <span className="tracking-wide text-white">💾 Save for Offline</span>
+                </button>
+              </div>
+            )}
+
+            {/* Metadata Grid - Key Information */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 md:gap-16 pt-12 md:pt-16 border-t-2 border-[#F0F0F0]">
+              <div className="flex flex-col gap-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] font-black text-[#717171]">
+                  Destination
+                </p>
+                <p className="text-3xl md:text-4xl font-black tracking-tight text-[#222222]">
+                  {pack.country}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] font-black text-[#717171]">
+                  Currency
+                </p>
+                <p className="text-3xl md:text-4xl font-black tracking-tight text-[#222222]">
+                  {pack.currency.symbol} {pack.currency.code}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] font-black text-[#717171]">
+                  Region
+                </p>
+                <p className="text-3xl md:text-4xl font-black tracking-tight text-[#222222]">
+                  {pack.region}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div className="detail-header-rule mb-16" />
-        
-        <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-[#222222] leading-[0.85] mb-10">
-          {pack.city}<span className="text-[#FF385C]">.</span>
-        </h1>
-        
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-
-{/* Destination */}
-<div className="inline-flex items-baseline whitespace-nowrap">
-  <span 
-    className="text-[10px] uppercase tracking-[0.2em] text-[#717171]" 
-    style={{ 
-      fontWeight: 900, 
-      WebkitTextStroke: '0.5px #717171',
-      WebkitFontSmoothing: 'auto',
-      marginRight: '12px' // This creates the physical space after the colon
-    }}
-  >
-    Destination:
-  </span>
-  <span className="text-sm font-black text-[#222222] uppercase tracking-tight">
-    {pack.country}
-  </span>
-</div>
-
-  <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
-
-{/* Currency */}
-<div className="inline-flex items-baseline whitespace-nowrap">
-  <span 
-    className="text-[10px] uppercase tracking-[0.2em] text-[#717171]" 
-    style={{ 
-      fontWeight: 900, 
-      WebkitTextStroke: '0.5px #717171',
-      WebkitFontSmoothing: 'auto',
-      marginRight: '12px' // This creates the physical space after the colon
-    }}
-  >
-    Currency:
-  </span>
-  <span className="text-sm font-black text-[#222222] uppercase tracking-tight">
-    {pack.currency.symbol} {pack.currency.code}
-  </span>
-</div>
-
-  <div className="w-[1px] h-8 bg-[#EBEBEB] hidden md:block" />
-
-  {/* Region */}
-  <div className="inline-flex items-baseline whitespace-nowrap">
-  <span 
-    className="text-[10px] uppercase tracking-[0.2em] text-[#717171]" 
-    style={{ 
-      fontWeight: 900, 
-      WebkitTextStroke: '0.5px #717171',
-      WebkitFontSmoothing: 'auto',
-      marginRight: '12px' // This creates the physical space after the colon
-    }}
-  >
-      Region:
-    </span>
-    <span className="text-sm font-black text-[#222222] uppercase tracking-tight">{pack.region}</span>
-  </div>
-</div>
       </header>
 
-      {/* Main Content Sections */}
-      <main className="space-y-32">
-        {sections.map((section, idx) => (
-          <SectionCard key={idx} section={section} />
-        ))}
-      </main>
-
-      {/* Minimalist Signature Footer */}
-      <footer className="mt-40 pt-16 border-t border-[#F0F0F0] flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="text-[10px] text-[#717171] uppercase tracking-[0.5em] font-black">
-          Local City Guide • Edition {new Date(pack.updatedAt).getFullYear()}
-        </div>
-        <div className="text-[10px] text-[#B0B0B0] font-mono">
-          ID: {pack.id.toUpperCase()} // v{pack.version}
-        </div>
-      </footer>
+      {/* Main Content Sections - Editorial Flow */}
+      <div className="max-w-[1024px] mx-auto px-6 md:px-10 lg:px-12 pb-32 md:pb-40">
+        <main className="divide-y-2 divide-[#F0F0F0]">
+          {Object.values(pack.sections || {}).map((section, idx) => (
+            <SectionCard key={idx} section={section} />
+          ))}
+        </main>
+      </div>
+      
+      {/* PWA Mobile Instructions */}
+      <InstallOverlay 
+        isOpen={showMobileOverlay} 
+        onClose={() => setShowMobileOverlay(false)} 
+        cityName={pack.city} 
+      />
     </article>
   );
 }

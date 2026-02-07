@@ -57,7 +57,7 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
       </div>
 
       {/* 3. Text Content Area */}
-      <div className="flex justify-between items-start gap-4 mt-1">
+      <div className="flex justify-between items-start gap-6 mt-1">
         <div className="flex flex-col min-w-0 flex-1">
           <Link to={`/city/${pack.slug}`} className="hover:opacity-70 transition-opacity">
             <h3 className="text-[15px] font-bold text-[#222222] leading-tight truncate">
