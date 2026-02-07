@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { InstallOverlay } from '@/components/city/InstallOverlay';
@@ -103,8 +104,46 @@ function SectionCard({ section }: { section: VersionedSection }) {
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
+  const { city, slug } = pack;
 
   if (!pack) return null;
+  
+    useEffect(() => {
+      // 1. Create the dynamic manifest object
+      const dynamicManifest = {
+        name: `Local City: ${pack.city}`, // Unique name: "Local City: Paris"
+        short_name: pack.city,
+        description: `Offline guide for ${city}.`,
+        start_url: window.location.pathname,
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#0f172a",
+        icons: [
+          { "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" },
+          { "src": "/pwa-512x512.png", "sizes": "512x512", "type": "image/png" }
+        ]
+      };
+  
+      // 2. Convert to a Blob and create a temporary URL
+      const stringManifest = JSON.stringify(dynamicManifest);
+      const blob = new Blob([stringManifest], { type: 'application/manifest+json' });
+      const manifestURL = URL.createObjectURL(blob);
+  
+      // 3. Find the manifest link tag and swap the href
+      // Make sure your index.html has <link id="manifest-placeholder" rel="manifest" href="/manifest.webmanifest">
+      const manifestTag = document.querySelector('link[rel="manifest"]');
+      if (manifestTag) {
+        manifestTag.setAttribute('href', manifestURL);
+      }
+  
+      // Cleanup: Reset to default manifest when leaving the page
+      return () => {
+        if (manifestTag) {
+          manifestTag.setAttribute('href', '/manifest.webmanifest');
+        }
+        URL.revokeObjectURL(manifestURL);
+      };
+    }, [city, window.location.pathname]);
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">

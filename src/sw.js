@@ -3,6 +3,8 @@ import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
+// Make sure this is present at the top of sw.js
+import { precacheAndRoute } from 'workbox-precaching';
 
 // Separate cache names for clarity
 const CITY_PACK_CACHE = 'city-pack-data-v1';
@@ -10,25 +12,42 @@ const IMAGE_CACHE = 'city-assets-images-v1';
 
 // 1. PRECACHE SETUP (The "App Shell")
 // This only caches common UI (JS, CSS, Icons). 
-// It does NOT include city-specific JSON from your /data folder.
-precacheAndRoute(self.__WB_MANIFEST); 
+// This constant is injected at build time by Vite-PWA
+// It MUST include your index.html
+precacheAndRoute(self.__WB_MANIFEST);
 
 cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
 // 2. SMART NAVIGATION (SPA Support)
+// This is the "glue" that makes deep links (/city/paris) work offline.
 registerRoute(
   ({ request }) => request.mode === 'navigate',
   async ({ event }) => {
     try {
+      // 1. Always try the network first to get the latest version
       const networkResponse = await fetch(event.request);
+      
+      // If the network returns a 404 (common in SPAs with deep links),
+      // we fallback to the cached App Shell (index.html)
       if (networkResponse.status === 404) {
-        return caches.match('/index.html');
+        const cacheResponse = await caches.match('/index.html');
+        if (cacheResponse) return cacheResponse;
       }
+      
       return networkResponse;
     } catch (error) {
-      return caches.match('/index.html');
+      // 2. OFFLINE FALLBACK
+      // If the network is unreachable (Airplane mode), return index.html.
+      // React Router will then take over and load the /city/:slug route.
+      const offlineFallback = await caches.match('/index.html');
+      if (offlineFallback) {
+        return offlineFallback;
+      }
+      
+      // If all else fails, throw the error
+      throw error;
     }
   }
 );

@@ -30,7 +30,7 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         scope: '/',
-        start_url: '/', // Note: We will override this dynamically in the UI
+        
         icons: [
           { 
             src: '/pwa-192x192.png', 
