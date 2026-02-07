@@ -28,6 +28,7 @@ export default defineConfig({
         description: 'Offline-first city travel packs platform.',
         theme_color: '#0f172a',
         background_color: '#ffffff',
+        start_url: '.',
         display: 'standalone',
         scope: '/',
         
