@@ -6,14 +6,12 @@ import type { CityPack, VersionedSection } from '@/types/cityPack';
 
 /**
  * SectionCard - The Magazine Article Layout
- * Enhanced for vertical rhythm and scannability.
  */
 function SectionCard({ section }: { section: VersionedSection }) {
   const { title, description, criticalAlert, summaryStats, tips } = section.payload;
 
   return (
     <section className="section-card animate-fadeIn py-16 md:py-24 first:pt-0 border-b border-air-border last:border-0">
-      {/* 1. Editorial Section Header */}
       <div className="mb-12 md:mb-16">
         <div className="h-[3px] w-12 bg-air-black mb-8" />
         <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-air-black leading-[1.05] max-w-3xl">
@@ -21,7 +19,6 @@ function SectionCard({ section }: { section: VersionedSection }) {
         </h2>
       </div>
 
-      {/* 2. Critical Alert (Safety Advisory) */}
       {criticalAlert && (
         <div className="alert-banner mb-16 bg-air-accent/[0.03] border-l-2 border-air-accent p-8 rounded-r-2xl">
           <div className="flex items-center gap-3 mb-4">
@@ -39,7 +36,6 @@ function SectionCard({ section }: { section: VersionedSection }) {
         </div>
       )}
 
-      {/* 3. Main Narrative Content */}
       <div className="prose-description mb-16">
         <ReactMarkdown
           components={{
@@ -56,7 +52,6 @@ function SectionCard({ section }: { section: VersionedSection }) {
         </ReactMarkdown>
       </div>
 
-      {/* 4. Metadata Stats Row */}
       {summaryStats && summaryStats.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-y border-air-border my-16">
           {summaryStats.map((stat, i) => (
@@ -74,7 +69,6 @@ function SectionCard({ section }: { section: VersionedSection }) {
         </div>
       )}
 
-      {/* 5. Expert Tips (Local Perspective) */}
       {tips && tips.length > 0 && (
         <div className="bg-[#F9F9F9] rounded-[32px] p-8 md:p-12 mt-16">
           <div className="flex items-center gap-3 mb-10">
@@ -105,59 +99,64 @@ function SectionCard({ section }: { section: VersionedSection }) {
 
 /**
  * CityPackDetailView
- * Handles dynamic PWA manifest swapping for contextual "Add to Home Screen".
  */
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
   
-  if (!pack) return null;
-
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 
   useEffect(() => {
-    // Use window.location.origin to ensure absolute URLs
-    const origin = window.location.origin; 
-    const cityPath = window.location.pathname;
-    const absoluteUrl = `${origin}${cityPath}`;
-  
+    // 1. CONSTANTS FOR ABSOLUTE URLS
+    const origin = window.location.origin;
+    const path = window.location.pathname;
+    
+    // Ensure we don't have double slashes if origin ends with /
+    const absoluteBase = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+    const fullStartUrl = `${absoluteBase}${path}`;
+
+    // 2. DYNAMIC MANIFEST CONFIGURATION
     const dynamicManifest = {
-      // Explicit ID to match the current identity as suggested by your logs
-      id: cityPath, 
-      name: `Travel Pack: ${pack.city}`,
+      // Identity: Matches current path as suggested by Chrome logs
+      id: path, 
+      name: `City: ${pack.city}`,
       short_name: pack.city,
       description: `Offline guide for ${pack.city}.`,
-      // Use absolute URLs to fix the "URL is invalid" errors
-      start_url: absoluteUrl, 
-      scope: absoluteUrl, 
+      
+      // Navigation: Absolute URLs fix the "Invalid URL" warnings
+      start_url: fullStartUrl, 
+      scope: fullStartUrl, 
+      
       display: "standalone",
       background_color: "#ffffff",
       theme_color: "#0f172a",
+      
       icons: [
         { 
-          "src": `${origin}/pwa-192x192.png`, 
+          "src": `${absoluteBase}/pwa-192x192.png`, 
           "sizes": "192x192", 
           "type": "image/png",
           "purpose": "any" 
         },
         { 
-          "src": `${origin}/pwa-512x512.png`, 
+          "src": `${absoluteBase}/pwa-512x512.png`, 
           "sizes": "512x512", 
           "type": "image/png",
           "purpose": "any"
         }
       ]
     };
-  
-    const stringManifest = JSON.stringify(dynamicManifest);
-    const blob = new Blob([stringManifest], { type: 'application/manifest+json' });
+
+    // 3. BLOB INJECTION
+    const blob = new Blob([JSON.stringify(dynamicManifest)], { type: 'application/manifest+json' });
     const manifestURL = URL.createObjectURL(blob);
     const manifestTag = document.getElementById('main-manifest');
-  
+
     if (manifestTag) {
       manifestTag.setAttribute('href', manifestURL);
     }
-  
+
+    // 4. CLEANUP
     return () => {
       if (manifestTag) manifestTag.setAttribute('href', '/manifest.webmanifest');
       URL.revokeObjectURL(manifestURL);
@@ -166,7 +165,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      {/* 1. Premium Hero Header */}
       <header className="pt-24 md:pt-32 pb-16 relative overflow-hidden">
         <div className="home-view-container relative z-10">
           <div className="max-w-4xl">
@@ -188,7 +186,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               A meticulously curated travel pack designed for the independent explorer.
             </p>
 
-            {/* Top Level Metadata Grid */}
             <div className="flex flex-wrap gap-x-16 gap-y-8 border-t border-air-border pt-12">
               <div className="flex flex-col gap-1">
                 <span className="label-editorial-bold text-[9px] tracking-[0.3em]">Currency</span>
@@ -206,7 +203,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               </div>
             </div>
 
-            {/* Primary PWA Actions */}
             <div className="mt-20 flex flex-wrap gap-4">
               <button
                 onClick={() => setShowMobileOverlay(true)}
@@ -228,7 +224,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </div>
       </header>
 
-      {/* 2. Main Content Sections */}
       <div className="home-view-container pb-32">
         <main className="max-w-4xl">
           {sections.map((section, idx) => (
@@ -236,7 +231,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
           ))}
         </main>
 
-        {/* 3. Page Decoration Footer */}
         <footer className="mt-40 py-24 border-t border-air-border flex flex-col items-center">
           <div className="opacity-5 select-none text-center mb-8">
             <span className="text-[14vw] font-black tracking-tighter text-air-black uppercase leading-none">
