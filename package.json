@@ -26,6 +26,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
+    "@vercel/node": "^5.5.33",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.24",
     "eslint": "^9.18.0",

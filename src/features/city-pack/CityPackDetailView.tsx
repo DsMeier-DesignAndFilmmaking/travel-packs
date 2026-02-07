@@ -107,46 +107,37 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 
   useEffect(() => {
-    const origin = window.location.origin;
-    const path = window.location.pathname;
-    const absoluteBase = origin.endsWith('/') ? origin.slice(0, -1) : origin;
-    const fullStartUrl = `${absoluteBase}${path}`;
-  
-    const dynamicManifest = {
-      id: path, 
-      name: `City: ${pack.city}`,
-      short_name: pack.city,
-      start_url: fullStartUrl, 
-      scope: fullStartUrl, 
-      display: "standalone",
-      background_color: "#ffffff",
-      theme_color: "#0f172a",
-      icons: [
-        { "src": `${absoluteBase}/pwa-192x192.png`, "sizes": "192x192", "type": "image/png", "purpose": "any" },
-        { "src": `${absoluteBase}/pwa-512x512.png`, "sizes": "512x512", "type": "image/png", "purpose": "any" }
-      ]
-    };
-  
-    const blob = new Blob([JSON.stringify(dynamicManifest)], { type: 'application/manifest+json' });
-    const manifestURL = URL.createObjectURL(blob);
+    // Point to the server-side dynamic manifest endpoint
+    const manifestUrl = `/api/manifest/${pack.slug}`;
     
-    // FORCE RE-SCAN: Remove the old tag and create a fresh one
-    const oldTag = document.getElementById('main-manifest');
+    // Remove any existing manifest tag
+    const oldTag = document.querySelector('link[rel="manifest"]');
     if (oldTag) {
-      oldTag.remove(); 
+      oldTag.remove();
     }
   
-    const newTag = document.createElement('link');
-    newTag.id = 'main-manifest';
-    newTag.rel = 'manifest';
-    newTag.href = manifestURL;
-    document.head.appendChild(newTag);
+    // Add the city-specific manifest
+    const manifestTag = document.createElement('link');
+    manifestTag.rel = 'manifest';
+    manifestTag.href = manifestUrl;
+    // Add a unique ID to ensure we can find it later
+    manifestTag.id = 'city-manifest';
+    document.head.appendChild(manifestTag);
   
     return () => {
-      URL.revokeObjectURL(manifestURL);
-      // On unmount, you could revert back to the main manifest if desired
+      // On unmount, restore the main app manifest
+      const cityTag = document.getElementById('city-manifest');
+      if (cityTag) {
+        cityTag.remove();
+      }
+      
+      // Restore main manifest
+      const mainManifest = document.createElement('link');
+      mainManifest.rel = 'manifest';
+      mainManifest.href = '/manifest.webmanifest';
+      document.head.appendChild(mainManifest);
     };
-  }, [pack.city, pack.id]);
+  }, [pack.slug]);
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
