@@ -110,19 +110,27 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
     // Point to the server-side dynamic manifest endpoint
     const manifestUrl = `/api/manifest/${pack.slug}`;
     
-    // Remove any existing manifest tag
-    const oldTag = document.querySelector('link[rel="manifest"]');
-    if (oldTag) {
-      oldTag.remove();
-    }
+    // CRITICAL: Remove ALL existing manifest links to prevent conflicts
+    const existingManifests = document.querySelectorAll('link[rel="manifest"]');
+    existingManifests.forEach(tag => tag.remove());
   
-    // Add the city-specific manifest
+    // Add the city-specific manifest with cache-busting timestamp
     const manifestTag = document.createElement('link');
     manifestTag.rel = 'manifest';
-    manifestTag.href = manifestUrl;
-    // Add a unique ID to ensure we can find it later
+    // Add timestamp to force fresh fetch and prevent browser caching
+    manifestTag.href = `${manifestUrl}?v=${Date.now()}`;
     manifestTag.id = 'city-manifest';
-    document.head.appendChild(manifestTag);
+    
+    // Insert at the beginning of head to ensure it's processed first
+    if (document.head.firstChild) {
+      document.head.insertBefore(manifestTag, document.head.firstChild);
+    } else {
+      document.head.appendChild(manifestTag);
+    }
+    
+    // Force browser to recognize the new manifest
+    // Dispatch event to trigger beforeinstallprompt re-evaluation
+    window.dispatchEvent(new Event('DOMContentLoaded'));
   
     return () => {
       // On unmount, restore the main app manifest
@@ -135,7 +143,11 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
       const mainManifest = document.createElement('link');
       mainManifest.rel = 'manifest';
       mainManifest.href = '/manifest.webmanifest';
-      document.head.appendChild(mainManifest);
+      if (document.head.firstChild) {
+        document.head.insertBefore(mainManifest, document.head.firstChild);
+      } else {
+        document.head.appendChild(mainManifest);
+      }
     };
   }, [pack.slug]);
 

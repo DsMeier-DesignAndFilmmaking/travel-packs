@@ -51,9 +51,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ]
   };
 
-  // Set proper headers to prevent caching during development
+  // Set proper headers to prevent caching
   res.setHeader('Content-Type', 'application/manifest+json');
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   
   return res.status(200).json(manifest);
 }
