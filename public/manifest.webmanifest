@@ -2,7 +2,7 @@
     "name": "Local City Travel Packs",
     "short_name": "Travel Packs",
     "description": "Offline-first city travel packs platform.",
-    "start_url": "/",
+    "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#0f172a",
