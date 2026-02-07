@@ -107,59 +107,44 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 
   useEffect(() => {
-    // 1. CONSTANTS FOR ABSOLUTE URLS
     const origin = window.location.origin;
     const path = window.location.pathname;
-    
-    // Ensure we don't have double slashes if origin ends with /
     const absoluteBase = origin.endsWith('/') ? origin.slice(0, -1) : origin;
     const fullStartUrl = `${absoluteBase}${path}`;
-
-    // 2. DYNAMIC MANIFEST CONFIGURATION
+  
     const dynamicManifest = {
-      // Identity: Matches current path as suggested by Chrome logs
       id: path, 
       name: `City: ${pack.city}`,
       short_name: pack.city,
-      description: `Offline guide for ${pack.city}.`,
-      
-      // Navigation: Absolute URLs fix the "Invalid URL" warnings
       start_url: fullStartUrl, 
       scope: fullStartUrl, 
-      
       display: "standalone",
       background_color: "#ffffff",
       theme_color: "#0f172a",
-      
       icons: [
-        { 
-          "src": `${absoluteBase}/pwa-192x192.png`, 
-          "sizes": "192x192", 
-          "type": "image/png",
-          "purpose": "any" 
-        },
-        { 
-          "src": `${absoluteBase}/pwa-512x512.png`, 
-          "sizes": "512x512", 
-          "type": "image/png",
-          "purpose": "any"
-        }
+        { "src": `${absoluteBase}/pwa-192x192.png`, "sizes": "192x192", "type": "image/png", "purpose": "any" },
+        { "src": `${absoluteBase}/pwa-512x512.png`, "sizes": "512x512", "type": "image/png", "purpose": "any" }
       ]
     };
-
-    // 3. BLOB INJECTION
+  
     const blob = new Blob([JSON.stringify(dynamicManifest)], { type: 'application/manifest+json' });
     const manifestURL = URL.createObjectURL(blob);
-    const manifestTag = document.getElementById('main-manifest');
-
-    if (manifestTag) {
-      manifestTag.setAttribute('href', manifestURL);
+    
+    // FORCE RE-SCAN: Remove the old tag and create a fresh one
+    const oldTag = document.getElementById('main-manifest');
+    if (oldTag) {
+      oldTag.remove(); 
     }
-
-    // 4. CLEANUP
+  
+    const newTag = document.createElement('link');
+    newTag.id = 'main-manifest';
+    newTag.rel = 'manifest';
+    newTag.href = manifestURL;
+    document.head.appendChild(newTag);
+  
     return () => {
-      if (manifestTag) manifestTag.setAttribute('href', '/manifest.webmanifest');
       URL.revokeObjectURL(manifestURL);
+      // On unmount, you could revert back to the main manifest if desired
     };
   }, [pack.city, pack.id]);
 
