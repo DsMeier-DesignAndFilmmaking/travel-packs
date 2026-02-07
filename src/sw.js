@@ -1,19 +1,14 @@
 /* global self */
-import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { clientsClaim } from 'workbox-core';
 import { registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
-// Make sure this is present at the top of sw.js
-import { precacheAndRoute } from 'workbox-precaching';
+import { CacheFirst } from 'workbox-strategies';
 
 // Separate cache names for clarity
 const CITY_PACK_CACHE = 'city-pack-data-v1';
 const IMAGE_CACHE = 'city-assets-images-v1';
 
-// 1. PRECACHE SETUP (The "App Shell")
-// This only caches common UI (JS, CSS, Icons). 
-// This constant is injected at build time by Vite-PWA
-// It MUST include your index.html
+// Ensure the manifest is injected here
 precacheAndRoute(self.__WB_MANIFEST);
 
 cleanupOutdatedCaches();
