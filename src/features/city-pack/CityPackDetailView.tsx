@@ -116,40 +116,53 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 
   useEffect(() => {
-    // 1. Create a dynamic manifest object based on the current city
+    // Use window.location.origin to ensure absolute URLs
+    const origin = window.location.origin; 
+    const cityPath = window.location.pathname;
+    const absoluteUrl = `${origin}${cityPath}`;
+  
     const dynamicManifest = {
+      // Explicit ID to match the current identity as suggested by your logs
+      id: cityPath, 
       name: `Travel Pack: ${pack.city}`,
       short_name: pack.city,
       description: `Offline guide for ${pack.city}.`,
-      // THIS IS THE KEY: Set start_url to the current deep link
-      start_url: window.location.pathname, 
-      scope: '/',
+      // Use absolute URLs to fix the "URL is invalid" errors
+      start_url: absoluteUrl, 
+      scope: absoluteUrl, 
       display: "standalone",
       background_color: "#ffffff",
       theme_color: "#0f172a",
       icons: [
-        { "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" },
-        { "src": "/pwa-512x512.png", "sizes": "512x512", "type": "image/png" }
+        { 
+          "src": `${origin}/pwa-192x192.png`, 
+          "sizes": "192x192", 
+          "type": "image/png",
+          "purpose": "any" 
+        },
+        { 
+          "src": `${origin}/pwa-512x512.png`, 
+          "sizes": "512x512", 
+          "type": "image/png",
+          "purpose": "any"
+        }
       ]
     };
-
+  
     const stringManifest = JSON.stringify(dynamicManifest);
     const blob = new Blob([stringManifest], { type: 'application/manifest+json' });
     const manifestURL = URL.createObjectURL(blob);
-// 3. Target the link tag you have in index.html
-    const manifestTag = document.querySelector('#main-manifest');
+    const manifestTag = document.getElementById('main-manifest');
+  
     if (manifestTag) {
       manifestTag.setAttribute('href', manifestURL);
     }
-
-    // 4. Cleanup: When leaving this city page, revert to the standard manifest
+  
     return () => {
-      if (manifestTag) {
-        manifestTag.setAttribute('href', '/manifest.webmanifest');
-      }
+      if (manifestTag) manifestTag.setAttribute('href', '/manifest.webmanifest');
       URL.revokeObjectURL(manifestURL);
     };
-    }, [pack.city, window.location.pathname]);
+  }, [pack.city, pack.id]);
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">

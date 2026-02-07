@@ -17,31 +17,24 @@ clientsClaim();
 
 // 2. SMART NAVIGATION (SPA Support)
 // This is the "glue" that makes deep links (/city/paris) work offline.
+// src/sw.js
+
+// 2. SMART NAVIGATION (SPA Support)
 registerRoute(
   ({ request }) => request.mode === 'navigate',
   async ({ event }) => {
+    // 1. Try network first (to get latest data/logic)
     try {
-      // 1. Always try the network first to get the latest version
-      const networkResponse = await fetch(event.request);
-      
-      // If the network returns a 404 (common in SPAs with deep links),
-      // we fallback to the cached App Shell (index.html)
-      if (networkResponse.status === 404) {
-        const cacheResponse = await caches.match('/index.html');
-        if (cacheResponse) return cacheResponse;
-      }
-      
-      return networkResponse;
+      return await fetch(event.request);
     } catch (error) {
       // 2. OFFLINE FALLBACK
-      // If the network is unreachable (Airplane mode), return index.html.
-      // React Router will then take over and load the /city/:slug route.
-      const offlineFallback = await caches.match('/index.html');
-      if (offlineFallback) {
-        return offlineFallback;
-      }
+      // This serves the App Shell (index.html) so React can load the route
+      const cache = await caches.open('workbox-precache-v2'); // Or your current precache name
+      const cachedResponse = await caches.match('/index.html');
       
-      // If all else fails, throw the error
+      if (cachedResponse) {
+        return cachedResponse;
+      }
       throw error;
     }
   }
