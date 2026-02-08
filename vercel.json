@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/city/:slug",
+      "destination": "/api/city-page?slug=$slug"
+    },
+    {
       "source": "/api/manifest/:slug",
       "destination": "/api/manifest/[slug]"
     },
