@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { AppProviders } from '@/app/providers/AppProviders';
 import { AppRouter } from '@/app/router/AppRouter';
 import { registerServiceWorker } from '@/pwa/registerServiceWorker';
- // Import your logic
 import './styles.css';
 
-// In your app initialization
+// Debug: confirm URL the PWA receives on launch (remove after verifying deep-link)
+console.log('[PWA launch] window.location.href:', window.location.href);
+
 registerServiceWorker();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

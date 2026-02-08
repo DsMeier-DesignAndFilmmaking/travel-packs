@@ -1,36 +1,24 @@
 /* global self */
-import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
-import { registerRoute } from 'workbox-routing';
+import { registerRoute, NavigationRoute } from 'workbox-routing';
 import { CacheFirst } from 'workbox-strategies';
 
-// Separate cache names for clarity
 const CITY_PACK_CACHE = 'city-pack-data-v1';
 const IMAGE_CACHE = 'city-assets-images-v1';
 
-// Ensure the manifest is injected here
 precacheAndRoute(self.__WB_MANIFEST);
-
 cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// 2. SMART NAVIGATION (SPA Support) — no redirect to root
-// Navigate requests (including PWA launch to /city/paris) are passed through: we fetch
-// event.request as-is. No redirect to /. The response is the document for that URL
-// (same index.html for SPA); the browser URL stays the deep link so the app opens on the right page.
-registerRoute(
-  ({ request }) => request.mode === 'navigate',
-  async ({ event }) => {
-    try {
-      return await fetch(event.request);
-    } catch (error) {
-      const cachedResponse = await caches.match(event.request.url) || await caches.match('/index.html');
-      if (cachedResponse) return cachedResponse;
-      throw error;
-    }
-  }
-);
+// SPA navigation fallback: serve precached index.html for same-origin navigations.
+// The browser keeps the *request* URL (e.g. /city/london) as the document URL, so
+// React Router receives the deep link and lands on the correct City Pack. Do not
+// fetch(event.request)—the server may redirect to / and the document URL would become /.
+const navHandler = createHandlerBoundToURL('/index.html');
+const navigationRoute = new NavigationRoute(navHandler);
+registerRoute(navigationRoute);
 
 // 3. SELECTIVE CITY DATA CACHING
 // We use a CacheFirst strategy for city JSON files.

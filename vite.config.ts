@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig({
+  // Must match deployment (e.g. / for root, /app/ for subpath). start_url in manifest must include base.
   base: '/', 
   plugins: [
     react(),
@@ -19,8 +20,9 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.js',
-      registerType: 'autoUpdate',
-      // 'auto' works with manual link updates; use null/false only if you register the SW yourself.
+      // 'prompt' avoids the initial flicker: no auto-reload when SW first activates/claims the client.
+      // User gets a "New version available" prompt instead of an immediate refresh.
+      registerType: 'prompt',
       injectRegister: 'auto',
       // Base manifest: start_url stays "/" so the plugin's default isn't fighting our dynamic updates.
       // usePwaManifest updates the same <link rel="manifest"> href for city packs (blob) and resets to /manifest.webmanifest on leave.

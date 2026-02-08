@@ -1,4 +1,8 @@
 // src/pwa/registerServiceWorker.ts
+// Only reload on controllerchange when the user has accepted the "New version" prompt.
+// This avoids the initial-load flicker when the SW first activates and claims the client.
+
+let reloadPending = false;
 
 export function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
@@ -6,13 +10,11 @@ export function registerServiceWorker() {
     return;
   }
 
-  // Register the SW
   navigator.serviceWorker
     .register('/sw.js')
     .then((registration) => {
       console.log('Service Worker registered:', registration);
 
-      // Listen for updates
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (!installingWorker) return;
@@ -20,12 +22,9 @@ export function registerServiceWorker() {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              // New update available
               console.log('New content is available; please refresh.');
-              // Optionally: prompt user to refresh
               showUpdatePrompt(installingWorker);
             } else {
-              // First install
               console.log('Content cached for offline use.');
             }
           }
@@ -36,19 +35,21 @@ export function registerServiceWorker() {
       console.error('Service Worker registration failed:', error);
     });
 
-  // Optional: listen for controlling SW changes (auto-activate new SW)
+  // Reload only when the user accepted the update (SKIP_WAITING was sent), not on first claim.
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    console.log('New Service Worker controlling this page, reloading...');
-    window.location.reload();
+    if (reloadPending) {
+      reloadPending = false;
+      window.location.reload();
+    }
   });
 }
 
-// Optional: show a simple update prompt to user
 function showUpdatePrompt(worker: ServiceWorker) {
   const shouldUpdate = window.confirm(
     'A new version of Travel Packs is available. Reload to update?'
   );
   if (shouldUpdate) {
+    reloadPending = true;
     worker.postMessage({ type: 'SKIP_WAITING' });
   }
 }

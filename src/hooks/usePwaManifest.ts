@@ -109,6 +109,7 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
 
   useEffect(() => {
     const origin = window.location.origin;
+    // start_url is full URL so router can parse; path already includes Vite base (e.g. /app/city/london if base is /app/)
     const startUrl = origin + path;
     const currentUrl = origin + path + (window.location.search || '');
 
