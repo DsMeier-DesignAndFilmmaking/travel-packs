@@ -12,13 +12,15 @@ cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// SPA navigation fallback: serve precached index.html for same-origin navigations.
-// The browser keeps the *request* URL (e.g. /city/london) as the document URL, so
-// React Router receives the deep link and lands on the correct City Pack. Do not
-// fetch(event.request)—the server may redirect to / and the document URL would become /.
+// SPA navigation fallback: serve precached index.html. Request URL (including path and query) is preserved as the document URL—no stripping. Deep links like /city/london?foo=bar stay intact.
 const navHandler = createHandlerBoundToURL('/index.html');
 const navigationRoute = new NavigationRoute(navHandler);
 registerRoute(navigationRoute);
+
+// Install: do not redirect or override the client URL. First launch uses the document's start_url (from manifest) as-is.
+self.addEventListener('install', function(event) {
+  event.waitUntil(self.skipWaiting());
+});
 
 // 3. SELECTIVE CITY DATA CACHING
 // We use a CacheFirst strategy for city JSON files.

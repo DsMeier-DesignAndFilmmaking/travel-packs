@@ -4,50 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <!-- No static manifest link: usePwaManifest / ManifestManager inject it on mount so the browser never uses a cached /manifest.webmanifest during A2HS. -->
   <link rel="icon" type="image/png" href="/pwa-192x192.png">
   <link rel="apple-touch-icon" href="/pwa-192x192.png">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Local City Travel Packs">
   <title>Local City Travel Packs</title>
-  <!-- Override title and apple-mobile-web-app-title for city deep links so A2HS sees correct name before React -->
+  <!-- Head-first: inject dynamic manifest for city pack routes before any other script. No static manifest or apple-mobile-web-app-title so our values win. -->
   <script>
     (function() {
-      var cityMatch = /^\/city\/([^/]+)$/.exec(location.pathname || '');
-      if (cityMatch) {
-        var slug = cityMatch[1];
-        var titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-        var cityTitle = titleFromSlug + ' Travel Pack';
-        document.title = cityTitle;
-        var meta = document.querySelector('meta[name="apple-mobile-web-app-title"]');
-        if (meta) meta.content = cityTitle;
-        else {
-          meta = document.createElement('meta');
-          meta.name = 'apple-mobile-web-app-title';
-          meta.content = cityTitle;
-          document.head.appendChild(meta);
-        }
-      }
+      var pathname = window.location.pathname || '/';
+      var cityMatch = /^\/city\/([^/]+)$/.exec(pathname);
+      if (!cityMatch) return;
+      var slug = cityMatch[1];
+      var titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+      var cityTitle = titleFromSlug + ' Travel Pack';
+      document.title = cityTitle;
+      var meta = document.createElement('meta');
+      meta.name = 'apple-mobile-web-app-title';
+      meta.content = cityTitle;
+      document.head.appendChild(meta);
+      var origin = window.location.origin;
+      var startUrl = window.location.href;
+      var manifest = {
+        id: pathname,
+        name: cityTitle,
+        short_name: cityTitle,
+        description: 'Offline-first travel guide for ' + titleFromSlug,
+        start_url: startUrl,
+        scope: origin + '/',
+        display: 'standalone',
+        background_color: '#ffffff',
+        theme_color: '#0f172a',
+        icons: [
+          { src: origin + '/pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: origin + '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+        ]
+      };
+      var json = JSON.stringify(manifest);
+      var base64 = btoa(unescape(encodeURIComponent(json)));
+      var dataUri = 'data:application/manifest+json;base64,' + base64;
+      var link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = dataUri;
+      document.head.appendChild(link);
     })();
   </script>
 </head>
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
-  <!-- A2HS debug: log manifest and title when document is ready and when fully loaded -->
   <script>
-    function logA2HSState(label) {
-      var link = document.querySelector('link[rel="manifest"]');
-      console.log('[A2HS ' + label + '] manifest href:', link ? link.href : 'none', '| document.title:', document.title);
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() { logA2HSState('DOMContentLoaded'); });
-    } else {
-      logA2HSState('DOMContentLoaded(sync)');
-    }
-    window.addEventListener('load', function() { logA2HSState('load'); });
+    (function() {
+      function log(label) {
+        var link = document.querySelector('link[rel="manifest"]');
+        console.log('[A2HS ' + label + '] manifest:', link ? link.href.substring(0, 60) + '...' : 'none', '| title:', document.title);
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() { log('DOMContentLoaded'); });
+      else log('DOMContentLoaded(sync)');
+      window.addEventListener('load', function() { log('load'); });
+    })();
   </script>
 </body>
 </html>
