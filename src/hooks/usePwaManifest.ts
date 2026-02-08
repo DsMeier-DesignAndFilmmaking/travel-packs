@@ -2,6 +2,11 @@
  * usePwaManifest - Fixes A2HS (Add to Home Screen) URL/title for detail views.
  * Generates a dynamic manifest as a Blob URL so the browser sees a fresh manifest
  * and uses the correct start_url and name for the current page.
+ *
+ * Vite/SPA: Cleanup must revoke blob URLs and reset the manifest link on unmount,
+ * since navigation does not reload the page and unreleased blobs cause memory leaks.
+ * We always update the existing manifest link (never create duplicates) so
+ * vite-plugin-pwa / HMR re-injection doesn't leave multiple <link rel="manifest"> tags.
  */
 
 import { useEffect, useRef } from 'react';
@@ -19,13 +24,24 @@ const BASE_MANIFEST = {
   ],
 } as const;
 
-function ensureManifestLink(): HTMLLinkElement {
-  let link = document.querySelector('link[rel="manifest"]') as HTMLLinkElement | null;
-  if (!link) {
-    link = document.createElement('link');
-    link.rel = 'manifest';
-    document.head.appendChild(link);
+/**
+ * Returns the single manifest link to use. Removes any duplicates (e.g. from HMR)
+ * and updates the first one, or creates one if none exist. Ensures we never have
+ * multiple <link rel="manifest"> tags.
+ */
+function getOrCreateSingleManifestLink(): HTMLLinkElement {
+  const links = document.querySelectorAll<HTMLLinkElement>('link[rel="manifest"]');
+  const first = links[0] ?? null;
+
+  for (let i = 1; i < links.length; i++) {
+    links[i].remove();
   }
+
+  if (first) return first;
+
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  document.head.appendChild(link);
   return link;
 }
 
@@ -53,9 +69,20 @@ function ensureOgUrl(content: string): void {
   }
 }
 
+/**
+ * Resets manifest to the standard Vite/static path and head to default (home).
+ * Must run on unmount so the A2HS panel returns to "Global App" and no blob refs remain.
+ * Collapses to a single manifest link to avoid leaving duplicates (e.g. from HMR).
+ */
 function resetManifestAndHeadToDefault(): void {
-  const link = document.querySelector('link[rel="manifest"]') as HTMLLinkElement | null;
-  if (link) link.href = DEFAULT_MANIFEST_HREF;
+  const links = document.querySelectorAll<HTMLLinkElement>('link[rel="manifest"]');
+  const first = links[0];
+  for (let i = 1; i < links.length; i++) {
+    links[i].remove();
+  }
+  if (first) {
+    first.href = DEFAULT_MANIFEST_HREF;
+  }
   const origin = window.location.origin;
   const homeUrl = origin + '/';
   ensureCanonicalLink(homeUrl);
@@ -95,23 +122,24 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
 
     const json = JSON.stringify(manifest);
     const blob = new Blob([json], { type: 'application/manifest+json' });
-    const blobUrl = URL.createObjectURL(blob);
+    const manifestUrl = URL.createObjectURL(blob);
 
     if (blobUrlRef.current) {
       URL.revokeObjectURL(blobUrlRef.current);
     }
-    blobUrlRef.current = blobUrl;
+    blobUrlRef.current = manifestUrl;
 
-    const manifestLink = ensureManifestLink();
-    manifestLink.href = blobUrl;
+    const manifestLink = getOrCreateSingleManifestLink();
+    manifestLink.href = manifestUrl;
 
     ensureCanonicalLink(currentUrl);
     ensureOgUrl(currentUrl);
     document.title = title;
 
     return () => {
-      if (blobUrlRef.current) {
-        URL.revokeObjectURL(blobUrlRef.current);
+      const urlToRevoke = blobUrlRef.current;
+      if (urlToRevoke) {
+        URL.revokeObjectURL(urlToRevoke);
         blobUrlRef.current = null;
       }
       resetManifestAndHeadToDefault();

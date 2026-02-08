@@ -18,23 +18,29 @@ export default defineConfig({
     VitePWA({
       strategies: 'injectManifest',
       srcDir: 'src',
-      filename: 'sw.js', 
+      filename: 'sw.js',
       registerType: 'autoUpdate',
-      devOptions: { 
-        enabled: true,
-        type: 'module' 
+      // 'auto' works with manual link updates; use null/false only if you register the SW yourself.
+      injectRegister: 'auto',
+      // Base manifest: start_url stays "/" so the plugin's default isn't fighting our dynamic updates.
+      // usePwaManifest updates the same <link rel="manifest"> href for city packs (blob) and resets to /manifest.webmanifest on leave.
+      manifest: {
+        start_url: '/',
       },
-      // Set to false to use your static /public/manifest.webmanifest file
-      // This allows dynamic manifest swapping for city-specific PWA installs
-      manifest: false,
-      
+
+      devOptions: {
+        enabled: true,
+        type: 'module'
+      },
+
       injectManifest: {
-        // PRE-CACHE ONLY THE CORE APP SHELL
-        // We exclude specific city JSON/Images so they aren't downloaded on home page load
+        // PRE-CACHE ONLY THE CORE APP SHELL (static files only).
+        // Dynamic blob: manifest URLs from usePwaManifest are client-side only and
+        // are never part of the precache manifest, so the SW does not try to cache them.
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
         globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg'],
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024 
-      }
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+      },
     })
   ],
   resolve: {
