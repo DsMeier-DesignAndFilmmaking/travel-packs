@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f172a">
-  <link rel="icon" type="image/png" href="/pwa-192x192.png">
-  <link rel="apple-touch-icon" href="/pwa-192x192.png">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Local City Travel Packs</title>
-  <!-- Head-first: inject dynamic manifest for city pack routes before any other script. No static manifest or apple-mobile-web-app-title so our values win. -->
+  <!-- Blocking script first: manifest + title + canonical before any other head content or body. No static <link rel="manifest"> anywhere. -->
   <script>
     (function() {
       var pathname = window.location.pathname || '/';
@@ -19,11 +10,16 @@
       var slug = cityMatch[1];
       var titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
       var cityTitle = titleFromSlug + ' Travel Pack';
+      var canonicalHref = window.location.href;
       document.title = cityTitle;
       var meta = document.createElement('meta');
       meta.name = 'apple-mobile-web-app-title';
       meta.content = cityTitle;
       document.head.appendChild(meta);
+      var canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      canonical.href = canonicalHref;
+      document.head.appendChild(canonical);
       var origin = window.location.origin;
       var startUrl = window.location.href;
       var manifest = {
@@ -50,6 +46,15 @@
       document.head.appendChild(link);
     })();
   </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="icon" type="image/png" href="/pwa-192x192.png">
+  <link rel="apple-touch-icon" href="/pwa-192x192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Local City Travel Packs</title>
 </head>
 <body>
   <div id="root"></div>

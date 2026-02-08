@@ -23,8 +23,7 @@ export default defineConfig({
             // User gets a "New version available" prompt instead of an immediate refresh.
             registerType: 'prompt',
             injectRegister: 'inline',
-            // Manual manifest: index.html head script injects dynamic manifest for /city/:slug. Do not inject static "Travel Packs" root manifest at build time.
-            manifest: false,
+            manifest: false, // Pre-hydration manifest in index.html; do not inject static manifest.webmanifest
             devOptions: {
                 enabled: true,
                 type: 'module'
