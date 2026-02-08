@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useLocation } from 'react-router-dom';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { usePwaManifest } from '@/hooks/usePwaManifest';
 import { InstallOverlay } from '@/components/city/InstallOverlay';
 import type { CityPack, VersionedSection } from '@/types/cityPack';
 
@@ -103,7 +105,13 @@ function SectionCard({ section }: { section: VersionedSection }) {
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
-  
+  const location = useLocation();
+
+  usePwaManifest({
+    title: `${pack.city} Travel Pack`,
+    path: location.pathname,
+  });
+
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 
   return (
