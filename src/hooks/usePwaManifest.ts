@@ -34,7 +34,8 @@ function getOrCreateSingleManifestLink(): HTMLLinkElement {
   const first = links[0] ?? null;
 
   for (let i = 1; i < links.length; i++) {
-    links[i].remove();
+    const el = links[i];
+    if (el) el.remove();
   }
 
   if (first) return first;
@@ -78,7 +79,8 @@ function resetManifestAndHeadToDefault(): void {
   const links = document.querySelectorAll<HTMLLinkElement>('link[rel="manifest"]');
   const first = links[0];
   for (let i = 1; i < links.length; i++) {
-    links[i].remove();
+    const el = links[i];
+    if (el) el.remove();
   }
   if (first) {
     first.href = DEFAULT_MANIFEST_HREF;
