@@ -33,12 +33,14 @@ export default defineConfig({
                 type: 'module'
             },
             injectManifest: {
-                // PRE-CACHE ONLY THE CORE APP SHELL (static files only).
-                // Dynamic blob: manifest URLs from usePwaManifest are client-side only and
-                // are never part of the precache manifest, so the SW does not try to cache them.
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
                 globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg'],
                 maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+            },
+            // With injectManifest, navigation fallback is in src/sw.js (NavigationRoute).
+            // If using generateSW, denylist must NOT include /city/ so deep links get the shell.
+            workbox: {
+                navigateFallbackDenylist: [/^\/api\//, /^\/_/, /\.(?:json|png|jpg|webmanifest)(?:\?|$)/],
             },
         })
     ],

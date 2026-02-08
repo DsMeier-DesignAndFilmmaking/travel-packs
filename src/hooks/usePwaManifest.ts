@@ -70,6 +70,19 @@ function ensureOgUrl(content: string): void {
   }
 }
 
+/** Set apple-touch-icon so iOS binds the icon to this app state (city pack or default). */
+function ensureAppleTouchIcon(href: string): void {
+  let link = document.querySelector('link[rel="apple-touch-icon"]') as HTMLLinkElement | null;
+  if (link) {
+    link.href = href;
+  } else {
+    link = document.createElement('link');
+    link.rel = 'apple-touch-icon';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+}
+
 /**
  * Resets manifest to the standard Vite/static path and head to default (home).
  * Must run on unmount so the A2HS panel returns to "Global App" and no blob refs remain.
@@ -89,6 +102,7 @@ function resetManifestAndHeadToDefault(): void {
   const homeUrl = origin + '/';
   ensureCanonicalLink(homeUrl);
   ensureOgUrl(homeUrl);
+  ensureAppleTouchIcon(origin + '/pwa-192x192.png');
   document.title = DEFAULT_TITLE;
 }
 
@@ -109,10 +123,10 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
 
   useEffect(() => {
     const origin = window.location.origin;
-    // start_url is full URL so router can parse; path already includes Vite base (e.g. /app/city/london if base is /app/)
     const startUrl = origin + path;
     const currentUrl = origin + path + (window.location.search || '');
 
+    // id must be the specific city path so the browser treats this installed app as tied to this route.
     const manifest = {
       ...BASE_MANIFEST,
       id: path,
@@ -138,6 +152,8 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
     ensureCanonicalLink(currentUrl);
     ensureOgUrl(currentUrl);
     document.title = title;
+    // iOS: bind apple-touch-icon to this city state (query avoids cached generic icon).
+    ensureAppleTouchIcon(origin + '/pwa-192x192.png?v=' + encodeURIComponent(path));
 
     return () => {
       const urlToRevoke = blobUrlRef.current;

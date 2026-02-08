@@ -7,6 +7,15 @@ import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { resetDynamicManifestToDefault, updateDynamicManifest } from '@/utils/dynamicManifest';
 
+/** Logs pathname on mount to verify PWA deep-link (no redirect-to-home before city loads). */
+function RouterLandingLogger() {
+  const location = useLocation();
+  useEffect(() => {
+    console.log('[Router mount] window.location.pathname:', window.location.pathname, '| location.pathname:', location.pathname);
+  }, []);
+  return null;
+}
+
 /**
  * ManifestManager - Keeps PWA manifest, canonical, and og:url in sync with the current route.
  * Initial load is handled by synchronous scripts in index.html so the manifest/title are correct
@@ -45,6 +54,7 @@ export function AppRouter() {
         v7_relativeSplatPath: true 
       }}
     >
+      <RouterLandingLogger />
       <ManifestManager />
       <AppShell>
         <Routes>
