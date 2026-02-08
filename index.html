@@ -4,8 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <link rel="manifest" href="/manifest.webmanifest">
+  <!-- PWA: dynamic manifest so "Add to Home Screen" from /city/xxx opens that URL -->
+  <link rel="manifest" href="/api/dynamic-manifest" id="manifest-link">
+  <script>
+    (function() {
+      var match = /^\/city\/([^/]+)$/.exec(location.pathname);
+      if (match) {
+        var link = document.getElementById('manifest-link');
+        if (link) link.href = '/api/dynamic-manifest?start_url=' + encodeURIComponent('/city/' + match[1]);
+      }
+    })();
+  </script>
   <link rel="icon" type="image/png" href="/pwa-192x192.png">
+  <!-- PWA / Add to Home Screen -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Local City Travel Packs</title>
 </head>
 <body>

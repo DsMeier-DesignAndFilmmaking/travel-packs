@@ -7,37 +7,53 @@ import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 /**
- * ManifestManager - Updates manifest link in <head> based on route
- * Runs synchronously on every route change
+ * ManifestManager - Keeps PWA manifest and canonical/og meta in sync with the current route.
+ * - Manifest: points to dynamic manifest with start_url = current path so "Add to Home Screen"
+ *   from /city/london opens directly to /city/london.
+ * - Canonical + og:url: so sharing and crawlers see the current page URL.
  */
 function ManifestManager() {
   const location = useLocation();
 
   useEffect(() => {
-    // Extract slug from path if we're on a city page
-    const cityMatch = location.pathname.match(/^\/city\/([^/]+)$/);
-    const slug = cityMatch ? cityMatch[1] : null;
-    
-    // Determine which manifest to use
-    const manifestHref = slug ? `/api/manifest/${slug}` : '/manifest.webmanifest';
-    
-    // Find existing manifest link
+    const path = location.pathname || '/';
+    const origin = window.location.origin;
+    const currentUrl = `${origin}${path}${location.search}`;
+
+    // 1. Manifest: always use dynamic manifest with explicit start_url for current route
+    const manifestHref = `/api/dynamic-manifest?start_url=${encodeURIComponent(path)}`;
     let manifestLink = document.querySelector('link[rel="manifest"]') as HTMLLinkElement;
-    
     if (manifestLink) {
-      // Update existing link
       manifestLink.href = manifestHref;
     } else {
-      // Create new manifest link if it doesn't exist
       manifestLink = document.createElement('link');
       manifestLink.rel = 'manifest';
       manifestLink.href = manifestHref;
       document.head.appendChild(manifestLink);
     }
-    
-    console.log('[ManifestManager] Updated manifest to:', manifestHref);
-    
-  }, [location.pathname]);
+
+    // 2. Canonical URL
+    let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (canonicalLink) {
+      canonicalLink.href = currentUrl;
+    } else {
+      canonicalLink = document.createElement('link');
+      canonicalLink.rel = 'canonical';
+      canonicalLink.href = currentUrl;
+      document.head.appendChild(canonicalLink);
+    }
+
+    // 3. Open Graph URL (for sharing)
+    let ogUrl = document.querySelector('meta[property="og:url"]') as HTMLMetaElement;
+    if (ogUrl) {
+      ogUrl.content = currentUrl;
+    } else {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      ogUrl.content = currentUrl;
+      document.head.appendChild(ogUrl);
+    }
+  }, [location.pathname, location.search]);
 
   return null;
 }

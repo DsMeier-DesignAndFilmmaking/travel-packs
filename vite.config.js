@@ -9,7 +9,9 @@ export default defineConfig({
         ViteImageOptimizer({
             jpg: { quality: 80 },
             png: { quality: 80 },
-            webp: { lossy: true, quality: 80 },
+            // 'lossy' is not a valid key; simply setting a quality level 
+            // implies lossy compression.
+            webp: { quality: 80 },
             avif: { quality: 60 },
         }),
         VitePWA({

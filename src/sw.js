@@ -15,26 +15,18 @@ cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// 2. SMART NAVIGATION (SPA Support)
-// This is the "glue" that makes deep links (/city/paris) work offline.
-// src/sw.js
-
-// 2. SMART NAVIGATION (SPA Support)
+// 2. SMART NAVIGATION (SPA Support) — no redirect to root
+// Navigate requests (including PWA launch to /city/paris) are passed through: we fetch
+// event.request as-is. No redirect to /. The response is the document for that URL
+// (same index.html for SPA); the browser URL stays the deep link so the app opens on the right page.
 registerRoute(
   ({ request }) => request.mode === 'navigate',
   async ({ event }) => {
-    // 1. Try network first (to get latest data/logic)
     try {
       return await fetch(event.request);
     } catch (error) {
-      // 2. OFFLINE FALLBACK
-      // This serves the App Shell (index.html) so React can load the route
-      const cache = await caches.open('workbox-precache-v2'); // Or your current precache name
-      const cachedResponse = await caches.match('/index.html');
-      
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+      const cachedResponse = await caches.match(event.request.url) || await caches.match('/index.html');
+      if (cachedResponse) return cachedResponse;
       throw error;
     }
   }
