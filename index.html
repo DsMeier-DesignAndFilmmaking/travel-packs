@@ -4,30 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <!-- PWA: inject manifest + canonical synchronously from current path (before any manifest link is seen) -->
-  <script>
-    (function() {
-      var path = location.pathname || '/';
-      var manifestHref = '/api/dynamic-manifest?start_url=' + encodeURIComponent(path);
-      var canonicalHref = location.origin + path + (location.search || '');
-
-      var linkManifest = document.createElement('link');
-      linkManifest.rel = 'manifest';
-      linkManifest.href = manifestHref;
-      linkManifest.id = 'manifest-link';
-      document.head.appendChild(linkManifest);
-
-      var linkCanonical = document.createElement('link');
-      linkCanonical.rel = 'canonical';
-      linkCanonical.href = canonicalHref;
-      document.head.appendChild(linkCanonical);
-    })();
-  </script>
+  <!-- No static manifest link: usePwaManifest / ManifestManager inject it on mount so the browser never uses a cached /manifest.webmanifest during A2HS. -->
   <link rel="icon" type="image/png" href="/pwa-192x192.png">
   <link rel="apple-touch-icon" href="/pwa-192x192.png">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Local City Travel Packs">
   <title>Local City Travel Packs</title>
   <!-- Override title for city deep links so A2HS sees correct name on first load -->
   <script>

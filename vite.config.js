@@ -22,12 +22,8 @@ export default defineConfig({
             // 'prompt' avoids the initial flicker: no auto-reload when SW first activates/claims the client.
             // User gets a "New version available" prompt instead of an immediate refresh.
             registerType: 'prompt',
-            injectRegister: 'auto',
-            // Base manifest: start_url stays "/" so the plugin's default isn't fighting our dynamic updates.
-            // usePwaManifest updates the same <link rel="manifest"> href for city packs (blob) and resets to /manifest.webmanifest on leave.
-            manifest: {
-                start_url: '/',
-            },
+            injectRegister: 'inline',
+            manifest: false,
             devOptions: {
                 enabled: true,
                 type: 'module'

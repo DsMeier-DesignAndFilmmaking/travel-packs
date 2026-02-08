@@ -70,7 +70,6 @@ function ensureOgUrl(content: string): void {
   }
 }
 
-/** Set apple-touch-icon so iOS binds the icon to this app state (city pack or default). */
 function ensureAppleTouchIcon(href: string): void {
   let link = document.querySelector('link[rel="apple-touch-icon"]') as HTMLLinkElement | null;
   if (link) {
@@ -83,26 +82,44 @@ function ensureAppleTouchIcon(href: string): void {
   }
 }
 
+/** Set apple-mobile-web-app-title so iOS shows the city name in the standalone app. */
+function ensureAppleMobileWebAppTitle(title: string): void {
+  let meta = document.querySelector('meta[name="apple-mobile-web-app-title"]') as HTMLMetaElement | null;
+  if (meta) {
+    meta.content = title;
+  } else {
+    meta = document.createElement('meta');
+    meta.name = 'apple-mobile-web-app-title';
+    meta.content = title;
+    document.head.appendChild(meta);
+  }
+}
+
 /**
  * Resets manifest to the standard Vite/static path and head to default (home).
- * Must run on unmount so the A2HS panel returns to "Global App" and no blob refs remain.
- * Collapses to a single manifest link to avoid leaving duplicates (e.g. from HMR).
+ * Creates the manifest link if it doesn't exist (e.g. initial load on home).
  */
 function resetManifestAndHeadToDefault(): void {
   const links = document.querySelectorAll<HTMLLinkElement>('link[rel="manifest"]');
-  const first = links[0];
+  let first = links[0];
   for (let i = 1; i < links.length; i++) {
     const el = links[i];
     if (el) el.remove();
   }
   if (first) {
     first.href = DEFAULT_MANIFEST_HREF;
+  } else {
+    first = document.createElement('link');
+    first.rel = 'manifest';
+    first.href = DEFAULT_MANIFEST_HREF;
+    document.head.appendChild(first);
   }
   const origin = window.location.origin;
   const homeUrl = origin + '/';
   ensureCanonicalLink(homeUrl);
   ensureOgUrl(homeUrl);
   ensureAppleTouchIcon(origin + '/pwa-192x192.png');
+  ensureAppleMobileWebAppTitle(DEFAULT_TITLE);
   document.title = DEFAULT_TITLE;
 }
 
@@ -123,18 +140,21 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
 
   useEffect(() => {
     const origin = window.location.origin;
-    const startUrl = origin + path;
-    const currentUrl = origin + path + (window.location.search || '');
+    const pathname = window.location.pathname;
+    const startUrl = window.location.href;
+    const currentUrl = origin + pathname + (window.location.search || '');
 
-    // id must be the specific city path so the browser treats this installed app as tied to this route.
+    // Unique version so the browser never uses a cached previous manifest during A2HS.
+    const version = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const manifest = {
       ...BASE_MANIFEST,
-      id: path,
+      id: pathname,
       name: title,
       short_name: title,
       description: `Offline-first travel guide for ${title.replace(/\s+Travel Pack$/, '')}`,
       start_url: startUrl,
       scope: origin + '/',
+      version,
     };
 
     const json = JSON.stringify(manifest);
@@ -152,8 +172,8 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
     ensureCanonicalLink(currentUrl);
     ensureOgUrl(currentUrl);
     document.title = title;
-    // iOS: bind apple-touch-icon to this city state (query avoids cached generic icon).
-    ensureAppleTouchIcon(origin + '/pwa-192x192.png?v=' + encodeURIComponent(path));
+    ensureAppleTouchIcon(origin + '/pwa-192x192.png?v=' + encodeURIComponent(pathname));
+    ensureAppleMobileWebAppTitle(title);
 
     return () => {
       const urlToRevoke = blobUrlRef.current;

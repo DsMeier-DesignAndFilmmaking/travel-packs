@@ -100,4 +100,14 @@ export function resetDynamicManifestToDefault(): void {
   }
 
   document.title = DEFAULT_TITLE;
+
+  let appleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]') as HTMLMetaElement | null;
+  if (appleTitle) {
+    appleTitle.content = DEFAULT_TITLE;
+  } else {
+    appleTitle = document.createElement('meta');
+    appleTitle.name = 'apple-mobile-web-app-title';
+    appleTitle.content = DEFAULT_TITLE;
+    document.head.appendChild(appleTitle);
+  }
 }
