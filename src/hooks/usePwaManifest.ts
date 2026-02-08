@@ -1,15 +1,19 @@
 /**
- * usePwaManifest - Fixes A2HS (Add to Home Screen) URL/title for detail views.
- * Generates a dynamic manifest as a Blob URL so the browser sees a fresh manifest
- * and uses the correct start_url and name for the current page.
+ * usePwaManifest - A2HS deep-link fix for /city/:slug.
  *
- * Vite/SPA: Cleanup must revoke blob URLs and reset the manifest link on unmount,
- * since navigation does not reload the page and unreleased blobs cause memory leaks.
- * We always update the existing manifest link (never create duplicates) so
- * vite-plugin-pwa / HMR re-injection doesn't leave multiple <link rel="manifest"> tags.
+ * AUDIT: Sources of "Travel Packs" / root URL during install (all addressed):
+ * - public/manifest.webmanifest: used only when link href is /manifest.webmanifest (home).
+ *   On city pages we never point the link here; we use a Data URI with id=pathname.
+ * - index.html: apple-mobile-web-app-title and title are overridden by inline script
+ *   for /city/:slug before React, so first paint shows the city name.
+ * - Vite: manifest: false, no auto-injected manifest link.
+ * - SW: NavigationRoute serves index.html; request URL is preserved (no path strip).
+ *
+ * Single manifest link: getOrCreateSingleManifestLink() removes duplicates and returns one.
+ * Manifest id: set to window.location.pathname so the browser does not merge with home PWA.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 const DEFAULT_MANIFEST_HREF = '/manifest.webmanifest';
 const DEFAULT_TITLE = 'Local City Travel Packs';
@@ -25,25 +29,27 @@ const BASE_MANIFEST = {
 } as const;
 
 /**
- * Returns the single manifest link to use. Removes any duplicates (e.g. from HMR)
- * and updates the first one, or creates one if none exist. Ensures we never have
- * multiple <link rel="manifest"> tags.
+ * Ensures exactly ONE <link rel="manifest"> in the DOM. Removes duplicates, returns the single link.
  */
 function getOrCreateSingleManifestLink(): HTMLLinkElement {
   const links = document.querySelectorAll<HTMLLinkElement>('link[rel="manifest"]');
   const first = links[0] ?? null;
-
   for (let i = 1; i < links.length; i++) {
     const el = links[i];
     if (el) el.remove();
   }
-
   if (first) return first;
-
   const link = document.createElement('link');
   link.rel = 'manifest';
   document.head.appendChild(link);
   return link;
+}
+
+/** Base64 Data URI for manifest so iOS Safari can read it during A2HS (no Blob fetch). */
+function manifestToDataUri(manifest: object): string {
+  const json = JSON.stringify(manifest);
+  const base64 = btoa(unescape(encodeURIComponent(json)));
+  return `data:application/manifest+json;base64,${base64}`;
 }
 
 function ensureCanonicalLink(href: string): void {
@@ -136,15 +142,12 @@ export interface UsePwaManifestOptions {
  * On unmount, revokes the Blob URL and resets the manifest to the default.
  */
 export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
-  const blobUrlRef = useRef<string | null>(null);
-
   useEffect(() => {
     const origin = window.location.origin;
     const pathname = window.location.pathname;
     const startUrl = window.location.href;
     const currentUrl = origin + pathname + (window.location.search || '');
 
-    // Unique version so the browser never uses a cached previous manifest during A2HS.
     const version = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const manifest = {
       ...BASE_MANIFEST,
@@ -157,17 +160,8 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
       version,
     };
 
-    const json = JSON.stringify(manifest);
-    const blob = new Blob([json], { type: 'application/manifest+json' });
-    const manifestUrl = URL.createObjectURL(blob);
-
-    if (blobUrlRef.current) {
-      URL.revokeObjectURL(blobUrlRef.current);
-    }
-    blobUrlRef.current = manifestUrl;
-
     const manifestLink = getOrCreateSingleManifestLink();
-    manifestLink.href = manifestUrl;
+    manifestLink.href = manifestToDataUri(manifest);
 
     ensureCanonicalLink(currentUrl);
     ensureOgUrl(currentUrl);
@@ -176,11 +170,6 @@ export function usePwaManifest({ title, path }: UsePwaManifestOptions): void {
     ensureAppleMobileWebAppTitle(title);
 
     return () => {
-      const urlToRevoke = blobUrlRef.current;
-      if (urlToRevoke) {
-        URL.revokeObjectURL(urlToRevoke);
-        blobUrlRef.current = null;
-      }
       resetManifestAndHeadToDefault();
     };
   }, [title, path]);

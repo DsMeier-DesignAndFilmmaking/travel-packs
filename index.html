@@ -12,14 +12,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Local City Travel Packs">
   <title>Local City Travel Packs</title>
-  <!-- Override title for city deep links so A2HS sees correct name on first load -->
+  <!-- Override title and apple-mobile-web-app-title for city deep links so A2HS sees correct name before React -->
   <script>
     (function() {
       var cityMatch = /^\/city\/([^/]+)$/.exec(location.pathname || '');
       if (cityMatch) {
         var slug = cityMatch[1];
         var titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-        document.title = titleFromSlug + ' Travel Pack';
+        var cityTitle = titleFromSlug + ' Travel Pack';
+        document.title = cityTitle;
+        var meta = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+        if (meta) meta.content = cityTitle;
+        else {
+          meta = document.createElement('meta');
+          meta.name = 'apple-mobile-web-app-title';
+          meta.content = cityTitle;
+          document.head.appendChild(meta);
+        }
       }
     })();
   </script>
