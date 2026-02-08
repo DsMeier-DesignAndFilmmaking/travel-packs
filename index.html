@@ -4,26 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <!-- PWA: dynamic manifest so "Add to Home Screen" from /city/xxx opens that URL -->
-  <link rel="manifest" href="/api/dynamic-manifest" id="manifest-link">
+  <!-- PWA: inject manifest + canonical synchronously from current path (before any manifest link is seen) -->
   <script>
     (function() {
-      var match = /^\/city\/([^/]+)$/.exec(location.pathname);
-      if (match) {
-        var link = document.getElementById('manifest-link');
-        if (link) link.href = '/api/dynamic-manifest?start_url=' + encodeURIComponent('/city/' + match[1]);
-      }
+      var path = location.pathname || '/';
+      var manifestHref = '/api/dynamic-manifest?start_url=' + encodeURIComponent(path);
+      var canonicalHref = location.origin + path + (location.search || '');
+
+      var linkManifest = document.createElement('link');
+      linkManifest.rel = 'manifest';
+      linkManifest.href = manifestHref;
+      linkManifest.id = 'manifest-link';
+      document.head.appendChild(linkManifest);
+
+      var linkCanonical = document.createElement('link');
+      linkCanonical.rel = 'canonical';
+      linkCanonical.href = canonicalHref;
+      document.head.appendChild(linkCanonical);
     })();
   </script>
   <link rel="icon" type="image/png" href="/pwa-192x192.png">
-  <!-- PWA / Add to Home Screen -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Local City Travel Packs</title>
+  <!-- Override title for city deep links so A2HS sees correct name on first load -->
+  <script>
+    (function() {
+      var cityMatch = /^\/city\/([^/]+)$/.exec(location.pathname || '');
+      if (cityMatch) {
+        var slug = cityMatch[1];
+        var titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+        document.title = titleFromSlug + ' Travel Pack';
+      }
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <!-- A2HS debug: log manifest and title when document is ready and when fully loaded -->
+  <script>
+    function logA2HSState(label) {
+      var link = document.querySelector('link[rel="manifest"]');
+      console.log('[A2HS ' + label + '] manifest href:', link ? link.href : 'none', '| document.title:', document.title);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { logA2HSState('DOMContentLoaded'); });
+    } else {
+      logA2HSState('DOMContentLoaded(sync)');
+    }
+    window.addEventListener('load', function() { logA2HSState('load'); });
+  </script>
 </body>
 </html>

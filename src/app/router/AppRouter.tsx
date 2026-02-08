@@ -7,10 +7,10 @@ import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 /**
- * ManifestManager - Keeps PWA manifest and canonical/og meta in sync with the current route.
- * - Manifest: points to dynamic manifest with start_url = current path so "Add to Home Screen"
- *   from /city/london opens directly to /city/london.
- * - Canonical + og:url: so sharing and crawlers see the current page URL.
+ * ManifestManager - Keeps PWA manifest, canonical, and og:url in sync with the current route.
+ * Initial load is handled by synchronous scripts in index.html so the manifest/title are correct
+ * before the browser uses them for A2HS. This effect runs on route changes (e.g. client-side
+ * nav from home to /city/paris) so the share sheet and A2HS still see the right URL/title.
  */
 function ManifestManager() {
   const location = useLocation();
@@ -52,6 +52,16 @@ function ManifestManager() {
       ogUrl.setAttribute('property', 'og:url');
       ogUrl.content = currentUrl;
       document.head.appendChild(ogUrl);
+    }
+
+    // 4. Document title for city pages (A2HS / share sheet)
+    const cityMatch = path.match(/^\/city\/([^/]+)$/);
+    const slug = cityMatch?.[1];
+    if (slug) {
+      const titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      document.title = `${titleFromSlug} Travel Pack`;
+    } else if (path === '/') {
+      document.title = 'Local City Travel Packs';
     }
   }, [location.pathname, location.search]);
 
