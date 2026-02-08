@@ -1,49 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Blocking script first: manifest + title + canonical before any other head content or body. No static <link rel="manifest"> anywhere. -->
   <script>
     (function() {
-      var pathname = window.location.pathname || '/';
-      var cityMatch = /^\/city\/([^/]+)$/.exec(pathname);
-      if (!cityMatch) return;
-      var slug = cityMatch[1];
-      var titleFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-      var cityTitle = titleFromSlug + ' Travel Pack';
-      var canonicalHref = window.location.href;
-      document.title = cityTitle;
-      var meta = document.createElement('meta');
-      meta.name = 'apple-mobile-web-app-title';
-      meta.content = cityTitle;
-      document.head.appendChild(meta);
-      var canonical = document.createElement('link');
-      canonical.rel = 'canonical';
-      canonical.href = canonicalHref;
-      document.head.appendChild(canonical);
-      var origin = window.location.origin;
-      var startUrl = window.location.href;
-      var manifest = {
-        id: pathname,
-        name: cityTitle,
-        short_name: cityTitle,
-        description: 'Offline-first travel guide for ' + titleFromSlug,
-        start_url: startUrl,
-        scope: origin + '/',
-        display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#0f172a',
-        icons: [
-          { src: origin + '/pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-          { src: origin + '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-        ]
-      };
-      var json = JSON.stringify(manifest);
-      var base64 = btoa(unescape(encodeURIComponent(json)));
-      var dataUri = 'data:application/manifest+json;base64,' + base64;
-      var link = document.createElement('link');
-      link.rel = 'manifest';
-      link.href = dataUri;
-      document.head.appendChild(link);
+      const path = window.location.pathname;
+      if (path.includes('/city/')) {
+        const citySlug = path.split('/').filter(Boolean).pop();
+        const cityName = citySlug.charAt(0).toUpperCase() + citySlug.slice(1);
+        const manifest = {
+          "id": path,
+          "name": cityName + " Travel Pack",
+          "short_name": cityName,
+          "start_url": window.location.origin + path,
+          "display": "standalone",
+          "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
+        };
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest));
+        document.head.appendChild(link);
+
+        document.title = cityName + " Travel Pack";
+        const meta = document.createElement('meta');
+        meta.name = "apple-mobile-web-app-title";
+        meta.content = cityName + " Travel Pack";
+        document.head.appendChild(meta);
+      }
     })();
   </script>
   <meta charset="UTF-8">
