@@ -1,46 +1,38 @@
 /* global self */
-// Multi-install PWA: no single app identity. Each city has its own manifest URL and scope.
-// Precache = build assets (index.html, JS, CSS, icons only). No global manifest precached.
-import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
+//
+// ABSOLUTE CONSTRAINTS — this app supports MULTIPLE independent installs.
+// DO NOT cache HTML. DO NOT use navigationFallback. DO NOT reuse app shell.
+// DO NOT merge city runtimes. DO NOT rely on refresh.
+//
+// Caching ONLY: city data, city JSON, city assets, city images. Cache keys include city slug.
+//
+import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst, NetworkOnly } from 'workbox-strategies';
 
+// Cache names: city-scoped where needed. Keys always include slug (e.g. /data/city-packs/{slug}.json).
 const CITY_PACK_CACHE = 'city-pack-data-v1';
-const IMAGE_CACHE = 'city-assets-images-v1';
 
-precacheAndRoute(self.__WB_MANIFEST);
+function cityImagesCacheName(citySlug) {
+  return `city-images-${citySlug}`;
+}
+
+// Vite PWA injects manifest here. When globPatterns: [], manifest is empty — no precache (city-scoped caching only).
+const wbManifest = self.__WB_MANIFEST;
+if (Array.isArray(wbManifest) && wbManifest.length > 0) {
+  precacheAndRoute(wbManifest);
+}
 cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// ——— NAVIGATION: "/" never cached/served offline; "/city/*" may use cache when offline ———
-// 1. Root "/" must NEVER be cached or served offline. Network only.
-registerRoute(
-  ({ request }) => {
-    if (request.mode !== 'navigate') return false;
-    const pathname = new URL(request.url).pathname;
-    return pathname === '/' || pathname === '';
-  },
-  new NetworkOnly(),
-  'GET'
-);
-
-// 2. All other navigations (e.g. /city/*): network first with cache bypass, then precached index.html when offline.
-// CRITICAL: Use cache: 'no-store' so we never reuse a cached document from a different URL (prevents second
-// install opening first city). Document URL is always the request URL; we never substitute another path.
-const indexHandler = createHandlerBoundToURL('/index.html');
+// ——— HARD RULE: NETWORK-ONLY NAVIGATION (non-negotiable) ———
+// IF request.mode === "navigate": ALWAYS fetch from network. NEVER serve from cache. NEVER fallback. NEVER rewrite. NEVER redirect.
+// Fixes multi-install bug: each app launch gets fresh HTML and boots with the correct URL (window.location.pathname).
 registerRoute(
   ({ request }) => request.mode === 'navigate',
-  async (params) => {
-    const navRequest = params.request;
-    const freshRequest = new Request(navRequest, { cache: 'no-store' });
-    try {
-      const response = await fetch(freshRequest);
-      if (response && response.status === 200) return response;
-    } catch (_) {}
-    return indexHandler(params);
-  },
+  new NetworkOnly(),
   'GET'
 );
 
@@ -49,8 +41,7 @@ self.addEventListener('install', function(event) {
   event.waitUntil(self.skipWaiting());
 });
 
-// 3. SELECTIVE CITY DATA CACHING
-// We use a CacheFirst strategy for city JSON files.
+// 3. CITY JSON ONLY — cache key = /data/city-packs/{slug}.json (slug in key)
 registerRoute(
   ({ url }) => url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json'),
   new CacheFirst({
@@ -58,11 +49,11 @@ registerRoute(
   })
 );
 
-// 4. CITY IMAGES (Selective)
+// 4. CITY ASSETS/IMAGES — only URLs whose path includes /assets/cities/ (path = key, must include city segment)
 registerRoute(
   ({ url }) => url.pathname.includes('/assets/cities/'),
   new CacheFirst({
-    cacheName: IMAGE_CACHE,
+    cacheName: 'city-assets-v1',
   })
 );
 
@@ -74,7 +65,7 @@ self.addEventListener('message', (event) => {
   const cacheCityPack = async (cityId, assets = []) => {
     try {
       const dataCache = await caches.open(CITY_PACK_CACHE);
-      const assetCache = await caches.open(IMAGE_CACHE);
+      const assetCache = await caches.open(cityImagesCacheName(cityId));
       
       // Fetch the JSON pack
       const jsonUrl = `/data/city-packs/${cityId}.json`;
@@ -101,8 +92,14 @@ self.addEventListener('message', (event) => {
   }
   
   if (event.data.type === 'REMOVE_CITY_PACK') {
+    const cityId = event.data.payload.cityId;
     event.waitUntil(
-      caches.open(CITY_PACK_CACHE).then(cache => cache.delete(`/data/city-packs/${event.data.payload.cityId}.json`))
+      (async () => {
+        const dataCache = await caches.open(CITY_PACK_CACHE);
+        await dataCache.delete(`/data/city-packs/${cityId}.json`);
+        const imgCacheName = cityImagesCacheName(cityId);
+        if (await caches.has(imgCacheName)) await caches.delete(imgCacheName);
+      })()
     );
   }
 });

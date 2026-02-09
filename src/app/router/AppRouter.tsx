@@ -8,9 +8,12 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 import { injectCityManifest, setHomeHead } from '@/utils/dynamicManifest';
 
 /**
- * Router uses ONLY current window.location (BrowserRouter default).
- * No localStorage/sessionStorage for route; no "last city" restore; no redirect to a different city.
- * Each installed app launch must show the city for its start_url.
+ * SPA ROUTER BOOT GUARANTEE
+ * - Reads window.location.pathname on boot (BrowserRouter uses browser history; no basename).
+ * - Does NOT redirect on init; no <Navigate> runs on initial render except when path is exactly "/home".
+ * - Does NOT restore last route; no localStorage/sessionStorage/cache for route.
+ * - Does NOT depend on cached state for initial location.
+ * Installed app launch MUST respect the URL it was launched with; this router does.
  */
 function RouterLandingLogger() {
   const location = useLocation();

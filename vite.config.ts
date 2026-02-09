@@ -1,3 +1,6 @@
+/**
+ * Sole Vite config for this project. Use this file only (no vite.config.js).
+ */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -25,11 +28,13 @@ export default defineConfig({
       includeManifestIcons: false,
       devOptions: { enabled: true, type: 'module' },
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg', '**/manifest*.webmanifest', '**/site.webmanifest'],
+        // ABSOLUTE: DO NOT cache HTML. No app shell precache. globPatterns: [] → precache 0 entries.
+        globPatterns: [],
+        globIgnores: ['**/*'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       },
       workbox: {
+        // ABSOLUTE: DO NOT use navigationFallback. No app shell fallback.
         navigateFallback: null,
         navigateFallbackDenylist: [/^\/api\//, /^\/_/, /\.(?:json|png|jpg|webmanifest)(?:\?|$)/],
         dontCacheBustURLsMatching: /\/assets\//,
