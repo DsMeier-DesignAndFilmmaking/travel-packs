@@ -116,13 +116,14 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
           <div className="max-w-4xl">
             <div className="h-[3px] w-16 bg-air-black mb-16" />
 
-            <div className="flex items-center gap-4 mb-8">
-              <span className="label-editorial-bold !text-air-gray text-[10px]">Destination</span>
-              <div className="h-[1px] w-8 bg-air-border" />
-              <p className="label-editorial-bold !mb-0 !text-air-black uppercase tracking-widest text-[11px]">
-                {pack.country} // {pack.region}
-              </p>
-            </div>
+            <div className="flex flex-col gap-1 mb-6">
+            <span className="label-editorial-bold !text-air-gray text-[10px] !mb-0">
+              Destination
+            </span>
+            <p className="label-editorial-bold !mb-0 !text-air-black uppercase tracking-[0.25em] text-[11px] leading-tight">
+              {pack.country} // {pack.region}
+            </p>
+          </div>
 
             <h1 className="text-7xl md:text-[120px] font-black tracking-tighter text-air-black leading-[0.8] mb-12">
               {pack.city}<span className="text-air-accent">.</span>
@@ -132,22 +133,37 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               A meticulously curated travel pack designed for the independent explorer.
             </p>
 
-            <div className="flex flex-wrap gap-x-16 gap-y-8 border-t border-air-border pt-12">
-              <div className="flex flex-col gap-1">
-                <span className="label-editorial-bold text-[9px] tracking-[0.3em]">Currency</span>
-                <span className="text-xl font-black tracking-tighter uppercase">
-                  {pack.currency.symbol} {pack.currency.code}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="label-editorial-bold text-[9px] tracking-[0.3em]">Update</span>
-                <span className="text-xl font-black tracking-tighter uppercase">Edition 2026</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="label-editorial-bold text-[9px] tracking-[0.3em]">ID</span>
-                <span className="text-xl font-black tracking-tighter uppercase">{pack.id.slice(0, 4)}</span>
-              </div>
+            <div className="flex flex-wrap gap-x-10 gap-y-6 border-t border-air-border pt-8 mt-10">
+            {/* Currency Item */}
+            <div className="flex flex-col gap-1.5 min-w-[100px]">
+              <span className="label-editorial-bold text-[10px] tracking-[0.2em] opacity-60">
+                Currency
+              </span>
+              <span className="text-xl font-black tracking-tight text-air-black">
+                {pack.currency.symbol} {pack.currency.code}
+              </span>
             </div>
+
+            {/* Update Item */}
+            <div className="flex flex-col gap-1.5 min-w-[100px]">
+              <span className="label-editorial-bold text-[10px] tracking-[0.2em] opacity-60">
+                Edition
+              </span>
+              <span className="text-xl font-black tracking-tight text-air-black">
+                2026
+              </span>
+            </div>
+
+            {/* ID Item */}
+            <div className="flex flex-col gap-1.5 min-w-[100px]">
+              <span className="label-editorial-bold text-[10px] tracking-[0.2em] opacity-60">
+                Asset ID
+              </span>
+              <span className="text-xl font-black tracking-tight text-air-black">
+                #{pack.id.slice(0, 4)}
+              </span>
+            </div>
+          </div>
 
             <div className="mt-20 flex flex-wrap gap-4">
               <button
