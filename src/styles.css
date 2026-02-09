@@ -140,20 +140,37 @@ main { flex: 1 0 auto; }
   --pack-accent-soft: rgba(255, 56, 92, 0.08);
 }
 
-.editorial-view .hero-header {
-  position: relative;
-  padding-top: 2rem;
-  padding-bottom: 1rem;
+/* Pack Header - 8pt grid, editorial design. Specific classes avoid generic overrides. */
+.pack-header-ghost-text {
+  /* Ghost text is purely decorative; parent has pointer-events-none */
+  color: var(--air-black);
 }
 
-.editorial-view .hero-title {
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 900;
-  letter-spacing: -0.07em;
-  line-height: 0.85;
-  color: var(--air-black);
-  /* Reduce the spacing specifically below the title */
-  margin-bottom: 1.5rem !important; 
+.pack-header-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--air-gray);
+  font-weight: 800;
+  margin: 0;
+}
+
+.pack-header-title {
+  /* Safe line-height for descenders (g, y, p); tight editorial look */
+  line-height: 0.95;
+  padding-bottom: 0.125em; /* ~4px at large sizes - descender clearance */
+}
+
+.pack-header-metadata-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  margin: 0;
+  color: var(--air-gray);
+  opacity: 0.6; /* Subtle labels, high-contrast data */
 }
 
 /* Vertical Spacing - REMOVED BORDERS */
@@ -182,15 +199,6 @@ main { flex: 1 0 auto; }
   font-size: 1.125rem;
   line-height: 1.8;
   color: #484848;
-}
-
-/* Metadata Grid */
-.editorial-view .metadata-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3.5rem;
-  margin-top: 3rem;
-  margin-bottom: 2.5rem;
 }
 
 /* Download Progress Bar */

@@ -111,98 +111,85 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative pt-20 md:pt-28 pb-16 overflow-hidden">
-  {/* Background Decoration */}
-  <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none select-none z-0">
-    <div className="home-view-container">
-       <span className="text-[20vw] font-black tracking-tighter leading-none">
-         {pack.city}
-       </span>
-    </div>
-  </div>
-
-  <div className="home-view-container relative z-10">
-    <div className="max-w-4xl">
-      {/* 1. Brand Mark */}
-      <div className="h-[2px] w-12 bg-air-accent mb-12 md:mb-16" />
-
-      {/* 2. Top Metadata Labels */}
-      <div className="flex flex-col gap-2 mb-8 md:mb-10">
-        <span className="label-editorial-bold text-air-gray text-[10px] tracking-[0.3em]">
-          Destination Manifest
-        </span>
-        <p className="text-[12px] font-bold text-air-black uppercase tracking-[0.15em] leading-none">
-          {pack.country} <span className="text-air-border mx-2">//</span> {pack.region}
-        </p>
-      </div>
-
-      {/* 3. Primary Title */}
-      <h1 className="text-6xl md:text-[110px] font-black tracking-tighter text-air-black leading-[0.8] mb-8">
-        {pack.city}<span className="text-air-accent">.</span>
-      </h1>
-
-      {/* 4. Subtitle / Description */}
-      <p className="text-lg md:text-xl text-air-gray font-medium leading-relaxed max-w-xl mb-12 md:mb-16">
-        A meticulously curated travel pack designed for the independent explorer. 
-        Available for full offline synchronization.
-      </p>
-
-      {/* 5. Utility Section: Grouped Metadata & Buttons */}
-      <div className="space-y-12"> 
-        {/* Metadata Row */}
-        <div className="flex flex-wrap gap-x-12 gap-y-8 border-t border-air-border pt-10">
-          <div className="flex flex-col gap-2 min-w-[120px]">
-            <span className="label-editorial-bold text-[10px] tracking-[0.2em] opacity-50">Local Currency</span>
-            <span className="text-xl font-black tracking-tight text-air-black">
-              {pack.currency.symbol} {pack.currency.code}
-            </span>
-          </div>
-          <div className="flex flex-col gap-2 min-w-[120px]">
-            <span className="label-editorial-bold text-[10px] tracking-[0.2em] opacity-50">Edition</span>
-            <span className="text-xl font-black tracking-tight text-air-black">2026.01</span>
-          </div>
-          <div className="flex flex-col gap-2 min-w-[120px]">
-            <span className="label-editorial-bold text-[10px] tracking-[0.2em] opacity-50">Asset ID</span>
-            <span className="text-xl font-black tracking-tight text-air-black font-mono">
-              #{pack.id.slice(0, 4)}
+      <header className="relative pt-20 md:pt-28 pb-16 md:pb-20 overflow-hidden">
+        {/* Ghost Text - decorative only, does not affect layout or clickability */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none z-0" aria-hidden="true">
+          <div className="home-view-container">
+            <span className="pack-header-ghost-text text-[20vw] font-black tracking-tighter leading-none">
+              {pack.city}
             </span>
           </div>
         </div>
-        
-      </div>
 
-      {/* Action Row - Added 'pt-4' to ensure physical gap if margin fails */}
+        <div className="home-view-container relative z-10">
+          <div className="max-w-4xl">
+            {/* 1. Brand Mark - 8pt grid: mb-12 (48px) md:mb-16 (64px) */}
+            <div className="h-[2px] w-12 bg-air-accent mb-12 md:mb-16" />
 
-{/* 1. Use space-y-12 on the parent to force a gap between the Grid and the Buttons */}
-<div className="flex flex-col space-y-12">
+            {/* 2. Top Metadata Labels - 8pt grid: gap-2 (8px), mb-8 (32px) */}
+            <div className="flex flex-col gap-2 mb-8">
+              <span className="pack-header-label text-[10px] tracking-[0.3em]">
+                Destination Manifest
+              </span>
+              <p className="text-xs font-bold text-air-black uppercase tracking-[0.15em] leading-[1.2]">
+                {pack.country} <span className="text-air-border mx-2">//</span> {pack.region}
+              </p>
+            </div>
 
-  {/* Your Metadata Grid Div here... */}
-  <div className="flex flex-wrap gap-x-12 gap-y-8 border-t border-air-border pt-10">
-     {/* ...items... */}
-  </div>
+            {/* 3. Primary Title - 8pt grid: leading safe for descenders, mb-8 (32px) */}
+            <h1 className="pack-header-title text-6xl md:text-[110px] font-black tracking-tighter text-air-black mb-8">
+              {pack.city}<span className="text-air-accent">.</span>
+            </h1>
 
-  {/* 2. Action Row: Use !mt-0 to reset and let the parent gap do the work */}
-  <div className="flex flex-wrap items-center gap-4 !mt-12"> 
-      <button
-        onClick={() => setShowMobileOverlay(true)}
-        className="btn-pill btn-pill--primary px-10 py-5 shadow-xl shadow-air-accent/10 active:scale-95 transition-transform"
-      >
-        Download Pack
-      </button>
-      
-      {!isInstalled && installPrompt && (
-        <button
-          onClick={() => void handleInstall()}
-          className="btn-pill btn-pill--outline px-10 py-5 hover:bg-air-black hover:text-white transition-all active:scale-95"
-        >
-          Install App
-        </button>
-      )}
-  </div>
-</div>
-    </div>
-  </div>
-</header>
+            {/* 4. Subtitle - 8pt grid: mb-12 (48px) md:mb-16 (64px) */}
+            <p className="text-lg md:text-xl text-air-gray font-medium leading-relaxed max-w-xl mb-12 md:mb-16">
+              A meticulously curated travel pack designed for the independent explorer.
+              Available for full offline synchronization.
+            </p>
+
+            {/* 5. Utility Section: Cohesive metadata grid + action buttons - 8pt grid */}
+            <div className="pack-header-utility flex flex-col gap-8 border-t border-air-border pt-10">
+              {/* Metadata Grid */}
+              <div className="flex flex-wrap gap-x-12 gap-y-8">
+                <div className="flex flex-col gap-2 min-w-[120px]">
+                  <span className="pack-header-metadata-label">Local Currency</span>
+                  <span className="text-xl font-black tracking-tight text-air-black">
+                    {pack.currency.symbol} {pack.currency.code}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2 min-w-[120px]">
+                  <span className="pack-header-metadata-label">Edition</span>
+                  <span className="text-xl font-black tracking-tight text-air-black">2026.01</span>
+                </div>
+                <div className="flex flex-col gap-2 min-w-[120px]">
+                  <span className="pack-header-metadata-label">Asset ID</span>
+                  <span className="text-xl font-black tracking-tight text-air-black font-mono">
+                    #{pack.id.slice(0, 4)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => setShowMobileOverlay(true)}
+                  className="btn-pill btn-pill--primary px-10 py-5 shadow-xl shadow-air-accent/10 active:scale-95 transition-transform"
+                >
+                  Download Pack
+                </button>
+                {!isInstalled && installPrompt && (
+                  <button
+                    onClick={() => void handleInstall()}
+                    className="btn-pill btn-pill--outline px-10 py-5 hover:bg-air-black hover:text-white transition-all active:scale-95"
+                  >
+                    Install App
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <div className="home-view-container pb-32">
         <main className="max-w-4xl">
