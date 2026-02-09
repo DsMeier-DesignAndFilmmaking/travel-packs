@@ -23,7 +23,7 @@ export function CityPackPage() {
         if (!result) throw new Error("City pack data is empty.");
         const normalizedPack: CityPack = {
           ...result,
-          id: result.id || result.packId || slug,
+          id: result.slug || result.id || result.packId || slug,
         };
         setPack(normalizedPack);
       })

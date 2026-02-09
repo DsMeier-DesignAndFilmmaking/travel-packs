@@ -107,7 +107,7 @@ function SectionCard({ section }: { section: VersionedSection }) {
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
-  const cityPath = `/city/${pack.id}`;
+  const cityPath = `/city/${pack.slug}`;
   usePwaManifest({ title: `${pack.city} Travel Pack`, path: cityPath });
 
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
