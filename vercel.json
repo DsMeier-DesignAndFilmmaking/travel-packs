@@ -2,5 +2,13 @@
   "rewrites": [
     { "source": "/manifests/city-:slug.json", "destination": "/api/manifest/:slug" },
     { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/manifests/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" }
+      ]
+    }
   ]
 }

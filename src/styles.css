@@ -1,15 +1,16 @@
-/* --- 1. CORE TOKENS & TAILWIND --- */
+/* Tailwind first so base/components/utilities are not overridden by legacy or custom styles. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- 1. CORE TOKENS --- */
 :root {
   --air-black: #222222;
   --air-gray: #717171;
   --air-border: #ebebeb;
   --air-bg: #ffffff;
-  --air-accent: #FF385C; 
+  --air-accent: #FF385C;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* --- 2. GLOBAL & HOMEPAGE STYLES --- */
 body {
@@ -187,7 +188,7 @@ main {
   padding: 0;
 }
 
-/* Section cards: JSX controls py-24 md:py-32. No override. */
+/* Section cards: JSX controls py-40 md:py-56. No override. */
 .editorial-view .section-card {
   background: transparent;
   border: none;

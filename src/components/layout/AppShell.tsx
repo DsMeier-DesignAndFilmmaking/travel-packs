@@ -68,8 +68,8 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       )}
 
-      {/* Main Content — no global pt-24/pt-28; city Detail View header owns its top padding. */}
-      <main className="flex-1 p-0 min-h-0">
+      {/* Main Content — no pt-24/pt-28 or pb-12/pb-16; padding would fight the Detail View header. */}
+      <main className="flex-1 p-0 min-h-0 overflow-auto">
         {children}
       </main>
 
