@@ -152,85 +152,43 @@ main { flex: 1 0 auto; }
   --pack-accent-soft: rgba(255, 56, 92, 0.08);
 }
 
-/* Pack Header - 8pt grid, editorial design. Box-model reset prevents cascade drift. */
-.pack-header-content h1,
-.pack-header-content p,
-.pack-header-content span {
+/* Ghost margin reset: let Tailwind utilities control spacing. Exclude prose p (uses mb-8). */
+.editorial-view header h1,
+.editorial-view header p,
+.editorial-view header span,
+.editorial-view .section-card h2,
+.editorial-view .section-card h3,
+.editorial-view .section-card span {
   margin: 0;
   padding: 0;
 }
 
-.pack-header-ghost-text {
-  color: var(--air-black);
-  /* Ghost layer: pointer-events-none on parent ensures no hit-area overlap */
+/* Pack Header - scoped to header content. No padding/margin overrides. */
+.editorial-view .pack-header-content h1,
+.editorial-view .pack-header-content p,
+.editorial-view .pack-header-content span {
+  margin: 0;
+  padding: 0;
 }
 
-.pack-header-label {
-  display: block;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: var(--air-gray);
-  font-weight: 800;
-}
-
-.pack-header-title {
-  /* leading 0.85-1.1: avoids descender clipping (g, j, p, y) */
-  line-height: 0.95;
-  padding-bottom: 0.125em;
-}
-
-.pack-header-metadata-label {
-  display: block;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  line-height: 1.25; /* leading-tight: technical look without clipping */
-  color: var(--air-gray);
-  opacity: 0.6;
-}
-
-/* Metadata item - flex-col, no fixed height. 12px gap ensures label/value separation. */
-.pack-header-metadata-item {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 120px;
-}
-
-.pack-header-metadata-value {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: var(--air-black);
-}
-
-.pack-header-metadata-value--mono {
-  font-family: ui-monospace, monospace;
-}
-
-/* Section cards: padding comes from JSX (py-24 md:py-32). Do not override. */
+/* Section cards: JSX controls py-24 md:py-32. No override. */
 .editorial-view .section-card {
   background: transparent;
   border: none;
 }
 
-/* Specific Fix for the Critical Alert Box */
+/* Alert banner: no !important. Tailwind p-10 md:p-12 in JSX wins. */
 .editorial-view .alert-banner {
   background-color: #FFF8F0;
   border-left: 4px solid var(--air-accent);
   border-radius: 0 12px 12px 0;
-  margin-bottom: 3rem;
-  /* Use fixed padding here to override any prose conflicts */
-  padding: 2rem 2rem 2rem 3.5rem !important; 
 }
 
-
-
-/* Content Typography */
+/* Prose: reset ghost margins (top/sides). mb-8 utility controls bottom. */
 .editorial-view .prose-description p {
-  margin-bottom: 2rem;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
   font-size: 1.125rem;
   line-height: 1.8;
   color: #484848;
@@ -263,8 +221,7 @@ main { flex: 1 0 auto; }
   animation: fadeIn 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
-/* Ensure the Safety Advisory text specifically respects the gutter */
+/* Alert banner prose: no !important. Tailwind in prose overrides if needed. */
 .editorial-view .alert-banner .prose p {
-  padding-left: 0 !important;
-  margin-bottom: 1rem;
+  padding-left: 0;
 }

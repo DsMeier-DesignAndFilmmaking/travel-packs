@@ -17,7 +17,7 @@ function SectionCard({ section }: { section: VersionedSection }) {
       {/* Section Heading */}
       <div className="mb-16 md:mb-24">
         <div className="h-[2px] w-16 bg-air-accent mb-12" />
-        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-air-black leading-[0.9] max-w-4xl">
+        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-air-black leading-[0.95] max-w-4xl">
           {title}
         </h2>
       </div>
@@ -63,7 +63,7 @@ function SectionCard({ section }: { section: VersionedSection }) {
               <span className="text-[10px] text-air-gray uppercase font-bold tracking-[0.3em]">
                 {stat.label}
               </span>
-              <div className="text-xl md:text-2xl font-black tracking-tight text-air-black leading-none">
+              <div className="text-xl md:text-2xl font-black tracking-tight text-air-black leading-[1.05]">
                 <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>
                   {stat.value}
                 </ReactMarkdown>
@@ -114,7 +114,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-24 overflow-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-24 overflow-x-hidden">
         {/* Ghost Text */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none z-0" aria-hidden="true">
           <div className="home-view-container h-full flex items-center">
@@ -124,8 +124,8 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
           </div>
         </div>
 
-        <div className="home-view-container relative z-10">
-          <div className="max-w-6xl">
+        <div className="pack-header-content home-view-container relative z-10">
+          <div className="w-full max-w-full md:max-w-6xl">
             {/* Header Identity Stack */}
             <div className="flex flex-col gap-12 md:gap-16 mb-24 md:mb-32">
               <div className="h-[2px] w-20 bg-air-accent" />
@@ -139,7 +139,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
                 </p>
               </div>
 
-              <h1 className="text-7xl md:text-[140px] font-black tracking-tighter text-air-black leading-[0.8] -ml-1 md:-ml-2">
+              <h1 className="text-7xl md:text-[140px] font-black tracking-tighter text-air-black leading-[0.95] -ml-1 md:-ml-2">
                 {pack.city}<span className="text-air-accent">.</span>
               </h1>
 
@@ -149,12 +149,11 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               </p>
             </div>
 
-            {/* Manifest Footer (Metadata + Buttons) */}
+            {/* Manifest Footer: bottom-axis alignment across breakpoints */}
             <div className="border-t border-air-border pt-16 mt-16">
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-16">
-                
-                {/* Data Grid */}
-                <div className="flex flex-wrap gap-x-16 gap-y-10">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-16">
+                {/* Data Grid - items-start for column, lg:aligns to row bottom */}
+                <div className="flex flex-wrap items-start gap-x-16 gap-y-10">
                   {[
                     { label: 'Local Currency', value: `${pack.currency.symbol} ${pack.currency.code}` },
                     { label: 'Edition', value: '2026.01' },
@@ -164,15 +163,15 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-air-gray">
                         {item.label}
                       </span>
-                      <span className={`text-2xl font-black tracking-tight text-air-black leading-none ${item.mono ? 'font-mono' : ''}`}>
+                      <span className={`text-2xl font-black tracking-tight text-air-black leading-[1.05] ${item.mono ? 'font-mono' : ''}`}>
                         {item.value}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                {/* Primary Actions */}
-                <div className="flex flex-wrap items-center gap-6">
+                {/* Primary Actions - align bottom with data grid on lg */}
+                <div className="flex flex-wrap items-center lg:items-end gap-6">
                   <button
                     onClick={() => setShowMobileOverlay(true)}
                     className="btn-pill btn-pill--primary px-12 py-6 text-sm font-black uppercase tracking-widest shadow-2xl shadow-air-accent/20 active:scale-95 transition-all"
@@ -196,13 +195,13 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
       {/* Main Content Sections */}
       <div className="home-view-container pb-40">
-        <main className="max-w-6xl">
+        <main className="w-full max-w-full md:max-w-6xl">
           {sections.map((section, idx) => (
             <SectionCard key={idx} section={section} />
           ))}
         </main>
 
-        <footer className="mt-60 py-32 border-t border-air-border flex flex-col items-center overflow-hidden">
+        <footer className="mt-60 py-32 border-t border-air-border flex flex-col items-center overflow-x-hidden">
           <div className="opacity-[0.03] select-none text-center mb-12">
             <span className="text-[20vw] font-black tracking-tighter text-air-black uppercase leading-none">
               {pack.city}
