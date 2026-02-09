@@ -147,21 +147,21 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               Available for full offline synchronization.
             </p>
 
-            {/* 5. Utility Section: Cohesive metadata grid + action buttons - 8pt grid */}
-            <div className="pack-header-utility flex flex-col gap-8 border-t border-air-border pt-10">
+            {/* 5. Utility Section: Premium whitespace - 8pt grid, gap-16 creates distinct "shelf" */}
+            <div className="pack-header-utility flex flex-col gap-16 border-t border-air-border pt-12">
               {/* Metadata Grid */}
               <div className="flex flex-wrap gap-x-12 gap-y-8">
-                <div className="flex flex-col gap-2 min-w-[120px]">
+                <div className="flex flex-col gap-3 min-w-[120px]">
                   <span className="pack-header-metadata-label">Local Currency</span>
                   <span className="text-xl font-black tracking-tight text-air-black">
                     {pack.currency.symbol} {pack.currency.code}
                   </span>
                 </div>
-                <div className="flex flex-col gap-2 min-w-[120px]">
+                <div className="flex flex-col gap-3 min-w-[120px]">
                   <span className="pack-header-metadata-label">Edition</span>
                   <span className="text-xl font-black tracking-tight text-air-black">2026.01</span>
                 </div>
-                <div className="flex flex-col gap-2 min-w-[120px]">
+                <div className="flex flex-col gap-3 min-w-[120px]">
                   <span className="pack-header-metadata-label">Asset ID</span>
                   <span className="text-xl font-black tracking-tight text-air-black font-mono">
                     #{pack.id.slice(0, 4)}
@@ -169,7 +169,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons - Clear vertical shelf above primary actions */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => setShowMobileOverlay(true)}

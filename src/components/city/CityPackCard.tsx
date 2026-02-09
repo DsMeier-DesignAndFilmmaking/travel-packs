@@ -24,7 +24,7 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
   const hasError = status === 'error';
 
   return (
-    <article className="group flex flex-col w-full bg-white transition-opacity duration-300">
+    <article className="city-pack-card group flex flex-col w-full bg-white transition-opacity duration-300">
       {/* 1. Image Container: Handled by .card-image-wrapper in styles.css */}
       <div className="card-image-wrapper aspect-[4/3] bg-gray-100">
       <Link to={`/city/${pack.slug}`} className="block w-full h-full">
@@ -56,34 +56,29 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
         )}
       </div>
 
-      {/* 3. Text Content Area */}
+      {/* 3. Text Content Area - Compact editorial layout, manual gap system */}
       <div className="flex justify-between items-start gap-6 mt-1">
-      <div className="flex flex-col min-w-0 flex-1 gap-1 py-1">
-      {/* Title Row */}
-      <Link to={`/city/${pack.slug}`} className="hover:opacity-70 transition-opacity">
-        <h3 className="text-[15px] font-bold text-[#222222] leading-tight truncate">
-          {pack.city}, {pack.country}
-        </h3>
-      </Link>
-      
-      {/* Metadata Rows - Grouped for tighter spacing */}
-      <div className="flex flex-col gap-0.5">
-        <p className="text-[14px] text-[#717171] font-normal leading-normal truncate">
-          {pack.category || pack.region}
-        </p>
-        
-        <p className="text-[13px] text-[#717171] font-medium leading-normal flex items-center">
-          {/* Safely repeat the symbol */}
-          <span className="text-air-black">
-            {pack.priceLevel 
-              ? (pack.currencySymbol || '$').repeat(pack.priceLevel) 
-              : (pack.currencySymbol || '$')}
-          </span>
-          <span className="mx-1.5 text-[#EBEBEB]">•</span>
-          <span>{new Date(pack.updatedAt).getFullYear()} Edition</span>
-        </p>
-      </div>
-    </div>
+        <div className="flex flex-col min-w-0 flex-1 gap-[3px]">
+          {/* Title Row */}
+          <Link to={`/city/${pack.slug}`} className="hover:opacity-70 transition-opacity">
+            <h3 className="!m-0 !p-0 text-[15px] font-bold text-[#222222] leading-[1.15] truncate">
+              {pack.city}, {pack.country}
+            </h3>
+          </Link>
+          {/* Metadata Rows - gap-[3px] controls vertical rhythm, no element margins */}
+          <p className="!m-0 !p-0 text-[14px] text-[#717171] font-normal leading-[1.15] truncate">
+            {pack.category || pack.region}
+          </p>
+          <p className="!m-0 !p-0 text-[13px] text-[#717171] font-medium leading-[1.15] flex items-center flex-wrap">
+            <span className="!m-0 !p-0 text-air-black">
+              {pack.priceLevel
+                ? (pack.currencySymbol || '$').repeat(pack.priceLevel)
+                : (pack.currencySymbol || '$')}
+            </span>
+            <span className="!my-0 !p-0 !mx-1.5 text-[#EBEBEB]">•</span>
+            <span className="!m-0 !p-0">{new Date(pack.updatedAt).getFullYear()} Edition</span>
+          </p>
+        </div>
         {/* 4. Action Section: Pill buttons and status indicators */}
         <div className="flex flex-col items-end justify-start flex-shrink-0 pt-0.5">
           {!isDownloaded && isOnline && (
@@ -129,7 +124,7 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
 
       {/* 5. Error Feedback: Minimalist Red Alert */}
       {hasError && (
-        <p className="text-[11px] text-[#FF385C] mt-2 font-bold uppercase tracking-tighter">
+        <p className="!m-0 !p-0 !mt-2 text-[11px] text-[#FF385C] font-bold uppercase tracking-tighter leading-[1.15]">
           Error: Please try again
         </p>
       )}
