@@ -4,8 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig({
-  // Must match deployment (e.g. / for root, /app/ for subpath). start_url in manifest must include base.
-  base: '/', 
+  base: '/',
   plugins: [
     react(),
     ViteImageOptimizer({
@@ -24,13 +23,10 @@ export default defineConfig({
       injectRegister: 'inline',
       manifest: false,
       includeManifestIcons: false,
-      devOptions: {
-        enabled: true,
-        type: 'module'
-      },
+      devOptions: { enabled: true, type: 'module' },
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
-        globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globIgnores: ['**/city-data/*.json', '**/city-assets/*.jpg', '**/manifest*.webmanifest', '**/site.webmanifest'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       },
       workbox: {

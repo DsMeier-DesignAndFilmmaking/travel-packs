@@ -5,7 +5,7 @@ import { ROUTES } from '@/config/routes';
 import { CityPackPage } from '@/pages/CityPackPage';
 import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { resetDynamicManifestToDefault, updateDynamicManifest } from '@/utils/dynamicManifest';
+import { injectCityManifest, setHomeHead } from '@/utils/dynamicManifest';
 
 /** Logs pathname on mount to verify PWA deep-link (no redirect-to-home before city loads). */
 function RouterLandingLogger() {
@@ -17,10 +17,9 @@ function RouterLandingLogger() {
 }
 
 /**
- * ManifestManager - Keeps PWA manifest, canonical, and og:url in sync with the current route.
- * Initial load is handled by synchronous scripts in index.html so the manifest/title are correct
- * before the browser uses them for A2HS. This effect runs on route changes (e.g. client-side
- * nav from home to /city/paris) so the share sheet and A2HS still see the right URL/title.
+ * ManifestManager — Dynamic manifest per city route only.
+ * - When route === "/": no manifest link (setHomeHead removes any and sets canonical/title).
+ * - When route === "/city/:slug": inject city-scoped manifest with start_url and scope for that city.
  */
 function ManifestManager() {
   const location = useLocation();
@@ -29,18 +28,18 @@ function ManifestManager() {
     const path = location.pathname || '/';
 
     if (path === '/') {
-      // Home: use default manifest so A2HS icon is not stuck on a city
-      resetDynamicManifestToDefault();
+      setHomeHead();
       return;
     }
 
-    // City or other route: use dynamic manifest and update canonical/title
     const cityMatch = path.match(/^\/city\/([^/]+)$/);
     const slug = cityMatch?.[1];
-    const title = slug
-      ? `${slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())} Travel Pack`
-      : undefined;
-    updateDynamicManifest(path, title ? { title } : undefined);
+    if (slug) {
+      const cityName = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      injectCityManifest({ citySlug: slug, cityName });
+    } else {
+      setHomeHead();
+    }
   }, [location.pathname, location.search]);
 
   return null;
