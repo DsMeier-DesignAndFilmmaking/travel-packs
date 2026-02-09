@@ -2,6 +2,8 @@
 
 Static manifest behavior is eliminated. Only `/city/*` routes have a manifest; homepage "/" has no manifest and cannot be installed.
 
+**App identity:** Each city uses a **unique, stable, real** manifest URL (`/manifests/city-{slug}.json`). No Blob or data URI — so the browser treats each city install as a separate app and installs no longer collapse to the first installed city.
+
 ---
 
 ## 1. Files Modified or Removed
@@ -9,7 +11,7 @@ Static manifest behavior is eliminated. Only `/city/*` routes have a manifest; h
 | File | Action |
 |------|--------|
 | **public/manifest.webmanifest** | **REMOVED** — no static manifest. |
-| **src/utils/dynamicManifest.ts** | **REPLACED** — single utility: `injectCityManifest`, `removeManifest`, `setHomeHead`, `buildCityManifest`. No reference to "/" or static manifest. |
+| **src/utils/dynamicManifest.ts** | **REPLACED** — real URLs only: `getCityManifestUrl(slug)`, `injectCityManifest`, `removeManifest`, `setHomeHead`. No Blob/data URI; href = `/manifests/city-{slug}.json`. |
 | **src/app/router/AppRouter.tsx** | **MODIFIED** — ManifestManager uses `setHomeHead()` when path === "/" (removes manifest), `injectCityManifest({ citySlug, cityName })` only for `/city/:slug`. |
 | **src/hooks/usePwaManifest.ts** | **REPLACED** — delegates to `injectCityManifest` / `setHomeHead`; no static manifest href. |
 | **src/features/city-pack/CityPackDetailView.tsx** | **MODIFIED** — calls `usePwaManifest` with pack data so manifest uses real city name. |
@@ -24,12 +26,12 @@ Static manifest behavior is eliminated. Only `/city/*` routes have a manifest; h
 
 ### 2.1 Dynamic manifest utility (`src/utils/dynamicManifest.ts`)
 
+- **`getCityManifestUrl(citySlug)`** — Returns the unique, stable, real manifest URL: `/manifests/city-{slug}.json`. Never Blob or data URI.
 - **`removeManifest()`** — Removes every `<link rel="manifest">` from `<head>`.
 - **`setHomeHead()`** — Calls `removeManifest()`, then sets canonical, og:url, apple-mobile-web-app-title, and document.title to home defaults. Ensures no manifest when route is "/".
-- **`buildCityManifest({ citySlug, cityName, icons? })`** — Returns a manifest object with `start_url` and `scope` = `origin + '/city/' + citySlug`, `display: 'standalone'`.
-- **`injectCityManifest(options)`** — Builds manifest via `buildCityManifest`, converts to data URI (`data:application/manifest+json;base64,...`), calls `removeManifest()`, appends one new `<link rel="manifest" href="...">`. Updates canonical, og:url, title, apple-mobile-web-app-title. Only for use on `/city/*` routes.
+- **`injectCityManifest(options)`** — Sets `<link rel="manifest" href="/manifests/city-{slug}.json">` (real URL only). Updates canonical, og:url, title, apple-mobile-web-app-title. Only for use on `/city/*` routes.
 
-No static manifest URL or "/" is referenced anywhere in this file.
+No Blob or data URI; each city has a distinct manifest URL so the browser treats each install as a separate app.
 
 ### 2.2 AppRouter (`src/app/router/AppRouter.tsx`)
 
@@ -45,8 +47,7 @@ No static manifest URL or "/" is referenced anywhere in this file.
 ### 2.4 index.html
 
 - Inline script runs only when `path.indexOf('/city/') !== -1`.
-- Builds manifest with `start_url` and `scope` = `origin + '/city/' + citySlug`.
-- Uses `data:application/manifest+json;base64,...` for the link href.
+- Sets `<link rel="manifest" href="/manifests/city-{slug}.json">` (real URL only; no data URI).
 - No `<link rel="manifest">` in HTML and no script branch for "/".
 
 ### 2.5 Vite config (`vite.config.ts`)
@@ -132,7 +133,7 @@ setHomeHead();
 removeManifest();
 
 // Build manifest object only (e.g. for API or tests)
-buildCityManifest({ citySlug, cityName, icons? });
+getCityManifestUrl(citySlug);
 ```
 
 All of the above are in `@/utils/dynamicManifest`. No static manifest; no "/" in any manifest.

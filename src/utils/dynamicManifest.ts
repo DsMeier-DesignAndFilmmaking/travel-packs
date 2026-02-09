@@ -1,54 +1,22 @@
 /**
- * Dynamic Manifest Injection System — city-scoped PWA only.
+ * Dynamic Manifest Injection — city-scoped PWA with UNIQUE, STABLE, REAL manifest URLs.
  *
- * - Only /city/* routes get a manifest (injected at runtime).
- * - Homepage "/" has NO manifest link; installation is impossible.
- * - Each city route defines its own start_url and scope.
+ * - Only /city/* routes get a manifest link.
+ * - Manifest href is ALWAYS a real URL: /manifests/city-{slug}.json (no Blob/data URI).
+ * - Each city = separate app identity so installs do not collapse to the first city.
+ * - Homepage "/" has no manifest link.
  */
 
 const DEFAULT_TITLE = 'Local City Travel Packs';
 
-const DEFAULT_ICONS = [
-  { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' as const, purpose: 'any maskable' as const },
-  { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' as const, purpose: 'any maskable' as const },
-];
+/** Stable, unique manifest URL per city. Real HTTP URL — never Blob or data URI. */
+export function getCityManifestUrl(citySlug: string): string {
+  return `/manifests/city-${citySlug}.json`;
+}
 
 export interface InjectCityManifestOptions {
   citySlug: string;
   cityName: string;
-  /** Optional; defaults to /pwa-192x192.png and /pwa-512x512.png */
-  icons?: Array<{ src: string; sizes: string; type: string; purpose?: string }>;
-}
-
-/**
- * Generates a valid Web App Manifest for a city route.
- * start_url and scope = /city/{slug}. Only for use on /city/* routes.
- */
-export function buildCityManifest(options: InjectCityManifestOptions): Record<string, unknown> {
-  const { citySlug, cityName, icons = DEFAULT_ICONS } = options;
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  const path = `/city/${citySlug}`;
-  const startUrl = `${origin}${path}`;
-  const name = `${cityName} Travel Pack`;
-  return {
-    id: path,
-    name,
-    short_name: cityName,
-    description: `Offline-first travel guide for ${cityName}`,
-    start_url: startUrl,
-    scope: startUrl,
-    display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#0f172a',
-    icons,
-  };
-}
-
-/** Base64 Data URI for manifest (iOS Safari can use it during A2HS without a separate fetch). */
-function manifestToDataUri(manifest: object): string {
-  const json = JSON.stringify(manifest);
-  const base64 = btoa(unescape(encodeURIComponent(json)));
-  return `data:application/manifest+json;base64,${base64}`;
 }
 
 /**
@@ -61,13 +29,12 @@ export function removeManifest(): void {
 }
 
 /**
- * Injects a city-scoped manifest into <head>, replacing any existing manifest link.
- * Only call this on /city/* routes.
- * Uses a data URI so the manifest is available immediately for iOS Share / A2HS.
+ * Injects a city-scoped manifest link into <head> using a REAL URL only.
+ * href = /manifests/city-{slug}.json (served by Vercel API). No Blob/data URI.
+ * Only call on /city/* routes.
  */
 export function injectCityManifest(options: InjectCityManifestOptions): void {
-  const manifest = buildCityManifest(options);
-  const href = manifestToDataUri(manifest);
+  const href = getCityManifestUrl(options.citySlug);
 
   removeManifest();
   const link = document.createElement('link');

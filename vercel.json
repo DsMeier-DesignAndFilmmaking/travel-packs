@@ -1,8 +1,6 @@
 {
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/manifests/city-:slug.json", "destination": "/api/manifest/:slug" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

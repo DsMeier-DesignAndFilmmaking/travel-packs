@@ -8,26 +8,9 @@
         var parts = path.split('/').filter(Boolean);
         var citySlug = parts[parts.length - 1];
         var cityName = citySlug.charAt(0).toUpperCase() + citySlug.slice(1).replace(/-/g, ' ');
-        var origin = window.location.origin;
-        var cityPath = '/city/' + citySlug;
-        var startUrl = origin + cityPath;
-        var manifest = {
-          id: cityPath,
-          name: cityName + ' Travel Pack',
-          short_name: cityName,
-          start_url: startUrl,
-          scope: startUrl,
-          display: 'standalone',
-          background_color: '#ffffff',
-          theme_color: '#0f172a',
-          icons: [
-            { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-            { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-          ]
-        };
         var link = document.createElement('link');
         link.rel = 'manifest';
-        link.href = 'data:application/manifest+json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(manifest))));
+        link.href = '/manifests/city-' + citySlug + '.json';
         document.head.appendChild(link);
         document.title = cityName + ' Travel Pack';
         var meta = document.createElement('meta');

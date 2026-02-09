@@ -1,4 +1,6 @@
 /* global self */
+// Multi-install PWA: no single app identity. Each city has its own manifest URL and scope.
+// Precache = build assets (index.html, JS, CSS, icons only). No global manifest precached.
 import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
 import { registerRoute } from 'workbox-routing';
@@ -12,7 +14,7 @@ cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// ——— NAVIGATION: "/" is online-only; "/city/*" may use cache when offline ———
+// ——— NAVIGATION: "/" never cached/served offline; "/city/*" may use cache when offline ———
 // 1. Root "/" must NEVER be cached or served offline. Network only.
 registerRoute(
   ({ request }) => {
