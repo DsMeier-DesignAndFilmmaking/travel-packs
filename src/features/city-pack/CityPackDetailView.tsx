@@ -7,42 +7,45 @@ import type { CityPack, VersionedSection } from '@/types/cityPack';
 
 /**
  * SectionCard - The Magazine Article Layout
+ * Optimized for vertical rhythm and clean typography.
  */
 function SectionCard({ section }: { section: VersionedSection }) {
   const { title, description, criticalAlert, summaryStats, tips } = section.payload;
 
   return (
-    <section className="section-card animate-fadeIn py-16 md:py-24 first:pt-0 border-b border-air-border last:border-0">
-      <div className="mb-12 md:mb-16">
-        <div className="h-[3px] w-12 bg-air-black mb-8" />
-        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-air-black leading-[1.05] max-w-3xl">
+    <section className="section-card animate-fadeIn py-24 md:py-32 border-b border-air-border last:border-0">
+      {/* Section Heading */}
+      <div className="mb-16 md:mb-24">
+        <div className="h-[2px] w-16 bg-air-accent mb-12" />
+        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-air-black leading-[0.9] max-w-4xl">
           {title}
         </h2>
       </div>
 
       {criticalAlert && (
-        <div className="alert-banner mb-16 bg-air-accent/[0.03] border-l-2 border-air-accent p-8 rounded-r-2xl">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="relative flex h-2 w-2">
+        <div className="alert-banner mb-20 bg-air-accent/[0.02] border-l-4 border-air-accent p-10 md:p-12 rounded-r-[32px]">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-30 bg-air-accent" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-air-accent" />
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-air-accent" />
             </span>
-            <p className="label-editorial-bold !text-air-accent !mb-0 text-[10px] tracking-[0.2em]">
-              Safety Advisory
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-air-accent">
+              Priority Safety Advisory
             </p>
           </div>
-          <div className="prose prose-sm md:prose-base max-w-none text-air-black/80 font-medium italic leading-relaxed">
+          <div className="prose prose-lg max-w-none text-air-black/90 font-semibold italic leading-relaxed">
             <ReactMarkdown>{criticalAlert}</ReactMarkdown>
           </div>
         </div>
       )}
 
-      <div className="prose-description mb-16">
+      {/* Main Narrative Body */}
+      <div className="prose-description mb-20 max-w-3xl">
         <ReactMarkdown
           components={{
-            p: ({ children }) => <p className="mb-6 last:mb-0 leading-[1.8]">{children}</p>,
+            p: ({ children }) => <p className="mb-8 last:mb-0 text-lg md:text-xl text-air-gray leading-relaxed font-medium">{children}</p>,
             h3: ({ children }) => (
-              <h3 className="text-xl md:text-2xl font-black text-air-black tracking-tight mt-12 mb-6">
+              <h3 className="text-2xl md:text-3xl font-black text-air-black tracking-tight mt-16 mb-8 uppercase">
                 {children}
               </h3>
             ),
@@ -54,13 +57,13 @@ function SectionCard({ section }: { section: VersionedSection }) {
       </div>
 
       {summaryStats && summaryStats.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-y border-air-border my-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 py-16 border-y border-air-border my-20">
           {summaryStats.map((stat, i) => (
-            <div key={i} className="flex flex-col gap-1">
-              <span className="label-editorial-bold text-[9px] text-air-gray uppercase tracking-[0.25em]">
+            <div key={i} className="flex flex-col gap-3">
+              <span className="text-[10px] text-air-gray uppercase font-bold tracking-[0.3em]">
                 {stat.label}
               </span>
-              <div className="text-lg md:text-xl font-black tracking-tight text-air-black">
+              <div className="text-xl md:text-2xl font-black tracking-tight text-air-black leading-none">
                 <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>
                   {stat.value}
                 </ReactMarkdown>
@@ -71,16 +74,16 @@ function SectionCard({ section }: { section: VersionedSection }) {
       )}
 
       {tips && tips.length > 0 && (
-        <div className="bg-[#F9F9F9] rounded-[32px] p-8 md:p-12 mt-16">
-          <div className="flex items-center gap-3 mb-10">
-            <div className="h-1.5 w-1.5 rounded-full bg-air-accent" />
-            <p className="label-editorial-bold !mb-0 !text-air-black text-[11px] tracking-[0.2em]">
+        <div className="bg-[#FBFBFB] rounded-[48px] p-10 md:p-20 mt-20">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="h-2 w-2 rounded-full bg-air-accent" />
+            <p className="text-[11px] font-black text-air-black uppercase tracking-[0.4em]">
               Local Perspective
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-x-16 gap-y-10">
+          <div className="grid md:grid-cols-2 gap-x-20 gap-y-12">
             {tips.map((tip, i) => (
-              <div key={i} className="text-[14px] md:text-[15px] text-air-gray leading-relaxed font-medium">
+              <div key={i} className="text-base md:text-lg text-air-gray leading-relaxed font-medium">
                 <ReactMarkdown
                   components={{
                     p: ({children}) => <p className="m-0">{children}</p>,
@@ -111,103 +114,102 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative min-h-[max(70vh,600px)] pt-20 md:pt-28 pb-16 md:pb-20 overflow-x-hidden">
-        {/* Ghost Text - decorative only, does not affect layout or clickability */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none z-0" aria-hidden="true">
-          <div className="home-view-container">
-            <span className="pack-header-ghost-text text-[20vw] font-black tracking-tighter leading-none">
+      <header className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-24 overflow-hidden">
+        {/* Ghost Text */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none z-0" aria-hidden="true">
+          <div className="home-view-container h-full flex items-center">
+            <span className="text-[30vw] font-black tracking-tighter leading-none -ml-10">
               {pack.city}
             </span>
           </div>
         </div>
 
-        <div className="pack-header-content home-view-container relative z-10 isolate">
-          <div className="max-w-6xl min-w-0">
-            {/* 1. Brand Mark - Premium vertical rhythm */}
-            <div className="flex flex-col gap-20">
-              <div className="h-[2px] w-12 bg-air-accent" />
-
-              {/* 2. Top Metadata - gap system, no element margins */}
-              <div className="flex flex-col gap-2">
-                <span className="pack-header-label !m-0 !p-0 text-[10px] tracking-[0.3em]">
+        <div className="home-view-container relative z-10">
+          <div className="max-w-6xl">
+            {/* Header Identity Stack */}
+            <div className="flex flex-col gap-12 md:gap-16 mb-24 md:mb-32">
+              <div className="h-[2px] w-20 bg-air-accent" />
+              
+              <div className="space-y-4">
+                <span className="text-[11px] font-black uppercase tracking-[0.5em] text-air-gray">
                   Destination Manifest
                 </span>
-                <p className="!m-0 !p-0 text-xs font-bold text-air-black uppercase tracking-[0.15em] leading-[1.2]">
-                  {pack.country} <span className="text-air-border !mx-2">//</span> {pack.region}
+                <p className="text-sm md:text-base font-black text-air-black uppercase tracking-[0.2em]">
+                  {pack.country} <span className="text-air-border mx-3">//</span> {pack.region}
                 </p>
               </div>
 
-              {/* 3. Primary Title - leading 0.85-1.1 safe for descenders */}
-              <h1 className="pack-header-title !m-0 !p-0 text-6xl md:text-[110px] font-black tracking-tighter text-air-black">
+              <h1 className="text-7xl md:text-[140px] font-black tracking-tighter text-air-black leading-[0.8] -ml-1 md:-ml-2">
                 {pack.city}<span className="text-air-accent">.</span>
               </h1>
 
-              {/* 4. Subtitle */}
-              <p className="!m-0 !p-0 text-lg md:text-xl text-air-gray font-medium leading-relaxed max-w-xl">
+              <p className="text-xl md:text-2xl text-air-gray font-medium leading-relaxed max-w-2xl opacity-80">
                 A meticulously curated travel pack designed for the independent explorer.
                 Available for full offline synchronization.
               </p>
             </div>
 
-            {/* 5. Utility Section - Premium whitespace above metadata and actions */}
-            <div className="pack-header-utility flex flex-col gap-12 border-t border-air-border pt-20 mt-20">
-              {/* Data Dock - gap-4 between items */}
-              <div className="flex flex-wrap gap-x-12 gap-y-4">
-                <div className="pack-header-metadata-item">
-                  <span className="pack-header-metadata-label !m-0 !p-0">Local Currency</span>
-                  <span className="pack-header-metadata-value !m-0 !p-0">
-                    {pack.currency.symbol} {pack.currency.code}
-                  </span>
+            {/* Manifest Footer (Metadata + Buttons) */}
+            <div className="border-t border-air-border pt-16 mt-16">
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-16">
+                
+                {/* Data Grid */}
+                <div className="flex flex-wrap gap-x-16 gap-y-10">
+                  {[
+                    { label: 'Local Currency', value: `${pack.currency.symbol} ${pack.currency.code}` },
+                    { label: 'Edition', value: '2026.01' },
+                    { label: 'Asset ID', value: `#${pack.id.slice(0, 4)}`, mono: true }
+                  ].map((item, i) => (
+                    <div key={i} className="flex flex-col gap-4">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-air-gray">
+                        {item.label}
+                      </span>
+                      <span className={`text-2xl font-black tracking-tight text-air-black leading-none ${item.mono ? 'font-mono' : ''}`}>
+                        {item.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                <div className="pack-header-metadata-item">
-                  <span className="pack-header-metadata-label !m-0 !p-0">Edition</span>
-                  <span className="pack-header-metadata-value !m-0 !p-0">2026.01</span>
-                </div>
-                <div className="pack-header-metadata-item">
-                  <span className="pack-header-metadata-label !m-0 !p-0">Asset ID</span>
-                  <span className="pack-header-metadata-value pack-header-metadata-value--mono !m-0 !p-0">
-                    #{pack.id.slice(0, 4)}
-                  </span>
-                </div>
-              </div>
 
-              {/* Action Row - 3x the data-point gap for clear hierarchy */}
-              <div className="flex flex-wrap items-center gap-4">
-                <button
-                  onClick={() => setShowMobileOverlay(true)}
-                  className="btn-pill btn-pill--primary px-10 py-5 shadow-xl shadow-air-accent/10 active:scale-95 transition-transform"
-                >
-                  Download Pack
-                </button>
-                {!isInstalled && installPrompt && (
+                {/* Primary Actions */}
+                <div className="flex flex-wrap items-center gap-6">
                   <button
-                    onClick={() => void handleInstall()}
-                    className="btn-pill btn-pill--outline px-10 py-5 hover:bg-air-black hover:text-white transition-all active:scale-95"
+                    onClick={() => setShowMobileOverlay(true)}
+                    className="btn-pill btn-pill--primary px-12 py-6 text-sm font-black uppercase tracking-widest shadow-2xl shadow-air-accent/20 active:scale-95 transition-all"
                   >
-                    Install App
+                    Download Pack
                   </button>
-                )}
+                  {!isInstalled && installPrompt && (
+                    <button
+                      onClick={() => void handleInstall()}
+                      className="btn-pill btn-pill--outline px-12 py-6 text-sm font-black uppercase tracking-widest hover:bg-air-black hover:text-white transition-all active:scale-95"
+                    >
+                      Install App
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="home-view-container pb-32">
+      {/* Main Content Sections */}
+      <div className="home-view-container pb-40">
         <main className="max-w-6xl">
           {sections.map((section, idx) => (
             <SectionCard key={idx} section={section} />
           ))}
         </main>
 
-        <footer className="mt-40 py-24 border-t border-air-border flex flex-col items-center">
-          <div className="opacity-5 select-none text-center mb-8">
-            <span className="text-[14vw] font-black tracking-tighter text-air-black uppercase leading-none">
+        <footer className="mt-60 py-32 border-t border-air-border flex flex-col items-center overflow-hidden">
+          <div className="opacity-[0.03] select-none text-center mb-12">
+            <span className="text-[20vw] font-black tracking-tighter text-air-black uppercase leading-none">
               {pack.city}
             </span>
           </div>
-          <p className="label-editorial-bold text-air-gray !text-[10px] tracking-[0.5em]">
-            End of Travel Pack // {pack.city} Edition
+          <p className="text-[11px] font-black text-air-gray uppercase tracking-[0.6em]">
+            End of Travel Pack <span className="mx-4 opacity-20">//</span> {pack.city} Edition
           </p>
         </footer>
       </div>

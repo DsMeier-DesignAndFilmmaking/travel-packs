@@ -210,11 +210,9 @@ main { flex: 1 0 auto; }
   font-family: ui-monospace, monospace;
 }
 
-/* Vertical Spacing - REMOVED BORDERS */
+/* Section cards: padding comes from JSX (py-24 md:py-32). Do not override. */
 .editorial-view .section-card {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  background: transparent; /* Removed white bg/borders */
+  background: transparent;
   border: none;
 }
 
