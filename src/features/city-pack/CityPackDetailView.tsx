@@ -114,7 +114,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative min-h-[85vh] flex flex-col justify-center pt-40 pb-24 md:pt-48 md:pb-32 overflow-x-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center pt-40 pb-24 overflow-x-hidden">
         {/* Ghost Text */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none z-0" aria-hidden="true">
           <div className="home-view-container h-full flex items-center">
@@ -126,8 +126,8 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
         <div className="pack-header-content home-view-container relative z-10">
           <div className="w-full max-w-full md:max-w-6xl">
-            {/* Header Identity Stack */}
-            <div className="flex flex-col gap-20 md:gap-24 mb-28 md:mb-36">
+            {/* Header Identity Stack — editorial vertical rhythm, gap-20 between major elements */}
+            <div className="flex flex-col gap-20 mb-28 md:mb-36">
               <div className="h-[2px] w-20 bg-air-accent" />
               
               <div className="flex flex-col gap-24">

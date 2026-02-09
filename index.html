@@ -3,20 +3,24 @@
 <head>
   <script>
     (function() {
-      var path = window.location.pathname;
-      if (path.indexOf('/city/') !== -1) {
-        var parts = path.split('/').filter(Boolean);
-        var citySlug = parts[parts.length - 1];
-        var cityName = citySlug.charAt(0).toUpperCase() + citySlug.slice(1).replace(/-/g, ' ');
-        var link = document.createElement('link');
-        link.rel = 'manifest';
-        link.href = '/manifests/city-' + citySlug + '.json';
-        document.head.appendChild(link);
-        document.title = cityName + ' Travel Pack';
-        var meta = document.createElement('meta');
-        meta.name = 'apple-mobile-web-app-title';
-        meta.content = cityName + ' Travel Pack';
-        document.head.appendChild(meta);
+      try {
+        var path = window.location.pathname;
+        if (path.indexOf('/city/') !== -1) {
+          var parts = path.split('/').filter(Boolean);
+          var citySlug = parts[parts.length - 1];
+          var cityName = citySlug.charAt(0).toUpperCase() + citySlug.slice(1).replace(/-/g, ' ');
+          var link = document.createElement('link');
+          link.rel = 'manifest';
+          link.href = '/manifests/city-' + citySlug + '.json';
+          document.head.appendChild(link);
+          document.title = cityName + ' Travel Pack';
+          var meta = document.createElement('meta');
+          meta.name = 'apple-mobile-web-app-title';
+          meta.content = cityName + ' Travel Pack';
+          document.head.appendChild(meta);
+        }
+      } catch (e) {
+        console.warn('[A2HS] Manifest injection failed:', e);
       }
     })();
   </script>

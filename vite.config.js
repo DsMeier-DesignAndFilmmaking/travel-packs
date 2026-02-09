@@ -51,4 +51,5 @@ export default defineConfig({
         assetsDir: 'assets',
         emptyOutDir: true
     }
+    // Vite hashes CSS/JS filenames by default (e.g. index-[hash].js) so new deployments bust cache.
 });
