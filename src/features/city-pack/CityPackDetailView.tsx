@@ -121,55 +121,57 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
           </div>
         </div>
 
-        <div className="home-view-container relative z-10">
-          <div className="max-w-4xl">
-            {/* 1. Brand Mark - 8pt grid: mb-12 (48px) md:mb-16 (64px) */}
-            <div className="h-[2px] w-12 bg-air-accent mb-12 md:mb-16" />
+        <div className="pack-header-content home-view-container relative z-10 isolate">
+          <div className="max-w-4xl min-w-0">
+            {/* 1. Brand Mark - 8pt grid: gap controls spacing below */}
+            <div className="flex flex-col gap-12 md:gap-16">
+              <div className="h-[2px] w-12 bg-air-accent" />
 
-            {/* 2. Top Metadata Labels - 8pt grid: gap-2 (8px), mb-8 (32px) */}
-            <div className="flex flex-col gap-2 mb-8">
-              <span className="pack-header-label text-[10px] tracking-[0.3em]">
-                Destination Manifest
-              </span>
-              <p className="text-xs font-bold text-air-black uppercase tracking-[0.15em] leading-[1.2]">
-                {pack.country} <span className="text-air-border mx-2">//</span> {pack.region}
+              {/* 2. Top Metadata - gap system, no element margins */}
+              <div className="flex flex-col gap-2">
+                <span className="pack-header-label !m-0 !p-0 text-[10px] tracking-[0.3em]">
+                  Destination Manifest
+                </span>
+                <p className="!m-0 !p-0 text-xs font-bold text-air-black uppercase tracking-[0.15em] leading-[1.2]">
+                  {pack.country} <span className="text-air-border !mx-2">//</span> {pack.region}
+                </p>
+              </div>
+
+              {/* 3. Primary Title - leading 0.85-1.1 safe for descenders */}
+              <h1 className="pack-header-title !m-0 !p-0 text-6xl md:text-[110px] font-black tracking-tighter text-air-black">
+                {pack.city}<span className="text-air-accent">.</span>
+              </h1>
+
+              {/* 4. Subtitle */}
+              <p className="!m-0 !p-0 text-lg md:text-xl text-air-gray font-medium leading-relaxed max-w-xl">
+                A meticulously curated travel pack designed for the independent explorer.
+                Available for full offline synchronization.
               </p>
             </div>
 
-            {/* 3. Primary Title - 8pt grid: leading safe for descenders, mb-8 (32px) */}
-            <h1 className="pack-header-title text-6xl md:text-[110px] font-black tracking-tighter text-air-black mb-8">
-              {pack.city}<span className="text-air-accent">.</span>
-            </h1>
-
-            {/* 4. Subtitle - 8pt grid: mb-12 (48px) md:mb-16 (64px) */}
-            <p className="text-lg md:text-xl text-air-gray font-medium leading-relaxed max-w-xl mb-12 md:mb-16">
-              A meticulously curated travel pack designed for the independent explorer.
-              Available for full offline synchronization.
-            </p>
-
-            {/* 5. Utility Section: Premium whitespace - 8pt grid, gap-16 creates distinct "shelf" */}
-            <div className="pack-header-utility flex flex-col gap-16 border-t border-air-border pt-12">
-              {/* Metadata Grid */}
-              <div className="flex flex-wrap gap-x-12 gap-y-8">
-                <div className="flex flex-col gap-3 min-w-[120px]">
-                  <span className="pack-header-metadata-label">Local Currency</span>
-                  <span className="text-xl font-black tracking-tight text-air-black">
+            {/* 5. Utility Section: 3:1 ratio - Data Dock gap-4, Action Row gap-12 */}
+            <div className="pack-header-utility flex flex-col gap-12 border-t border-air-border pt-12 mt-12 md:mt-16">
+              {/* Data Dock - gap-4 between items */}
+              <div className="flex flex-wrap gap-x-12 gap-y-4">
+                <div className="pack-header-metadata-item">
+                  <span className="pack-header-metadata-label !m-0 !p-0">Local Currency</span>
+                  <span className="pack-header-metadata-value !m-0 !p-0">
                     {pack.currency.symbol} {pack.currency.code}
                   </span>
                 </div>
-                <div className="flex flex-col gap-3 min-w-[120px]">
-                  <span className="pack-header-metadata-label">Edition</span>
-                  <span className="text-xl font-black tracking-tight text-air-black">2026.01</span>
+                <div className="pack-header-metadata-item">
+                  <span className="pack-header-metadata-label !m-0 !p-0">Edition</span>
+                  <span className="pack-header-metadata-value !m-0 !p-0">2026.01</span>
                 </div>
-                <div className="flex flex-col gap-3 min-w-[120px]">
-                  <span className="pack-header-metadata-label">Asset ID</span>
-                  <span className="text-xl font-black tracking-tight text-air-black font-mono">
+                <div className="pack-header-metadata-item">
+                  <span className="pack-header-metadata-label !m-0 !p-0">Asset ID</span>
+                  <span className="pack-header-metadata-value pack-header-metadata-value--mono !m-0 !p-0">
                     #{pack.id.slice(0, 4)}
                   </span>
                 </div>
               </div>
 
-              {/* Action Buttons - Clear vertical shelf above primary actions */}
+              {/* Action Row - 3x the data-point gap for clear hierarchy */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => setShowMobileOverlay(true)}

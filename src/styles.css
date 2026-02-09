@@ -89,12 +89,12 @@ main { flex: 1 0 auto; }
 
 .card-image-wrapper:hover img { transform: scale(1.05); }
 
-/* CityPackCard - Compact editorial layout. Override inherited/Preflight margins. */
+/* CityPackCard - Box-model reset. Override body/Preflight inherited margins. */
 .city-pack-card h3,
 .city-pack-card p,
 .city-pack-card span {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .city-pack-card .card-image-wrapper {
@@ -152,10 +152,17 @@ main { flex: 1 0 auto; }
   --pack-accent-soft: rgba(255, 56, 92, 0.08);
 }
 
-/* Pack Header - 8pt grid, editorial design. Specific classes avoid generic overrides. */
+/* Pack Header - 8pt grid, editorial design. Box-model reset prevents cascade drift. */
+.pack-header-content h1,
+.pack-header-content p,
+.pack-header-content span {
+  margin: 0;
+  padding: 0;
+}
+
 .pack-header-ghost-text {
-  /* Ghost text is purely decorative; parent has pointer-events-none */
   color: var(--air-black);
+  /* Ghost layer: pointer-events-none on parent ensures no hit-area overlap */
 }
 
 .pack-header-label {
@@ -165,13 +172,12 @@ main { flex: 1 0 auto; }
   letter-spacing: 0.3em;
   color: var(--air-gray);
   font-weight: 800;
-  margin: 0;
 }
 
 .pack-header-title {
-  /* Safe line-height for descenders (g, y, p); tight editorial look */
+  /* leading 0.85-1.1: avoids descender clipping (g, j, p, y) */
   line-height: 0.95;
-  padding-bottom: 0.125em; /* ~4px at large sizes - descender clearance */
+  padding-bottom: 0.125em;
 }
 
 .pack-header-metadata-label {
@@ -180,10 +186,28 @@ main { flex: 1 0 auto; }
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-weight: 800;
-  margin: 0;
-  line-height: 1.5; /* Prevents label feeling crushed against bold values */
+  line-height: 1.25; /* leading-tight: technical look without clipping */
   color: var(--air-gray);
-  opacity: 0.6; /* Subtle labels, high-contrast data */
+  opacity: 0.6;
+}
+
+/* Consolidated metadata item/value - replaces repetitive Tailwind */
+.pack-header-metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* gap-3 */
+  min-width: 120px;
+}
+
+.pack-header-metadata-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--air-black);
+}
+
+.pack-header-metadata-value--mono {
+  font-family: ui-monospace, monospace;
 }
 
 /* Vertical Spacing - REMOVED BORDERS */
