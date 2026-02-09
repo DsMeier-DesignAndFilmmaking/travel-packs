@@ -16,8 +16,8 @@ function SectionCard({ section }: { section: VersionedSection }) {
     <section className="section-card animate-fadeIn py-40 md:py-56 border-b border-air-border last:border-0">
       {/* Section Heading */}
       <div className="mb-20 md:mb-28">
-        <div className="h-[2px] w-16 bg-air-accent mb-12" />
-        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-air-black leading-[0.95] max-w-4xl">
+        <div className="h-[2px] w-16 bg-air-accent mb-12 !m-0" />
+        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-air-black leading-[0.95] max-w-4xl !m-0">
           {title}
         </h2>
       </div>
@@ -126,24 +126,24 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
         <div className="pack-header-content home-view-container relative z-10">
           <div className="w-full max-w-full md:max-w-6xl">
-            {/* Header Identity Stack — editorial vertical rhythm, gap-24 between text blocks */}
+            {/* Header Identity Stack — editorial vertical rhythm, gap-24 only (no extra margins). */}
             <div className="flex flex-col gap-24 mb-28 md:mb-36">
-              <div className="h-[2px] w-20 bg-air-accent" />
+              <div className="h-[2px] w-20 bg-air-accent !m-0" />
               
-              <div className="flex flex-col gap-24">
-                <span className="text-[11px] font-black uppercase tracking-[0.5em] text-air-gray">
+              <div className="flex flex-col gap-24 !m-0">
+                <span className="text-[11px] font-black uppercase tracking-[0.5em] text-air-gray !m-0">
                   Destination Manifest
                 </span>
-                <p className="text-sm md:text-base font-black text-air-black uppercase tracking-[0.2em]">
+                <p className="text-sm md:text-base font-black text-air-black uppercase tracking-[0.2em] !m-0">
                   {pack.country} <span className="text-air-border mx-3">//</span> {pack.region}
                 </p>
               </div>
 
-              <h1 className="text-7xl md:text-[140px] font-black tracking-tighter text-air-black leading-[0.95] -ml-1 md:-ml-2">
+              <h1 className="text-7xl md:text-[140px] font-black tracking-tighter text-air-black leading-[0.95] -ml-1 md:-ml-2 !m-0">
                 {pack.city}<span className="text-air-accent">.</span>
               </h1>
 
-              <p className="text-xl md:text-2xl text-air-gray font-medium leading-relaxed max-w-2xl opacity-80">
+              <p className="text-xl md:text-2xl text-air-gray font-medium leading-relaxed max-w-2xl opacity-80 !m-0">
                 A meticulously curated travel pack designed for the independent explorer.
                 Available for full offline synchronization.
               </p>

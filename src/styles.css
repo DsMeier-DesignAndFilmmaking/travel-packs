@@ -21,16 +21,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Baseline: main has zero padding. No pt-24/pt-28 — Detail View header controls its own top spacing. */
+/* Baseline: main has zero padding. No pt-24/pt-28 or pb-12 — no layout ceiling; sub-pages control spacing. */
 main {
   flex: 1 0 auto;
   padding: 0;
 }
 .app-layout > main {
-  padding-top: 0;
-  padding-right: 0;
-  padding-bottom: 0;
-  padding-left: 0;
+  padding: 0 !important;
 }
 
 /* CSS specificity: do not add global p or div margins that would override Tailwind layout (gap-*, py-*, etc.). Layout is controlled by utility classes in components. */
@@ -169,7 +166,7 @@ main {
   --pack-accent-soft: rgba(255, 56, 92, 0.08);
 }
 
-/* Ghost margin reset: let Tailwind utilities control spacing. Exclude prose p (uses mb-8). */
+/* Editorial: gap controls spacing; no global p/div margins on these. */
 .editorial-view header h1,
 .editorial-view header p,
 .editorial-view header span,
@@ -178,6 +175,9 @@ main {
 .editorial-view .section-card span {
   margin: 0;
   padding: 0;
+}
+.editorial-view .pack-header-content [class*="gap-24"] > * {
+  margin: 0;
 }
 
 /* Pack Header - scoped to header content. No padding/margin overrides. */

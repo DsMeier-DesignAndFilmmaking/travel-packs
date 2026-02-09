@@ -68,8 +68,8 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       )}
 
-      {/* Main Content — no pt-24/pt-28 or pb-12/pb-16; padding would fight the Detail View header. */}
-      <main className="flex-1 p-0 min-h-0 overflow-auto">
+      {/* Main Content — no layout ceiling: no pt-24/pt-28 or pb-12; sub-pages control their own spacing. */}
+      <main className="flex-1 min-h-0 overflow-auto !p-0 !pt-0 !pb-0">
         {children}
       </main>
 
