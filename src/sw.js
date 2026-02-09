@@ -11,21 +11,60 @@
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
 import { registerRoute } from 'workbox-routing';
-import { CacheFirst, NetworkOnly } from 'workbox-strategies';
+import { CacheFirst, NetworkOnly, NetworkFirst } from 'workbox-strategies';
 
-// Cache names: city-scoped where needed. Keys always include slug (e.g. /data/city-packs/{slug}.json).
-const CITY_PACK_CACHE = 'city-pack-data-v1';
+// Build version: replaced at build time by scripts/inject-build-version.js for cache busting.
+const BUILD_VERSION = '__BUILD_VERSION__';
+const CITY_PACK_CACHE = `city-pack-data-${BUILD_VERSION}`;
 
 function cityImagesCacheName(citySlug) {
   return `city-images-${citySlug}`;
 }
 
+const CITY_PACK_JSON_RE = /^\/data\/city-packs\/[^/]+\.json$/;
+const NETWORK_TIMEOUT_MS = 8000;
+
 // ——— 1. "/" HTML NEVER CACHED ———
-// Same-origin request for pathname "/" → always network, no-store. Registered first so it wins over any other route.
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin || url.pathname !== '/') return;
-  event.respondWith(fetch(event.request, { cache: 'no-store' }));
+  if (url.origin !== self.location.origin) return;
+
+  const path = url.pathname;
+  const isNav = event.request.mode === 'navigate';
+
+  if (path === '/') {
+    event.respondWith(fetch(event.request, { cache: 'no-store' }));
+    return;
+  }
+
+  // ——— 2. City pack JSON: NetworkFirst so UI updates reflect immediately when online; fallback to cache for offline ———
+  if (CITY_PACK_JSON_RE.test(path)) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CITY_PACK_CACHE);
+        try {
+          const networkPromise = fetch(event.request);
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Network timeout')), NETWORK_TIMEOUT_MS)
+          );
+          const response = await Promise.race([networkPromise, timeoutPromise]);
+          if (response && response.ok) {
+            await cache.put(event.request, response.clone());
+            return response;
+          }
+        } catch (_) {
+          // Offline or timeout: use cache
+        }
+        const cached = await cache.match(event.request);
+        return cached || (await fetch(event.request));
+      })()
+    );
+    return;
+  }
+
+  if (isNav) {
+    // Navigate handled by Workbox NetworkOnly below
+  }
 });
 
 // Vite PWA injects manifest here. When globPatterns: [], manifest is empty — no precache (city-scoped caching only).
@@ -50,11 +89,24 @@ self.addEventListener('install', function(event) {
   event.waitUntil(self.skipWaiting());
 });
 
-// ——— 6. OFFLINE CACHING: city data and assets ONLY (never "/" HTML) ———
-registerRoute(
-  ({ url }) => url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json'),
-  new CacheFirst({ cacheName: CITY_PACK_CACHE })
-);
+// Activate: delete old city-pack-data-* caches from previous builds so new deploys get fresh data after SW update.
+self.addEventListener('activate', function(event) {
+  const currentCache = CITY_PACK_CACHE;
+  event.waitUntil(
+    caches.keys().then((names) => {
+      return Promise.all(
+        names
+          .filter((name) => name.startsWith('city-pack-data-') && name !== currentCache)
+          .map((name) => {
+            console.log('[SW] Deleting outdated cache:', name);
+            return caches.delete(name);
+          })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// ——— 6. OFFLINE CACHING: city assets (city-pack JSON handled above with audit logging) ———
 registerRoute(
   ({ url }) => url.pathname.includes('/assets/cities/'),
   new CacheFirst({ cacheName: 'city-assets-v1' })

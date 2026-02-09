@@ -7,8 +7,10 @@
  * - supports experimentation with AI-enriched fields without rewriting pages
  */
 export class ContentClient {
-  async getJson<T>(path: string): Promise<T> {
-    const response = await fetch(path);
+  async getJson<T>(path: string, options?: { cache?: RequestCache }): Promise<T> {
+    const response = await fetch(path, {
+      cache: options?.cache ?? 'default',
+    });
 
     if (!response.ok) {
       throw new Error(`Failed content fetch: ${path} (${response.status})`);

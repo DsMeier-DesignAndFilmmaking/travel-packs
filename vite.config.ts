@@ -7,8 +7,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { manifestDevPlugin } from './vite-plugin-manifest-dev';
 
+const buildVersion = process.env.BUILD_ENV === 'dev' ? 'dev' : String(Date.now());
+
 export default defineConfig({
   base: '/',
+  define: {
+    __BUILD_VERSION__: JSON.stringify(buildVersion),
+  },
   plugins: [
     manifestDevPlugin(),
     react(),

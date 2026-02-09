@@ -97,8 +97,13 @@ export function AppShell({ children }: PropsWithChildren) {
             ))}
           </nav>
 
-          {/* 3. Divider */}
-          <div className="w-8 h-[2px] bg-black" />
+          {/* 3. Build version (verification that fresh code is running) */}
+          <p className="mt-6 text-[10px] font-mono text-[#999] tabular-nums" aria-hidden="true">
+            build <span data-build-version>{__BUILD_VERSION__}</span>
+          </p>
+
+          {/* 4. Divider */}
+          <div className="w-8 h-[2px] bg-black mt-4" />
         </div>
       </footer>
     </div>

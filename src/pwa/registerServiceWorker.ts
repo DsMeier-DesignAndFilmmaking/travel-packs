@@ -5,14 +5,14 @@ let updateAccepted = false;
 
 export function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
-    console.log('Service workers are not supported in this browser.');
+    console.log('[SW] Service workers are not supported.');
     return;
   }
 
   navigator.serviceWorker
     .register('/sw.js')
     .then((registration) => {
-      console.log('Service Worker registered:', registration);
+      console.log('[SW] Registered; scope:', registration.scope);
 
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
@@ -20,20 +20,26 @@ export function registerServiceWorker() {
 
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('New content available; activating and reloading.');
+            console.log('[SW] New content available; activating and reloading.');
             updateAccepted = true;
             installingWorker.postMessage({ type: 'SKIP_WAITING' });
           }
         };
       };
+
+      // Log when a waiting worker exists (new deploy is ready).
+      if (registration.waiting) {
+        console.log('[SW] Update waiting; reload to get latest.');
+      }
     })
     .catch((error) => {
-      console.error('Service Worker registration failed:', error);
+      console.error('[SW] Registration failed:', error);
     });
 
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (updateAccepted) {
       updateAccepted = false;
+      console.log('[SW] Controller changed; reloading to load fresh code.');
       window.location.reload();
     }
   });
