@@ -1,8 +1,7 @@
 // src/pwa/registerServiceWorker.ts
-// Only reload on controllerchange when the user has accepted the "New version" prompt.
-// This avoids the initial-load flicker when the SW first activates and claims the client.
+// On SW update: skipWaiting then reload so Vercel deployments force UI refresh (cache buster).
 
-let reloadPending = false;
+let updateAccepted = false;
 
 export function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
@@ -20,13 +19,10 @@ export function registerServiceWorker() {
         if (!installingWorker) return;
 
         installingWorker.onstatechange = () => {
-          if (installingWorker.state === 'installed') {
-            if (navigator.serviceWorker.controller) {
-              console.log('New content is available; please refresh.');
-              showUpdatePrompt(installingWorker);
-            } else {
-              console.log('Content cached for offline use.');
-            }
+          if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            console.log('New content available; activating and reloading.');
+            updateAccepted = true;
+            installingWorker.postMessage({ type: 'SKIP_WAITING' });
           }
         };
       };
@@ -35,21 +31,10 @@ export function registerServiceWorker() {
       console.error('Service Worker registration failed:', error);
     });
 
-  // Reload only when the user accepted the update (SKIP_WAITING was sent), not on first claim.
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloadPending) {
-      reloadPending = false;
+    if (updateAccepted) {
+      updateAccepted = false;
       window.location.reload();
     }
   });
-}
-
-function showUpdatePrompt(worker: ServiceWorker) {
-  const shouldUpdate = window.confirm(
-    'A new version of Travel Packs is available. Reload to update?'
-  );
-  if (shouldUpdate) {
-    reloadPending = true;
-    worker.postMessage({ type: 'SKIP_WAITING' });
-  }
 }

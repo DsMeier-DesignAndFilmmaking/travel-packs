@@ -68,8 +68,8 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       )}
 
-      {/* Main Content - no restrictive padding; views control their own spacing */}
-      <main className="flex-1 p-0">
+      {/* Main Content - no top padding; city header controls its own pt. */}
+      <main className="flex-1 p-0 pt-0">
         {children}
       </main>
 

@@ -13,7 +13,7 @@ function SectionCard({ section }: { section: VersionedSection }) {
   const { title, description, criticalAlert, summaryStats, tips } = section.payload;
 
   return (
-    <section className="section-card animate-fadeIn py-32 md:py-40 border-b border-air-border last:border-0">
+    <section className="section-card animate-fadeIn py-32 md:py-48 border-b border-air-border last:border-0">
       {/* Section Heading */}
       <div className="mb-20 md:mb-28">
         <div className="h-[2px] w-16 bg-air-accent mb-12" />
@@ -114,7 +114,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative min-h-[85vh] flex flex-col justify-center py-32 md:py-40 overflow-x-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center pt-40 pb-24 md:pt-48 md:pb-32 overflow-x-hidden">
         {/* Ghost Text */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none z-0" aria-hidden="true">
           <div className="home-view-container h-full flex items-center">
@@ -130,7 +130,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
             <div className="flex flex-col gap-20 md:gap-24 mb-28 md:mb-36">
               <div className="h-[2px] w-20 bg-air-accent" />
               
-              <div className="space-y-4">
+              <div className="flex flex-col gap-24">
                 <span className="text-[11px] font-black uppercase tracking-[0.5em] text-air-gray">
                   Destination Manifest
                 </span>
