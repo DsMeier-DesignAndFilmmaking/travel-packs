@@ -5,9 +5,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { manifestDevPlugin } from './vite-plugin-manifest-dev';
 export default defineConfig({
     base: '/',
     plugins: [
+        manifestDevPlugin(),
         react(),
         ViteImageOptimizer({
             jpg: { quality: 80 },

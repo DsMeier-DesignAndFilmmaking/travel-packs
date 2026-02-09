@@ -68,7 +68,7 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       )}
 
-      {/* Main Content - zero padding baseline; views control their own spacing */}
+      {/* Main Content - no restrictive padding; views control their own spacing */}
       <main className="flex-1 p-0">
         {children}
       </main>

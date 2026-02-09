@@ -26,6 +26,8 @@ main {
   padding: 0;
 }
 
+/* CSS specificity: do not add global p or div margins that would override Tailwind layout (gap-*, py-*, etc.). Layout is controlled by utility classes in components. */
+
 .app-layout {
   display: flex;
   flex-direction: column;

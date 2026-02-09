@@ -13,9 +13,9 @@ function SectionCard({ section }: { section: VersionedSection }) {
   const { title, description, criticalAlert, summaryStats, tips } = section.payload;
 
   return (
-    <section className="section-card animate-fadeIn py-24 md:py-32 border-b border-air-border last:border-0">
+    <section className="section-card animate-fadeIn py-32 md:py-40 border-b border-air-border last:border-0">
       {/* Section Heading */}
-      <div className="mb-16 md:mb-24">
+      <div className="mb-20 md:mb-28">
         <div className="h-[2px] w-16 bg-air-accent mb-12" />
         <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-air-black leading-[0.95] max-w-4xl">
           {title}
@@ -114,7 +114,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-24 overflow-x-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center py-32 md:py-40 overflow-x-hidden">
         {/* Ghost Text */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none z-0" aria-hidden="true">
           <div className="home-view-container h-full flex items-center">
@@ -127,7 +127,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         <div className="pack-header-content home-view-container relative z-10">
           <div className="w-full max-w-full md:max-w-6xl">
             {/* Header Identity Stack */}
-            <div className="flex flex-col gap-12 md:gap-16 mb-24 md:mb-32">
+            <div className="flex flex-col gap-20 md:gap-24 mb-28 md:mb-36">
               <div className="h-[2px] w-20 bg-air-accent" />
               
               <div className="space-y-4">
@@ -150,8 +150,8 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
             </div>
 
             {/* Manifest Footer: bottom-axis alignment across breakpoints */}
-            <div className="border-t border-air-border pt-16 mt-16">
-              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-16">
+            <div className="border-t border-air-border pt-20 mt-20">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-20">
                 {/* Data Grid - items-start for column, lg:aligns to row bottom */}
                 <div className="flex flex-wrap items-start gap-x-16 gap-y-10">
                   {[
@@ -193,17 +193,17 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </div>
       </header>
 
-      {/* Main Content Sections */}
-      <div className="home-view-container pb-40">
-        <main className="w-full max-w-full md:max-w-6xl">
+      {/* Main Content Sections - home-view-container for horizontal alignment */}
+      <div className="home-view-container pb-48">
+        <div className="w-full max-w-full md:max-w-6xl flex flex-col gap-20">
           {sections.map((section, idx) => (
             <SectionCard key={idx} section={section} />
           ))}
-        </main>
+        </div>
 
-        <footer className="mt-60 py-32 border-t border-air-border flex flex-col items-center overflow-x-hidden">
+        <footer className="mt-32 py-40 border-t border-air-border flex flex-col items-center overflow-x-hidden">
           <div className="home-view-container flex flex-col items-center w-full">
-          <div className="opacity-[0.03] select-none text-center mb-12">
+          <div className="opacity-[0.03] select-none text-center mb-16">
             <span className="text-[20vw] font-black tracking-tighter text-air-black uppercase leading-none">
               {pack.city}
             </span>
