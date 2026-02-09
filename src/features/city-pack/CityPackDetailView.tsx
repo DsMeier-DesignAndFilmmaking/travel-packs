@@ -168,27 +168,38 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
             </span>
           </div>
         </div>
-
-        {/* Action Row - Added 'pt-4' to ensure physical gap if margin fails */}
         
       </div>
-      <div className="flex flex-wrap items-center gap-4 pt-4">
-          <button
-            onClick={() => setShowMobileOverlay(true)}
-            className="btn-pill btn-pill--primary px-10 py-5 shadow-xl shadow-air-accent/10 active:scale-95 transition-transform"
-          >
-            Download Pack
-          </button>
-          
-          {!isInstalled && installPrompt && (
-            <button
-              onClick={() => void handleInstall()}
-              className="btn-pill btn-pill--outline px-10 py-5 hover:bg-air-black hover:text-white transition-all active:scale-95"
-            >
-              Install App
-            </button>
-          )}
-        </div>
+
+      {/* Action Row - Added 'pt-4' to ensure physical gap if margin fails */}
+
+{/* 1. Use space-y-12 on the parent to force a gap between the Grid and the Buttons */}
+<div className="flex flex-col space-y-12">
+
+  {/* Your Metadata Grid Div here... */}
+  <div className="flex flex-wrap gap-x-12 gap-y-8 border-t border-air-border pt-10">
+     {/* ...items... */}
+  </div>
+
+  {/* 2. Action Row: Use !mt-0 to reset and let the parent gap do the work */}
+  <div className="flex flex-wrap items-center gap-4 !mt-12"> 
+      <button
+        onClick={() => setShowMobileOverlay(true)}
+        className="btn-pill btn-pill--primary px-10 py-5 shadow-xl shadow-air-accent/10 active:scale-95 transition-transform"
+      >
+        Download Pack
+      </button>
+      
+      {!isInstalled && installPrompt && (
+        <button
+          onClick={() => void handleInstall()}
+          className="btn-pill btn-pill--outline px-10 py-5 hover:bg-air-black hover:text-white transition-all active:scale-95"
+        >
+          Install App
+        </button>
+      )}
+  </div>
+</div>
     </div>
   </div>
 </header>
