@@ -1,12 +1,19 @@
 // /src/components/layout/AppShell.tsx
 import { useEffect, useState, type PropsWithChildren } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
+
+/** Only /city/:slug is installable; homepage must never show Install. */
+function useIsInstallableRoute(): boolean {
+  const { pathname } = useLocation();
+  return /^\/city\/[^/]+$/.test(pathname);
+}
 
 export function AppShell({ children }: PropsWithChildren) {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
+  const isInstallableRoute = useIsInstallableRoute();
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -41,7 +48,7 @@ export function AppShell({ children }: PropsWithChildren) {
               </div>
             )}
 
-            {!isInstalled && installPrompt && (
+            {isInstallableRoute && !isInstalled && installPrompt && (
               <button
                 type="button"
                 className="btn-pill btn-pill--outline scale-90 md:scale-100"

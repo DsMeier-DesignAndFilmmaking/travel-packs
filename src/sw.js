@@ -1,8 +1,8 @@
 /* global self */
 import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
-import { registerRoute, NavigationRoute } from 'workbox-routing';
-import { CacheFirst } from 'workbox-strategies';
+import { registerRoute } from 'workbox-routing';
+import { CacheFirst, NetworkOnly } from 'workbox-strategies';
 
 const CITY_PACK_CACHE = 'city-pack-data-v1';
 const IMAGE_CACHE = 'city-assets-images-v1';
@@ -12,10 +12,31 @@ cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// SPA navigation fallback: serve precached index.html. Request URL (including path and query) is preserved as the document URL—no stripping. Deep links like /city/london?foo=bar stay intact.
-const navHandler = createHandlerBoundToURL('/index.html');
-const navigationRoute = new NavigationRoute(navHandler);
-registerRoute(navigationRoute);
+// ——— NAVIGATION: "/" is online-only; "/city/*" may use cache when offline ———
+// 1. Root "/" must NEVER be cached or served offline. Network only.
+registerRoute(
+  ({ request }) => {
+    if (request.mode !== 'navigate') return false;
+    const pathname = new URL(request.url).pathname;
+    return pathname === '/' || pathname === '';
+  },
+  new NetworkOnly(),
+  'GET'
+);
+
+// 2. All other navigations (e.g. /city/*): network first, then precached index.html so SPA and deep links work offline. Document URL is preserved.
+const indexHandler = createHandlerBoundToURL('/index.html');
+registerRoute(
+  ({ request }) => request.mode === 'navigate',
+  async (params) => {
+    try {
+      const response = await fetch(params.request);
+      if (response && response.status === 200) return response;
+    } catch (_) {}
+    return indexHandler(params);
+  },
+  'GET'
+);
 
 // Install: do not redirect or override the client URL. First launch uses the document's start_url (from manifest) as-is.
 self.addEventListener('install', function(event) {

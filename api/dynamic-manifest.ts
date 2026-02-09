@@ -25,7 +25,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  // Only /city/:slug is installable. Root "/" must never be start_url for PWA install.
   const startPath = path && path.startsWith('/') ? path : '/';
+  const isCityRoute = /^\/city\/[^/]+$/.test(startPath);
+
+  if (!isCityRoute) {
+    // Home or non-city: return a non-installable manifest (display: browser).
+    const homeManifest = {
+      id: '/',
+      name: 'Local City Travel Packs',
+      short_name: 'Travel Packs',
+      description: 'Browse city travel packs. Open a city page to install for offline use.',
+      start_url: `${origin}/`,
+      scope: `${origin}/`,
+      display: 'browser',
+      background_color: '#ffffff',
+      theme_color: '#0f172a',
+      icons: [
+        { src: `${origin}/pwa-192x192.png`, sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: `${origin}/pwa-512x512.png`, sizes: '512x512', type: 'image/png', purpose: 'any' }
+      ]
+    };
+    res.setHeader('Content-Type', 'application/manifest+json');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+    return res.status(200).json(homeManifest);
+  }
+
   const startUrl = `${origin}${startPath}`;
 
   // City-specific name/short_name when path is /city/:slug
@@ -60,7 +85,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     short_name: shortName,
     description,
     start_url: startUrl,
-    scope: `${origin}/`,
+    scope: startUrl,
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#0f172a',
