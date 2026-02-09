@@ -63,7 +63,7 @@ export function AppShell({ children }: PropsWithChildren) {
 
       {/* Offline Banner */}
       {!isOnline && (
-        <div className="system-banner sticky top-[80px] z-[999]">
+        <div className="system-banner sticky z-[999]" style={{ top: 'calc(80px + env(safe-area-inset-top, 0px))' }}>
           Viewing downloaded city packs in offline mode
         </div>
       )}
