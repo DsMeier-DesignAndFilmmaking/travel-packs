@@ -5,8 +5,10 @@ import { AppRouter } from '@/app/router/AppRouter';
 import { registerServiceWorker } from '@/pwa/registerServiceWorker';
 import './styles.css';
 
-// Debug: confirm URL the PWA receives on launch (remove after verifying deep-link)
-console.log('[PWA launch] window.location.href:', window.location.href);
+// Launch URL is the single source of truth for which city app opened. No override from storage or state.
+if (typeof window !== 'undefined' && window.location.pathname.startsWith('/city/')) {
+  console.log('[PWA launch] city from start_url:', window.location.pathname);
+}
 
 registerServiceWorker();
 

@@ -26,13 +26,17 @@ registerRoute(
   'GET'
 );
 
-// 2. All other navigations (e.g. /city/*): network first, then precached index.html so SPA and deep links work offline. Document URL is preserved.
+// 2. All other navigations (e.g. /city/*): network first with cache bypass, then precached index.html when offline.
+// CRITICAL: Use cache: 'no-store' so we never reuse a cached document from a different URL (prevents second
+// install opening first city). Document URL is always the request URL; we never substitute another path.
 const indexHandler = createHandlerBoundToURL('/index.html');
 registerRoute(
   ({ request }) => request.mode === 'navigate',
   async (params) => {
+    const navRequest = params.request;
+    const freshRequest = new Request(navRequest, { cache: 'no-store' });
     try {
-      const response = await fetch(params.request);
+      const response = await fetch(freshRequest);
       if (response && response.status === 200) return response;
     } catch (_) {}
     return indexHandler(params);

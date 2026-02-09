@@ -7,7 +7,11 @@ import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { injectCityManifest, setHomeHead } from '@/utils/dynamicManifest';
 
-/** Logs pathname on mount to verify PWA deep-link (no redirect-to-home before city loads). */
+/**
+ * Router uses ONLY current window.location (BrowserRouter default).
+ * No localStorage/sessionStorage for route; no "last city" restore; no redirect to a different city.
+ * Each installed app launch must show the city for its start_url.
+ */
 function RouterLandingLogger() {
   const location = useLocation();
   useEffect(() => {
