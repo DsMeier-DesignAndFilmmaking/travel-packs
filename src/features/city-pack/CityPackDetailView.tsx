@@ -111,7 +111,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
   return (
     <article className="editorial-view w-full bg-white min-h-screen">
-      <header className="relative pt-20 md:pt-28 pb-16 md:pb-20 overflow-hidden">
+      <header className="relative min-h-[max(70vh,600px)] pt-20 md:pt-28 pb-16 md:pb-20 overflow-x-hidden">
         {/* Ghost Text - decorative only, does not affect layout or clickability */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none z-0" aria-hidden="true">
           <div className="home-view-container">
@@ -122,9 +122,9 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </div>
 
         <div className="pack-header-content home-view-container relative z-10 isolate">
-          <div className="max-w-4xl min-w-0">
-            {/* 1. Brand Mark - 8pt grid: gap controls spacing below */}
-            <div className="flex flex-col gap-12 md:gap-16">
+          <div className="max-w-6xl min-w-0">
+            {/* 1. Brand Mark - Premium vertical rhythm */}
+            <div className="flex flex-col gap-20">
               <div className="h-[2px] w-12 bg-air-accent" />
 
               {/* 2. Top Metadata - gap system, no element margins */}
@@ -149,8 +149,8 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               </p>
             </div>
 
-            {/* 5. Utility Section: 3:1 ratio - Data Dock gap-4, Action Row gap-12 */}
-            <div className="pack-header-utility flex flex-col gap-12 border-t border-air-border pt-12 mt-12 md:mt-16">
+            {/* 5. Utility Section - Premium whitespace above metadata and actions */}
+            <div className="pack-header-utility flex flex-col gap-12 border-t border-air-border pt-20 mt-20">
               {/* Data Dock - gap-4 between items */}
               <div className="flex flex-wrap gap-x-12 gap-y-4">
                 <div className="pack-header-metadata-item">
@@ -194,7 +194,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
       </header>
 
       <div className="home-view-container pb-32">
-        <main className="max-w-4xl">
+        <main className="max-w-6xl">
           {sections.map((section, idx) => (
             <SectionCard key={idx} section={section} />
           ))}

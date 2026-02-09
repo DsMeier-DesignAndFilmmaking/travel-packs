@@ -57,7 +57,7 @@ main { flex: 1 0 auto; }
   color: var(--air-black);
 }
 
-/* Home Grid & Cards */
+/* Home Grid & Cards - .home-view-container used by header and main. padding reduces usable width by 48px (24px×2) horizontally. */
 .home-view-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -191,11 +191,11 @@ main { flex: 1 0 auto; }
   opacity: 0.6;
 }
 
-/* Consolidated metadata item/value - replaces repetitive Tailwind */
+/* Metadata item - flex-col, no fixed height. 12px gap ensures label/value separation. */
 .pack-header-metadata-item {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* gap-3 */
+  gap: 12px;
   min-width: 120px;
 }
 
