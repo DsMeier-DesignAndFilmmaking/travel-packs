@@ -8,12 +8,21 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 import { injectCityManifest, setHomeHead } from '@/utils/dynamicManifest';
 
 /**
- * SPA ROUTER BOOT GUARANTEE
- * - Reads window.location.pathname on boot (BrowserRouter uses browser history; no basename).
- * - Does NOT redirect on init; no <Navigate> runs on initial render except when path is exactly "/home".
- * - Does NOT restore last route; no localStorage/sessionStorage/cache for route.
- * - Does NOT depend on cached state for initial location.
- * Installed app launch MUST respect the URL it was launched with; this router does.
+ * ROUTER BOOT SAFETY — SPA initializes from the launch URL only.
+ *
+ * 1. Initial route = window.location.pathname
+ *    BrowserRouter uses the browser URL; no basename or initialEntries. First paint matches the document URL.
+ *
+ * 2. No redirect to "last city"
+ *    We never read lastCity (or any stored route) to redirect. The only automatic redirect is /home → /.
+ *
+ * 3. No global state on boot to override route
+ *    We do not read localStorage, sessionStorage, or cache to set or change the initial route.
+ *
+ * 4. Persisted city data only for this city
+ *    Storage is namespaced by city slug (travel-packs.city.<slug>.*). We only read the key for the current pathname, never other installs.
+ *
+ * BrowserRouter is used without basename or initialEntries so the initial location always comes from window.location.
  */
 function RouterLandingLogger() {
   const location = useLocation();
@@ -54,10 +63,10 @@ function ManifestManager() {
 
 export function AppRouter() {
   return (
-    <BrowserRouter 
-      future={{ 
-        v7_startTransition: true, 
-        v7_relativeSplatPath: true 
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
       }}
     >
       <RouterLandingLogger />

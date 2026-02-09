@@ -1,21 +1,43 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { HomePageView } from '@/features/home/HomePageView';
 import { useCityPacks } from '@/hooks/useCityPacks';
 import { cityPackRepository } from '@/services/content/cityPackRepository';
 import type { CityPackSummary } from '@/types/cityPack';
+import { clearGlobalStateOnHome, getStorageKey } from '@/utils/storageKeys';
+
+const HOME_RESET_KEY = 'resetDone';
 
 /**
  * HomePage Controller
  * Refined for a premium product feel with micro-interactions
  * and editorial-grade layout consistency.
+ *
+ * SPA homepage reset: when user lands on "/", we clear global state and force one
+ * network reload so the next city install works correctly. State is namespaced
+ * (travel-packs.home.* / travel-packs.city.<slug>.*) so installs do not conflict.
  */
 export function HomePage() {
+  const location = useLocation();
   const [packs, setPacks] = useState<CityPackSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
 
   const { downloadCityPack, removeCityPack, getPackStatus, listDownloadedPacks } = useCityPacks();
+
+  // 0. SPA Homepage reset — on "/" clear global state and force one network reload for next city install
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+    const resetFlagKey = getStorageKey('home', null, HOME_RESET_KEY);
+    if (localStorage.getItem(resetFlagKey)) {
+      localStorage.removeItem(resetFlagKey);
+      return;
+    }
+    clearGlobalStateOnHome();
+    localStorage.setItem(resetFlagKey, '1');
+    window.location.replace(window.location.href);
+  }, [location.pathname]);
 
   // 1. Connectivity Lifecycle
   useEffect(() => {

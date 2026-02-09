@@ -1,10 +1,11 @@
 /**
  * Dynamic Manifest Injection — city-scoped PWA with UNIQUE, STABLE, REAL manifest URLs.
  *
+ * ABSOLUTE: Do NOT use Blob URLs or data URIs for manifest href. Only real HTTP URLs: /manifests/city-{slug}.json
+ *
  * - Only /city/* routes get a manifest link.
- * - Manifest href is ALWAYS a real URL: /manifests/city-{slug}.json (no Blob/data URI).
  * - Each city = separate app identity so installs do not collapse to the first city.
- * - Homepage "/" has no manifest link.
+ * - Homepage "/" has no manifest link (setHomeHead removes it).
  */
 
 const DEFAULT_TITLE = 'Local City Travel Packs';

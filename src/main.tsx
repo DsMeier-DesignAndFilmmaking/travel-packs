@@ -5,7 +5,7 @@ import { AppRouter } from '@/app/router/AppRouter';
 import { registerServiceWorker } from '@/pwa/registerServiceWorker';
 import './styles.css';
 
-// Launch URL is the single source of truth for which city app opened. No override from storage or state.
+// ROUTER BOOT SAFETY: Launch URL is the single source of truth. We do not redirect or read storage to override route.
 if (typeof window !== 'undefined' && window.location.pathname.startsWith('/city/')) {
   console.log('[PWA launch] city from start_url:', window.location.pathname);
 }

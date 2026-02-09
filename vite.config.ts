@@ -18,6 +18,7 @@ export default defineConfig({
       webp: { quality: 80 }, 
       avif: { quality: 60 },
     }),
+    // ABSOLUTE CONSTRAINTS: No "/" HTML cache. No SPA runtime reuse. No Blob manifests. No merged city state. City manifests = real URLs. Offline = city assets/data only.
     VitePWA({
       strategies: 'injectManifest',
       srcDir: 'src',
@@ -28,13 +29,13 @@ export default defineConfig({
       includeManifestIcons: false,
       devOptions: { enabled: true, type: 'module' },
       injectManifest: {
-        // ABSOLUTE: DO NOT cache HTML. No app shell precache. globPatterns: [] → precache 0 entries.
+        // Do NOT cache "/" HTML: precache zero entries (no app shell).
         globPatterns: [],
         globIgnores: ['**/*'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       },
       workbox: {
-        // ABSOLUTE: DO NOT use navigationFallback. No app shell fallback.
+        // Do NOT reuse SPA runtime: no navigation fallback (each launch = fresh document URL).
         navigateFallback: null,
         navigateFallbackDenylist: [/^\/api\//, /^\/_/, /\.(?:json|png|jpg|webmanifest)(?:\?|$)/],
         dontCacheBustURLsMatching: /\/assets\//,

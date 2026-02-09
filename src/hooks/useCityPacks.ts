@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getCitySlugFromPath, getStorageKey } from '@/utils/storageKeys';
 
 export type DownloadStatus = 'not-downloaded' | 'downloading' | 'downloaded' | 'error';
 
@@ -18,15 +20,13 @@ interface UseCityPacksResult {
   listDownloadedPacks: () => DownloadedPackMeta[];
 }
 
-const STORAGE_KEY = 'local-city-travel-packs.downloaded.v1';
 const CACHE_NAME = 'city-pack-json-v1';
 
-function readStorage(): StoredState {
-  const raw = localStorage.getItem(STORAGE_KEY);
+function readStorageForKey(key: string): StoredState {
+  const raw = localStorage.getItem(key);
   if (!raw) {
     return { downloaded: {} };
   }
-
   try {
     return JSON.parse(raw) as StoredState;
   } catch {
@@ -34,17 +34,30 @@ function readStorage(): StoredState {
   }
 }
 
-function writeStorage(state: StoredState) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
 export function useCityPacks(): UseCityPacksResult {
-  const [stored, setStored] = useState<StoredState>(() => readStorage());
+  const { pathname } = useLocation();
+  const slug = getCitySlugFromPath(pathname);
+  const storageKey = slug ? getStorageKey('city', slug, 'downloaded.v1') : null;
+
+  const [stored, setStored] = useState<StoredState>(() =>
+    storageKey ? readStorageForKey(storageKey) : { downloaded: {} }
+  );
   const [transientStatus, setTransientStatus] = useState<Record<string, DownloadStatus>>({});
 
+  // When route (slug) changes, load that city's stored state; on home use empty state
   useEffect(() => {
-    writeStorage(stored);
-  }, [stored]);
+    if (storageKey) {
+      setStored(readStorageForKey(storageKey));
+    } else {
+      setStored({ downloaded: {} });
+    }
+  }, [storageKey]);
+
+  useEffect(() => {
+    if (storageKey) {
+      localStorage.setItem(storageKey, JSON.stringify(stored));
+    }
+  }, [stored, storageKey]);
 
   const getPackStatus = useCallback(
     (cityId: string): DownloadStatus => {

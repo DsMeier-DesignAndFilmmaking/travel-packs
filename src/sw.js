@@ -1,10 +1,12 @@
 /* global self */
 //
-// ABSOLUTE CONSTRAINTS — this app supports MULTIPLE independent installs.
-// DO NOT cache HTML. DO NOT use navigationFallback. DO NOT reuse app shell.
-// DO NOT merge city runtimes. DO NOT rely on refresh.
-//
-// Caching ONLY: city data, city JSON, city assets, city images. Cache keys include city slug.
+// ABSOLUTE CONSTRAINTS (multi-city PWA — do not violate)
+// 1. Do NOT cache "/" HTML — homepage fetch uses cache: 'no-store'; navigations are NetworkOnly.
+// 2. Do NOT reuse SPA runtime across city installs — every launch gets fresh document URL; no app shell precache.
+// 3. Do NOT use Blob URLs — manifests and assets use real HTTP URLs only (see dynamicManifest).
+// 4. Do NOT merge city runtime state — storage is namespaced per city (travel-packs.city.<slug>.*); only city data cached here.
+// 5. Keep dynamic city manifests functional — do not cache or rewrite manifest URLs; they are real /manifests/city-{slug}.json.
+// 6. Offline caching ONLY for city assets/data — never for "/" or any HTML. Only routes below may cache.
 //
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
@@ -18,6 +20,14 @@ function cityImagesCacheName(citySlug) {
   return `city-images-${citySlug}`;
 }
 
+// ——— 1. "/" HTML NEVER CACHED ———
+// Same-origin request for pathname "/" → always network, no-store. Registered first so it wins over any other route.
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || url.pathname !== '/') return;
+  event.respondWith(fetch(event.request, { cache: 'no-store' }));
+});
+
 // Vite PWA injects manifest here. When globPatterns: [], manifest is empty — no precache (city-scoped caching only).
 const wbManifest = self.__WB_MANIFEST;
 if (Array.isArray(wbManifest) && wbManifest.length > 0) {
@@ -27,9 +37,8 @@ cleanupOutdatedCaches();
 self.skipWaiting();
 clientsClaim();
 
-// ——— HARD RULE: NETWORK-ONLY NAVIGATION (non-negotiable) ———
-// IF request.mode === "navigate": ALWAYS fetch from network. NEVER serve from cache. NEVER fallback. NEVER rewrite. NEVER redirect.
-// Fixes multi-install bug: each app launch gets fresh HTML and boots with the correct URL (window.location.pathname).
+// ——— 2. NAVIGATION = NETWORK ONLY (no SPA runtime reuse) ———
+// Every document request goes to network. No cached HTML, no fallback. Launch URL = document URL.
 registerRoute(
   ({ request }) => request.mode === 'navigate',
   new NetworkOnly(),
@@ -41,20 +50,14 @@ self.addEventListener('install', function(event) {
   event.waitUntil(self.skipWaiting());
 });
 
-// 3. CITY JSON ONLY — cache key = /data/city-packs/{slug}.json (slug in key)
+// ——— 6. OFFLINE CACHING: city data and assets ONLY (never "/" HTML) ———
 registerRoute(
   ({ url }) => url.pathname.startsWith('/data/city-packs/') && url.pathname.endsWith('.json'),
-  new CacheFirst({
-    cacheName: CITY_PACK_CACHE,
-  })
+  new CacheFirst({ cacheName: CITY_PACK_CACHE })
 );
-
-// 4. CITY ASSETS/IMAGES — only URLs whose path includes /assets/cities/ (path = key, must include city segment)
 registerRoute(
   ({ url }) => url.pathname.includes('/assets/cities/'),
-  new CacheFirst({
-    cacheName: 'city-assets-v1',
-  })
+  new CacheFirst({ cacheName: 'city-assets-v1' })
 );
 
 // 5. MESSAGE HANDLING (Manual Trigger from "Get" Button)
