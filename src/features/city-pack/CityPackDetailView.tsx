@@ -202,6 +202,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </main>
 
         <footer className="mt-60 py-32 border-t border-air-border flex flex-col items-center overflow-x-hidden">
+          <div className="home-view-container flex flex-col items-center w-full">
           <div className="opacity-[0.03] select-none text-center mb-12">
             <span className="text-[20vw] font-black tracking-tighter text-air-black uppercase leading-none">
               {pack.city}
@@ -210,6 +211,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
           <p className="text-[11px] font-black text-air-gray uppercase tracking-[0.6em]">
             End of Travel Pack <span className="mx-4 opacity-20">//</span> {pack.city} Edition
           </p>
+          </div>
         </footer>
       </div>
 

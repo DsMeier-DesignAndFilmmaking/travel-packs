@@ -68,14 +68,14 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       )}
 
-      {/* Main Content */}
-      <main className="flex-1 pt-24 md:pt-28 pb-12 md:pb-16">
+      {/* Main Content - zero padding baseline; views control their own spacing */}
+      <main className="flex-1 p-0">
         {children}
       </main>
 
-      {/* Footer */}
+      {/* Footer - home-view-container for horizontal alignment sync */}
       <footer className="w-full border-t border-[#F0F0F0] pt-16 md:pt-24 pb-12 md:pb-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6 flex flex-col items-center">
+        <div className="home-view-container flex flex-col items-center !py-0">
 
           {/* 1. Branding */}
           <div className="mb-12 text-center">
