@@ -170,7 +170,9 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </div>
 
         {/* Action Row - Added 'pt-4' to ensure physical gap if margin fails */}
-        <div className="flex flex-wrap items-center gap-4 pt-4">
+        
+      </div>
+      <div className="flex flex-wrap items-center gap-4 pt-4">
           <button
             onClick={() => setShowMobileOverlay(true)}
             className="btn-pill btn-pill--primary px-10 py-5 shadow-xl shadow-air-accent/10 active:scale-95 transition-transform"
@@ -187,7 +189,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
             </button>
           )}
         </div>
-      </div>
     </div>
   </div>
 </header>

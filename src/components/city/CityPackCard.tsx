@@ -58,27 +58,32 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
 
       {/* 3. Text Content Area */}
       <div className="flex justify-between items-start gap-6 mt-1">
-      <div className="flex flex-col min-w-0 flex-1">
+      <div className="flex flex-col min-w-0 flex-1 gap-1 py-1">
+      {/* Title Row */}
       <Link to={`/city/${pack.slug}`} className="hover:opacity-70 transition-opacity">
-        <h3 className="text-[15px] font-bold text-[#222222] leading-[1.1] truncate">
+        <h3 className="text-[15px] font-bold text-[#222222] leading-tight truncate">
           {pack.city}, {pack.country}
         </h3>
       </Link>
       
-      <p className="text-[14px] text-[#717171] font-normal leading-[0.5] truncate -mt-0.5">
-        {pack.category || pack.region}
-      </p>
-      
-      <p className="text-[13px] text-[#717171] mt-0 font-medium leading-[0.5]">
-        {/* Safely repeat the symbol */}
-        {pack.priceLevel 
-          ? (pack.currencySymbol || '$').repeat(pack.priceLevel) 
-          : (pack.currencySymbol || '$')} 
-        <span className="mx-1 text-[#EBEBEB]">•</span>
-        {new Date(pack.updatedAt).getFullYear()} Edition
-      </p>
+      {/* Metadata Rows - Grouped for tighter spacing */}
+      <div className="flex flex-col gap-0.5">
+        <p className="text-[14px] text-[#717171] font-normal leading-normal truncate">
+          {pack.category || pack.region}
+        </p>
+        
+        <p className="text-[13px] text-[#717171] font-medium leading-normal flex items-center">
+          {/* Safely repeat the symbol */}
+          <span className="text-air-black">
+            {pack.priceLevel 
+              ? (pack.currencySymbol || '$').repeat(pack.priceLevel) 
+              : (pack.currencySymbol || '$')}
+          </span>
+          <span className="mx-1.5 text-[#EBEBEB]">•</span>
+          <span>{new Date(pack.updatedAt).getFullYear()} Edition</span>
+        </p>
+      </div>
     </div>
-
         {/* 4. Action Section: Pill buttons and status indicators */}
         <div className="flex flex-col items-end justify-start flex-shrink-0 pt-0.5">
           {!isDownloaded && isOnline && (
