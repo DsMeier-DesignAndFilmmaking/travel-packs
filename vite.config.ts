@@ -31,7 +31,7 @@ export default defineConfig({
     }),
     VitePWA({
       strategies: 'generateSW',
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       injectRegister: 'inline',
       manifest: false,
       includeManifestIcons: false,
@@ -42,7 +42,7 @@ export default defineConfig({
 
       workbox: {
         // FIX: 'cacheId' is the correct property for top-level naming in GenerateSW
-        cacheId: 'tp-v110-guide-path',
+        cacheId: 'tp-v120-data-audit',
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
@@ -54,20 +54,31 @@ export default defineConfig({
 
         runtimeCaching: [
           {
-            // Always fetch manifests fresh from the Vercel API
+            // Manifests: never cache (avoid 304); dynamic API and legacy path
+            urlPattern: /^\/api\/manifest\//,
+            handler: 'NetworkOnly',
+          },
+          {
             urlPattern: /^\/manifests\//,
             handler: 'NetworkOnly',
           },
           {
-            // UI Shell: Try network first so users see updates, fallback to cache for offline
+            // Index.html: NetworkFirst with short timeout so UI updates; cache only when offline/slow
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'v70-navigation-cache',
-              expiration: {
-                maxEntries: 1,
-              },
-              networkTimeoutSeconds: 5,
+              cacheName: 'v120-index-html',
+              expiration: { maxEntries: 1 },
+              networkTimeoutSeconds: 3,
+            },
+          },
+          {
+            // JS/CSS: CacheFirst safe (Vite hashes filenames, e.g. index-KtJFv4Jy.js)
+            urlPattern: /\/assets\/.*\.(js|css)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'v120-hashed-assets',
+              expiration: { maxEntries: 64, maxAgeSeconds: 60 * 60 * 24 * 365 },
             },
           },
         ],

@@ -16,7 +16,7 @@ Vite + React + TypeScript scaffold for an offline-first, JSON-driven city travel
 - Service worker uses `vite-plugin-pwa` with `injectManifest`.
 - No global runtime caching is enabled.
 - Only explicitly downloaded city JSON files are stored (`city-pack-json-v1`).
-- Offline routing is enabled for app navigation (`/city/:slug`) via app-shell fallback.
+- Offline routing is enabled for app navigation (`/guide/:slug`) via app-shell fallback.
 - Downloaded city pages work offline because their JSON payload is available in cache.
 
 ## Final production readiness checklist

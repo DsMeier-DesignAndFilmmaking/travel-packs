@@ -1,6 +1,6 @@
 # Dynamic Manifest Implementation — Route-Scoped City PWA
 
-Static manifest behavior is eliminated. Only `/city/*` routes have a manifest; homepage "/" has no manifest and cannot be installed.
+Static manifest behavior is eliminated. Only `/guide/*` routes have a manifest; homepage "/" has no manifest and cannot be installed.
 
 **App identity:** Each city uses a **unique, stable, real** manifest URL (`/manifests/city-{slug}.json`). No Blob or data URI — so the browser treats each city install as a separate app and installs no longer collapse to the first installed city.
 
@@ -12,11 +12,11 @@ Static manifest behavior is eliminated. Only `/city/*` routes have a manifest; h
 |------|--------|
 | **public/manifest.webmanifest** | **REMOVED** — no static manifest. |
 | **src/utils/dynamicManifest.ts** | **REPLACED** — real URLs only: `getCityManifestUrl(slug)`, `injectCityManifest`, `removeManifest`, `setHomeHead`. No Blob/data URI; href = `/manifests/city-{slug}.json`. |
-| **src/app/router/AppRouter.tsx** | **MODIFIED** — ManifestManager uses `setHomeHead()` when path === "/" (removes manifest), `injectCityManifest({ citySlug, cityName })` only for `/city/:slug`. |
+| **src/app/router/AppRouter.tsx** | **MODIFIED** — ManifestManager uses `setHomeHead()` when path === "/" (removes manifest), `injectCityManifest({ citySlug, cityName })` only for `/guide/:slug`. |
 | **src/hooks/usePwaManifest.ts** | **REPLACED** — delegates to `injectCityManifest` / `setHomeHead`; no static manifest href. |
 | **src/features/city-pack/CityPackDetailView.tsx** | **MODIFIED** — calls `usePwaManifest` with pack data so manifest uses real city name. |
 | **api/dynamic-manifest.ts** | **MODIFIED** — returns **404** for non-city paths (no valid manifest for "/"). |
-| **index.html** | **MODIFIED** — inline script only injects manifest for `/city/*`; adds `scope: startUrl`; no manifest when path is "/". |
+| **index.html** | **MODIFIED** — inline script only injects manifest for `/guide/*`; adds `scope: startUrl`; no manifest when path is "/". |
 | **vite.config.ts** | **MODIFIED** — `manifest: false`; `globPatterns` no longer include `webmanifest`; `globIgnores` include `**/manifest*.webmanifest`, `**/site.webmanifest`. |
 | **src/sw.js** | **UNCHANGED** — already: "/" → NetworkOnly (never cached/served offline); other navigations → network first then precached index.html. |
 
@@ -29,7 +29,7 @@ Static manifest behavior is eliminated. Only `/city/*` routes have a manifest; h
 - **`getCityManifestUrl(citySlug)`** — Returns the unique, stable, real manifest URL: `/manifests/city-{slug}.json`. Never Blob or data URI.
 - **`removeManifest()`** — Removes every `<link rel="manifest">` from `<head>`.
 - **`setHomeHead()`** — Calls `removeManifest()`, then sets canonical, og:url, apple-mobile-web-app-title, and document.title to home defaults. Ensures no manifest when route is "/".
-- **`injectCityManifest(options)`** — Sets `<link rel="manifest" href="/manifests/city-{slug}.json">` (real URL only). Updates canonical, og:url, title, apple-mobile-web-app-title. Only for use on `/city/*` routes.
+- **`injectCityManifest(options)`** — Sets `<link rel="manifest" href="/manifests/city-{slug}.json">` (real URL only). Updates canonical, og:url, title, apple-mobile-web-app-title. Only for use on `/guide/*` routes.
 
 No Blob or data URI; each city has a distinct manifest URL so the browser treats each install as a separate app.
 
@@ -46,7 +46,7 @@ No Blob or data URI; each city has a distinct manifest URL so the browser treats
 
 ### 2.4 index.html
 
-- Inline script runs only when `path.indexOf('/city/') !== -1`.
+- Inline script runs only when `path.indexOf('/guide/') !== -1`.
 - Sets `<link rel="manifest" href="/manifests/city-{slug}.json">` (real URL only; no data URI).
 - No `<link rel="manifest">` in HTML and no script branch for "/".
 
@@ -77,7 +77,7 @@ No Blob or data URI; each city has a distinct manifest URL so the browser treats
    If something ever requested a manifest for the root path, `/api/dynamic-manifest` returns 404 for non-city paths. So there is no valid manifest document for "/".
 
 4. **Install UI only on city routes**  
-   AppShell shows the install button only when the route is `/city/*`; `usePWAInstall.handleInstall()` does not call `prompt()` when the path is "/". So programmatic install from the homepage is blocked.
+   AppShell shows the install button only when the route is `/guide/*`; `usePWAInstall.handleInstall()` does not call `prompt()` when the path is "/". So programmatic install from the homepage is blocked.
 
 5. **SW never caches or serves "/"**  
    The service worker uses `NetworkOnly` for navigation to "/", so "/" is never cached or served offline. The PWA entry point is never the root URL.
@@ -94,16 +94,16 @@ Together, this guarantees "/" cannot be installed as the PWA and has no manifest
    - Add to Home Screen / install must not be offered (or must not use "/" as start URL).
 
 2. **City page has manifest**
-   - Open `https://travel-packs.vercel.app/city/paris-france`.
-   - In DevTools → Application → Manifest: manifest should be present with `start_url` and `scope` pointing to `/city/paris-france`.
+   - Open `https://travel-packs.vercel.app/guide/paris-france`.
+   - In DevTools → Application → Manifest: manifest should be present with `start_url` and `scope` pointing to `/guide/paris-france`.
    - In Elements, `<link rel="manifest">` should have an `href` like `data:application/manifest+json;base64,...`.
 
 3. **Install from city page**
-   - On `/city/paris-france`, use Add to Home Screen / install.
-   - Launch the installed app: it must open directly to the city page (e.g. `/city/paris-france`), not "/".
+   - On `/guide/paris-france`, use Add to Home Screen / install.
+   - Launch the installed app: it must open directly to the city page (e.g. `/guide/paris-france`), not "/".
 
 4. **Navigation**
-   - In browser: go "/" → "/city/london-united-kingdom" → back to "/". All must load and navigate normally.
+   - In browser: go "/" → "/guide/london-united-kingdom" → back to "/". All must load and navigate normally.
    - In installed PWA: from a city page, in-app links to "/" and to other cities should work when online.
 
 5. **Offline**
@@ -112,14 +112,14 @@ Together, this guarantees "/" cannot be installed as the PWA and has no manifest
 
 6. **API**
    - Request `GET /api/dynamic-manifest?start_url=/` or with Referer of "/": response must be **404**.
-   - Request `GET /api/dynamic-manifest?start_url=/city/paris-france`: response must be **200** with JSON manifest for that city.
+   - Request `GET /api/dynamic-manifest?start_url=/guide/paris-france`: response must be **200** with JSON manifest for that city.
 
 ---
 
 ## 5. Dynamic Manifest Utility API (reference)
 
 ```ts
-// Only on /city/* routes
+// Only on /guide/* routes
 injectCityManifest({
   citySlug: string,   // e.g. 'paris-france'
   cityName: string,  // e.g. 'Paris'

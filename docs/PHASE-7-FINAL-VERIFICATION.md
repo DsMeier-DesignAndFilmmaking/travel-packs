@@ -76,7 +76,7 @@ No changes were made to manifest `start_url`/`scope` (already correct per Phase 
 
 ### 1. Local dev
 
-- [ ] Run `npm run dev`, open e.g. `http://localhost:5173/city/paris-france`.
+- [ ] Run `npm run dev`, open e.g. `http://localhost:5173/guide/paris-france`.
 - [ ] **CityPackDetailView reflects new UI changes:** Edit text or layout in `CityPackDetailView.tsx`, save → UI updates (HMR or reload).
 - [ ] **No stale UI:** Change content in `public/data/city-packs/paris-france.json`, save → reload city page → new content appears (dev server serves fresh file; SW uses NetworkFirst).
 - [ ] **Build version:** Footer shows “build” plus a number; console shows `[App] Build version: <value>`.
@@ -93,7 +93,7 @@ No changes were made to manifest `start_url`/`scope` (already correct per Phase 
 
 ### 3. Installed PWA (Add to Home Screen)
 
-- [ ] From a city page (e.g. `/city/paris-france`), use “Add to Home Screen” (or browser install).
+- [ ] From a city page (e.g. `/guide/paris-france`), use “Add to Home Screen” (or browser install).
 - [ ] Close the app, open again from the home screen icon → city detail loads (start_url = that city).
 - [ ] **CityPackDetailView reflects new UI:** Deploy a new version, open PWA → if prompt “New content available” and reload, or manually reload → new UI is visible.
 - [ ] **No stale UI:** Deploy new JSON/content, open PWA and reload (or accept update) → city detail shows new content (NetworkFirst + versioned cache).

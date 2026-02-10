@@ -240,7 +240,7 @@ self.addEventListener('message', (event) => {
    The router boots only from `window.location.pathname`; it does not read localStorage/sessionStorage to redirect to a “last city”. So after the "/" reload, the app stays on "/" and does not jump back to the first city.
 
 4. **Next city install gets the right URL**  
-   When the user later opens a **city** icon (City A or City B), the browser loads the document for that install’s `start_url` (e.g. `/city/paris-france`). Because navigations are network-only, that document is fetched from the server with the correct URL. The SPA then initializes with that URL and shows that city. The previous "/" reset ensured there was no leftover global state that could make the app think it should show the first city.
+   When the user later opens a **city** icon (City A or City B), the browser loads the document for that install’s `start_url` (e.g. `/guide/paris-france`). Because navigations are network-only, that document is fetched from the server with the correct URL. The SPA then initializes with that URL and shows that city. The previous "/" reset ensured there was no leftover global state that could make the app think it should show the first city.
 
 So: **SPA runtime reset on "/"** = fresh document + clean global state + no stored route override → each city install opens to its own city, and the “first city wins” bug is avoided.
 
@@ -253,8 +253,8 @@ Use these on **Android Chrome** and **iOS Safari** (Add to Home Screen from the 
 **Prerequisites**
 
 - Deployed URL (e.g. `https://travel-packs.vercel.app/`)
-- City A: e.g. Istanbul — `/city/istanbul-turkiye`
-- City B: e.g. Paris — `/city/paris-france`
+- City A: e.g. Istanbul — `/guide/istanbul-turkiye`
+- City B: e.g. Paris — `/guide/paris-france`
 
 **Steps**
 
@@ -293,13 +293,13 @@ City manifests are **per-city**, **stable**, and **real URLs**. They are not sha
 **Uniqueness**
 
 - Each city has its own manifest **URL**: `/manifests/city-{slug}.json` (e.g. `/manifests/city-istanbul-turkiye.json`, `/manifests/city-paris-france.json`).
-- Each manifest has its own **identity**: `id`, `start_url`, and `scope` are set to that city’s path (e.g. `id: "/city/paris-france"`, `start_url: "/city/paris-france"`, `scope: "/city/paris-france"`).
+- Each manifest has its own **identity**: `id`, `start_url`, and `scope` are set to that city’s path (e.g. `id: "/guide/paris-france"`, `start_url: "/guide/paris-france"`, `scope: "/guide/paris-france"`).
 - The API serves them from `api/manifest/[slug].ts` with the slug in the path; Vercel rewrites `/manifests/city-:slug.json` → `/api/manifest/:slug`. No Blob or data URI; only real HTTP URLs.
 
 **Intact**
 
 - On **"/"** the app calls `setHomeHead()` which **removes** any `<link rel="manifest">`. The homepage has **no** manifest, so it is not installable as a city app.
-- On **/city/:slug** the app calls `injectCityManifest({ citySlug, cityName })`, which removes any existing manifest link and adds a single `<link rel="manifest" href="/manifests/city-{slug}.json">`. So the document always has exactly one manifest, and it is the one for the **current** city.
+- On **/guide/:slug** the app calls `injectCityManifest({ citySlug, cityName })`, which removes any existing manifest link and adds a single `<link rel="manifest" href="/manifests/city-{slug}.json">`. So the document always has exactly one manifest, and it is the one for the **current** city.
 - The SW and HomePage reset do **not** change or serve manifests; they only affect caching and in-memory/global storage. Manifest links are controlled only by the router/ManifestManager and the dynamic manifest utility.
 
 **Summary**

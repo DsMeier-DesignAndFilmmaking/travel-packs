@@ -66,7 +66,7 @@ registerRoute(
 | **src/sw.js** | Single navigation route: `request.mode === 'navigate'` → `NetworkOnly()`. No HTML fallback. Precache only when manifest has entries (empty when globPatterns: []). City JSON and city assets routes only; city images cache name = `city-images-{slug}`. REMOVE_CITY_PACK also deletes that city’s image cache. |
 | **vite.config.ts** | `injectManifest.globPatterns: []`, `injectManifest.globIgnores: ['**/*']` so no precache entries (no index.html, no app shell). `workbox.navigateFallback: null` (no navigation fallback). |
 | **src/app/router/AppRouter.tsx** | SPA router boot guarantee comment: reads `window.location.pathname` on boot; no redirect on init; no restore from storage; no cached state for route. |
-| **src/main.tsx** | Launch URL log when path starts with `/city/` (no override of location). |
+| **src/main.tsx** | Launch URL log when path starts with `/guide/` (no override of location). |
 | **docs/PWA-MULTI-INSTALL-VERIFICATION.md** | Step-by-step verification for Android Chrome and iOS Safari. |
 | **docs/PWA-OUTPUT-SERVICE-WORKER-AND-HTML.md** | This document. |
 
@@ -90,7 +90,7 @@ So one “runtime” (same document/HTML) was reused across installs.
    With `globPatterns: []`, the precache manifest is empty, so `index.html` (and any other HTML) is never precached. The SW has no HTML to serve for any URL.
 
 3. **No app-shell or fallback.**  
-   There is no handler that returns a single HTML document for multiple paths. So the document URL and the response always match the launch URL (e.g. `/city/paris-france`).
+   There is no handler that returns a single HTML document for multiple paths. So the document URL and the response always match the launch URL (e.g. `/guide/paris-france`).
 
 4. **Router boots from the real URL.**  
    The SPA router uses `BrowserRouter`, which reads `window.location` at boot. It does not redirect on init and does not restore a route from storage. So the first paint matches the document URL the browser loaded.

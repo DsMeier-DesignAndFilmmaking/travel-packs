@@ -7,7 +7,7 @@ This scaffold establishes the baseline architecture for a production-oriented PW
 - Vite + React + TypeScript application shell
 - Route structure:
   - `/` city pack catalog
-  - `/city/:slug` city pack detail
+  - `/guide/:slug` city pack detail
 - JSON-first content model (city packs in `public/data/city-packs/*.json`)
 - Schema contract for content validation (`public/data/schemas/city-travel-pack.schema.json`)
 - PWA manifest + service worker integration (`vite-plugin-pwa`, `injectManifest`)

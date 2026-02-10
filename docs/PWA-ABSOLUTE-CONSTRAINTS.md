@@ -16,7 +16,7 @@ These constraints are **non-negotiable** for the multi-city PWA. Do not cache "/
 
 ## 2. Do not reuse SPA runtime across city installs
 
-- **Service worker:** Every `request.mode === 'navigate'` is handled with `NetworkOnly()`. The document is always fetched from the network, so the URL of the document is the launch URL (e.g. `/city/paris-france`). The SPA then boots from `window.location.pathname` with no stored route override.
+- **Service worker:** Every `request.mode === 'navigate'` is handled with `NetworkOnly()`. The document is always fetched from the network, so the URL of the document is the launch URL (e.g. `/guide/paris-france`). The SPA then boots from `window.location.pathname` with no stored route override.
 - **Vite PWA:** `navigateFallback: null` — no app shell fallback, so there is no single cached shell reused for all cities.
 - **App:** Router does not read localStorage/sessionStorage to redirect; HomePage on "/" clears global state and forces one reload so the next city install gets a clean runtime.
 
@@ -46,9 +46,9 @@ These constraints are **non-negotiable** for the multi-city PWA. Do not cache "/
 ## 5. Keep dynamic city manifests functional
 
 - **Per-city manifest URL:** `/manifests/city-{slug}.json` — unique per city, served by API, real URL only.
-- **Document head:** On `/city/:slug`, `injectCityManifest({ citySlug, cityName })` sets `<link rel="manifest" href="/manifests/city-{slug}.json">`. On "/", `setHomeHead()` removes any manifest link.
+- **Document head:** On `/guide/:slug`, `injectCityManifest({ citySlug, cityName })` sets `<link rel="manifest" href="/manifests/city-{slug}.json">`. On "/", `setHomeHead()` removes any manifest link.
 - **Service worker:** Does not cache or rewrite manifest URLs. No route serves or alters `/manifests/*` responses.
-- **Manifest content:** Each manifest has its own `id`, `start_url`, and `scope` (e.g. `/city/paris-france`), so each install has a distinct identity.
+- **Manifest content:** Each manifest has its own `id`, `start_url`, and `scope` (e.g. `/guide/paris-france`), so each install has a distinct identity.
 
 **Files:** `src/utils/dynamicManifest.ts`, `src/app/router/AppRouter.tsx` (ManifestManager), `api/manifest/[slug].ts`, `vercel.json` (rewrite). SW does not add routes for manifest URLs.
 

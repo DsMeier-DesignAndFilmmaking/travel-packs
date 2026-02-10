@@ -38,7 +38,7 @@ registerRoute(
 );
 
 // 4. SPA NAVIGATION FALLBACK
-// Ensures that refreshing the page on /city/london works while offline.
+// Ensures that refreshing the page on /guide/london works while offline.
 const handler = createHandlerBoundToURL('/index.html');
 const navigationRoute = new NavigationRoute(handler);
 registerRoute(navigationRoute);

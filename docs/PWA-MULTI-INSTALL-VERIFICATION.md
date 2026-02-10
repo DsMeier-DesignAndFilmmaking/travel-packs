@@ -37,8 +37,8 @@ Use this checklist to prove that each installed city app opens to its own city w
 - **iOS**: Safari (Add to Home Screen uses Safari)
 - **Android**: Chrome
 - Two different city pages, e.g.:
-  - **City A**: Istanbul — `/city/istanbul-turkiye`
-  - **City B**: Paris — `/city/paris-france`
+  - **City A**: Istanbul — `/guide/istanbul-turkiye`
+  - **City B**: Paris — `/guide/paris-france`
 
 ---
 
@@ -58,18 +58,18 @@ Use this checklist to prove that each installed city app opens to its own city w
 
 ### 1. Install City A (e.g. Istanbul)
 
-1. In Chrome, go to `https://travel-packs.vercel.app/city/istanbul-turkiye`.
-2. Confirm the page shows **Istanbul** content and the address bar shows `/city/istanbul-turkiye`.
+1. In Chrome, go to `https://travel-packs.vercel.app/guide/istanbul-turkiye`.
+2. Confirm the page shows **Istanbul** content and the address bar shows `/guide/istanbul-turkiye`.
 3. Tap the **menu** (⋮) → **“Install app”** or **“Add to Home screen”**.
 4. Confirm the install prompt shows **Istanbul** (e.g. “Istanbul Pack”).
 5. Complete install. A new icon appears on the home screen (e.g. “Istanbul Pack”).
 6. **Tap the Istanbul icon.**  
-   - **PASS**: App opens directly to **Istanbul** (Istanbul content, URL `/city/istanbul-turkiye`).  
+   - **PASS**: App opens directly to **Istanbul** (Istanbul content, URL `/guide/istanbul-turkiye`).  
    - **FAIL**: Opens to another city or “/” or blank; or requires refresh to show Istanbul.
 
 ### 2. Install City B (e.g. Paris)
 
-1. In Chrome (browser), go to `https://travel-packs.vercel.app/city/paris-france`.
+1. In Chrome (browser), go to `https://travel-packs.vercel.app/guide/paris-france`.
 2. Confirm the page shows **Paris** content.
 3. Tap **menu** → **“Install app”** / **“Add to Home screen”**.
 4. Complete install. A **second** icon appears (e.g. “Paris Pack”).
@@ -107,7 +107,7 @@ Use this checklist to prove that each installed city app opens to its own city w
 
 ### 1. Install City A (e.g. Istanbul)
 
-1. In **Safari**, go to `https://travel-packs.vercel.app/city/istanbul-turkiye`.
+1. In **Safari**, go to `https://travel-packs.vercel.app/guide/istanbul-turkiye`.
 2. Confirm the page shows **Istanbul** content.
 3. Tap the **Share** button → **“Add to Home Screen”**.
 4. Confirm the name/title is Istanbul-related (e.g. “Istanbul Travel Pack”).
@@ -118,7 +118,7 @@ Use this checklist to prove that each installed city app opens to its own city w
 
 ### 2. Install City B (e.g. Paris)
 
-1. In **Safari**, go to `https://travel-packs.vercel.app/city/paris-france`.
+1. In **Safari**, go to `https://travel-packs.vercel.app/guide/paris-france`.
 2. Confirm the page shows **Paris** content.
 3. Tap **Share** → **“Add to Home Screen”**.
 4. Tap **Add**. A **second** icon appears (e.g. “Paris Travel Pack”).
