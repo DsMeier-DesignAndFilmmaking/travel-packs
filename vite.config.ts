@@ -1,6 +1,6 @@
 /**
  * Single Vite config for this project. Do not use vite.config.js.
- * PWA: generateSW + autoUpdate; cache name rotated to kill old cached versions.
+ * PWA: generateSW + autoUpdate; cache ID rotated to kill old cached versions.
  */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -35,14 +35,42 @@ export default defineConfig({
       injectRegister: 'inline',
       manifest: false,
       includeManifestIcons: false,
-      devOptions: { enabled: true },
+      devOptions: { 
+        enabled: true,
+        type: 'module'
+      },
 
       workbox: {
+        // FIX: 'cacheId' is the correct property for top-level naming in GenerateSW
+        cacheId: 'tp-v70-stable',
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        cacheName: 'v60-final-cleanup',
+        
+        // Ensures SPAs handle routing correctly without a blank screen
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api\//, /^\/manifests\//],
+
+        runtimeCaching: [
+          {
+            // Always fetch manifests fresh from the Vercel API
+            urlPattern: /^\/manifests\//,
+            handler: 'NetworkOnly',
+          },
+          {
+            // UI Shell: Try network first so users see updates, fallback to cache for offline
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'v70-navigation-cache',
+              expiration: {
+                maxEntries: 1,
+              },
+              networkTimeoutSeconds: 5,
+            },
+          },
+        ],
       },
     }),
   ],
