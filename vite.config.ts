@@ -35,7 +35,7 @@ export default defineConfig({
       injectRegister: null,
       manifest: false,
       includeManifestIcons: false,
-      // Manifest: not generated here. Vercel rewrites /manifests/city-:slug.json → /api/manifest/:slug; city pages use Blob manifest in CityPackDetailView.
+      // Manifest: not generated here. Vercel rewrites /manifests/city-:slug.json → /api/manifest/:slug (slug-based only).
       devOptions: { enabled: true, type: 'module' },
       injectManifest: {
         globPatterns: [],

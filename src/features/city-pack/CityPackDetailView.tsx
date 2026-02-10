@@ -115,15 +115,15 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
   useEffect(() => {
     if (!slug || slug === 'undefined') return;
 
-    const manifestPath = `/manifests/city-${slug}.json`;
+    const manifestHref = '/manifests/city-' + slug + '.json?v=' + Date.now();
     let link = document.querySelector<HTMLLinkElement>("link[rel='manifest']");
 
     if (link) {
-      link.href = manifestPath;
+      link.href = manifestHref;
     } else {
       link = document.createElement('link');
       link.rel = 'manifest';
-      link.href = manifestPath;
+      link.href = manifestHref;
       document.head.appendChild(link);
     }
 
