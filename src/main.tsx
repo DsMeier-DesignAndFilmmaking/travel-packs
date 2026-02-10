@@ -1,3 +1,6 @@
+/** Nuclear PWA reset: run before React/CSS so white-screen users get SW unregistered and caches purged. */
+import './pwa-reset';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { AppProviders } from '@/app/providers/AppProviders';

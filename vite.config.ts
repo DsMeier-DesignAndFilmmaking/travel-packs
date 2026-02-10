@@ -1,7 +1,6 @@
 /**
  * Single Vite config for this project. Do not use vite.config.js.
- * registerType: immediate + skipWaiting + clientsClaim so new SW takes over as soon as it's downloaded.
- * /manifests/ is NetworkFirst so manifest JSON is never served from cache.
+ * PWA: generateSW + autoUpdate; cache name rotated to kill old cached versions.
  */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -31,46 +30,31 @@ export default defineConfig({
       avif: { quality: 60 },
     }),
     VitePWA({
-      // 1. Change to 'autoUpdate' for the "immediate" effect without TS errors
-      registerType: 'autoUpdate', 
-      
-      // 2. Switching to 'generateSW' is safer for most PWA needs 
-      // unless you have complex custom logic in your src/sw.js.
-      strategies: 'generateSW', 
-      
+      strategies: 'generateSW',
+      registerType: 'autoUpdate',
       injectRegister: 'inline',
-      manifest: false, // We handle this dynamically in CityPackDetailView
+      manifest: false,
       includeManifestIcons: false,
       devOptions: { enabled: true },
 
       workbox: {
-        // 3. Force the Service Worker to update and take over immediately
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        
-        // 4. Critical: Ensure dynamic city routes aren't trapped by a static fallback
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [
-          /^\/api\//, 
-          /^\/_/, 
-          /^\/manifests\//, 
-          /\.(?:json|png|jpg|webmanifest)(?:\?|$)/
-        ],
-        
+        navigateFallbackDenylist: [/^\/api\//, /^\/manifests\//],
         runtimeCaching: [
           {
-            // Always fetch manifests from the network to avoid city-undefined or stale data
             urlPattern: /^\/manifests\//,
-            handler: 'NetworkOnly', 
+            handler: 'NetworkOnly',
           },
           {
-            // UI Shell: Try network first so users see updates, fallback to cache for offline
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'v4-storage-shell', // Incremented version to break old cache
-              networkTimeoutSeconds: 5,
+              cacheName: 'v10-final-reset-shell',
+              networkTimeoutSeconds: 8,
               expiration: { maxEntries: 1 },
             },
           },
