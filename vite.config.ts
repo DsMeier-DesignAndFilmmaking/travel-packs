@@ -42,23 +42,7 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/manifests\//],
-        runtimeCaching: [
-          {
-            urlPattern: /^\/manifests\//,
-            handler: 'NetworkOnly',
-          },
-          {
-            urlPattern: ({ request }) => request.mode === 'navigate',
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'v12-final-reset',
-              networkTimeoutSeconds: 8,
-              expiration: { maxEntries: 1 },
-            },
-          },
-        ],
+        cacheName: 'v60-final-cleanup',
       },
     }),
   ],

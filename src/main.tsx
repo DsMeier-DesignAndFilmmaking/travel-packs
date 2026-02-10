@@ -4,18 +4,6 @@ import { AppProviders } from '@/app/providers/AppProviders';
 import { AppRouter } from '@/app/router/AppRouter';
 import './styles.css';
 
-// Emergency reset: clear white screen for all users (SW unregister + cache purge)
-if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then((regs) => {
-    regs.forEach((reg) => reg.unregister());
-  });
-}
-if (typeof caches !== 'undefined') {
-  caches.keys().then((keys) => {
-    keys.forEach((key) => caches.delete(key));
-  });
-}
-
 const APP_VERSION_KEY = 'app_version';
 
 function runHardResetIfNeeded(): boolean {
