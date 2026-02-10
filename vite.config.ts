@@ -53,7 +53,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'v10-final-reset-shell',
+              cacheName: 'v12-final-reset',
               networkTimeoutSeconds: 8,
               expiration: { maxEntries: 1 },
             },

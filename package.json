@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.ts",
-    "build": "node scripts/inject-build-version.js && node scripts/generate-manifests.js && tsc -b && vite build --config vite.config.ts && node scripts/restore-sw.js",
+    "build": "node scripts/generate-manifests.js && tsc -b && vite build --config vite.config.ts",
     "preview": "vite preview --config vite.config.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
