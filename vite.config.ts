@@ -1,6 +1,6 @@
 /**
  * Single Vite config for this project. Do not use vite.config.js.
- * PWA: generateSW + autoUpdate; cache ID rotated to kill old cached versions.
+ * PWA: generateSW + prompt; Strict network rules to prevent stale UI and JSON syntax errors.
  */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -8,9 +8,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { manifestDevPlugin } from './vite-plugin-manifest-dev';
 
-const buildVersion = process.env.BUILD_ENV === 'dev' ? 'dev' : String(Date.now());
+const buildVersion = String(Date.now());
 const buildTime = Date.now();
-const appVersion = Date.now();
 
 export default defineConfig({
   base: '/',
@@ -18,7 +17,7 @@ export default defineConfig({
     __BUILD_VERSION__: JSON.stringify(buildVersion),
     __VITE_BUILD_TIME__: JSON.stringify(buildTime),
     'process.env.VITE_BUILD_TIME': JSON.stringify(buildTime),
-    __APP_VERSION__: JSON.stringify(appVersion),
+    __APP_VERSION__: JSON.stringify(buildVersion),
   },
   plugins: [
     manifestDevPlugin(),
@@ -31,7 +30,7 @@ export default defineConfig({
     }),
     VitePWA({
       strategies: 'generateSW',
-      registerType: 'prompt',
+      registerType: 'prompt', // Better for stability than autoUpdate
       injectRegister: 'inline',
       manifest: false,
       includeManifestIcons: false,
@@ -39,46 +38,50 @@ export default defineConfig({
         enabled: true,
         type: 'module'
       },
-
       workbox: {
-        // FIX: 'cacheId' is the correct property for top-level naming in GenerateSW
-        cacheId: 'tp-v120-data-audit',
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // Incrementing CacheID to force a complete browser purge
+        cacheId: 'tp-v200-ultimate-reset',
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
         
-        // Ensures SPAs handle routing correctly without a blank screen
+        // CRITICAL FIX: The Denylist prevents the SW from serving index.html when JSON is requested
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/manifests\//],
+        navigateFallbackDenylist: [
+          /^\/api\//,               // Ignore API routes
+          /^\/manifests\//,         // Ignore manifest paths
+          /\?v=/,                   // Ignore anything with a version query (cache buster)
+          /\.json$/,                // Ignore all JSON files
+          /manifest/                // Ignore anything containing the word manifest
+        ],
 
         runtimeCaching: [
           {
-            // Manifests: never cache (avoid 304); dynamic API and legacy path
-            urlPattern: /^\/api\/manifest\//,
+            // FORCE Manifests to be Network Only - No SW intervention allowed
+            urlPattern: ({ url }) => url.pathname.includes('manifest') || url.pathname.startsWith('/api/'),
             handler: 'NetworkOnly',
           },
           {
-            urlPattern: /^\/manifests\//,
-            handler: 'NetworkOnly',
-          },
-          {
-            // Index.html: NetworkFirst with short timeout so UI updates; cache only when offline/slow
+            // UI Shell: Always try Network first. If it takes >3s, use cache.
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'v120-index-html',
+              cacheName: 'v200-ui-shell',
               expiration: { maxEntries: 1 },
               networkTimeoutSeconds: 3,
             },
           },
           {
-            // JS/CSS: CacheFirst safe (Vite hashes filenames, e.g. index-KtJFv4Jy.js)
-            urlPattern: /\/assets\/.*\.(js|css)$/,
+            // Static Assets: CacheFirst (Safe due to Vite's content hashing)
+            urlPattern: /\.(?:js|css|png|jpg|jpeg|svg|gif)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'v120-hashed-assets',
-              expiration: { maxEntries: 64, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheName: 'v200-static-assets',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+              },
             },
           },
         ],
@@ -92,5 +95,6 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
+    sourcemap: false,
   },
 });
