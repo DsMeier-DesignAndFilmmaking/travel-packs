@@ -1,0 +1,7 @@
+# PROJECT RULES - DO NOT IGNORE
+
+- NEVER create or modify 'vite.config.js'.
+- ALWAYS use 'vite.config.ts' for configuration.
+- If 'vite.config.js' exists, DELETE it immediately without asking.
+- This is a TypeScript project; avoid creating '.js' files when '.ts' equivalents are present.
+- When modifying PWA settings, only edit 'vite.config.ts'.

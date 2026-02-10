@@ -3,7 +3,7 @@
  *
  * ABSOLUTE: Do NOT use Blob URLs or data URIs for manifest href. Only real HTTP URLs: /manifests/city-{slug}.json
  *
- * - Only /city/* routes get a manifest link.
+ * - Only /guide/* routes get a manifest link.
  * - Each city = separate app identity so installs do not collapse to the first city.
  * - Homepage "/" has no manifest link (setHomeHead removes it).
  */
@@ -32,7 +32,7 @@ export function removeManifest(): void {
 /**
  * Injects a city-scoped manifest link into <head> using a REAL URL only.
  * href = /manifests/city-{slug}.json (served by Vercel API). No Blob/data URI.
- * Only call on /city/* routes.
+ * Only call on /guide/* routes.
  */
 export function injectCityManifest(options: InjectCityManifestOptions): void {
   const href = getCityManifestUrl(options.citySlug);
@@ -44,7 +44,7 @@ export function injectCityManifest(options: InjectCityManifestOptions): void {
   document.head.appendChild(link);
 
   const origin = window.location.origin;
-  const path = `/city/${options.citySlug}`;
+  const path = `/guide/${options.citySlug}`;
   const currentUrl = origin + path + (window.location.search || '');
 
   ensureCanonicalLink(currentUrl);

@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const origin = `${req.headers['x-forwarded-proto'] || 'https'}://${req.headers.host}`;
-  const startUrl = `/city/${slug}?utm_source=homescreen&v=${buildId}`;
+  const startUrl = `/guide/${slug}?utm_source=homescreen&v=${buildId}`;
 
   const manifest = {
     id: `city-pack-${slug}`,

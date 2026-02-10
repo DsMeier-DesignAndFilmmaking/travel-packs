@@ -14,10 +14,10 @@
 const APP_PREFIX = 'travel-packs';
 
 /**
- * Parses pathname to get city slug when on a city route (/city/:slug).
+ * Parses pathname to get city slug when on a city route (/guide/:slug).
  */
 export function getCitySlugFromPath(pathname: string): string | null {
-  const match = pathname.match(/^\/city\/([^/]+)$/);
+  const match = pathname.match(/^\/guide\/([^/]+)$/);
   return match?.[1] ?? null;
 }
 

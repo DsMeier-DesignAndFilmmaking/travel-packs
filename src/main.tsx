@@ -13,7 +13,7 @@ console.log(
 );
 
 // Optional: Log city launch for debugging
-if (typeof window !== 'undefined' && window.location.pathname.startsWith('/city/')) {
+if (typeof window !== 'undefined' && window.location.pathname.startsWith('/guide/')) {
   console.log('[PWA launch] city from start_url:', window.location.pathname);
 }
 

@@ -33,9 +33,9 @@ export function usePWAInstall() {
 
   const handleInstall = async () => {
     if (!installPrompt) return;
-    // Only allow install on /city/*. Never install from homepage.
+    // Only allow install on /guide/*. Never install from homepage.
     const path = window.location.pathname || '/';
-    if (path === '/' || !path.startsWith('/city/')) return;
+    if (path === '/' || !path.startsWith('/guide/')) return;
     await installPrompt.prompt();
     const { outcome } = await installPrompt.userChoice;
     if (outcome === 'accepted') setInstallPrompt(null);

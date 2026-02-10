@@ -42,7 +42,7 @@ export default defineConfig({
 
       workbox: {
         // FIX: 'cacheId' is the correct property for top-level naming in GenerateSW
-        cacheId: 'tp-v70-stable',
+        cacheId: 'tp-v110-guide-path',
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         cleanupOutdatedCaches: true,
         skipWaiting: true,

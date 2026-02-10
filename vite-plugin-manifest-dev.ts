@@ -27,7 +27,7 @@ export function manifestDevPlugin(): Plugin {
           return;
         }
         const origin = `http://${req.headers.host ?? 'localhost:5173'}`;
-        const cityPath = `/city/${slug}`;
+        const cityPath = `/guide/${slug}`;
         let cityName = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
         const dataUrl = `${origin}/data/city-packs/${slug}.json`;

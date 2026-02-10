@@ -1,4 +1,4 @@
 export const ROUTES = {
   home: '/',
-  cityPack: '/city/:slug'
+  cityPack: '/guide/:slug'
 } as const;

@@ -5,10 +5,10 @@ import { ROUTES } from '@/config/routes';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { ReloadPrompt } from '@/components/pwa/ReloadPrompt';
 
-/** Only /city/:slug is installable; homepage must never show Install. */
+/** Only /guide/:slug is installable; homepage must never show Install. */
 function useIsInstallableRoute(): boolean {
   const { pathname } = useLocation();
-  return /^\/city\/[^/]+$/.test(pathname);
+  return /^\/guide\/[^/]+$/.test(pathname);
 }
 
 export function AppShell({ children }: PropsWithChildren) {

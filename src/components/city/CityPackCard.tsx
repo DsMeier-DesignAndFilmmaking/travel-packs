@@ -27,7 +27,7 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
     <article className="city-pack-card group flex flex-col w-full bg-white transition-opacity duration-300">
       {/* 1. Image Container: Handled by .card-image-wrapper in styles.css */}
       <div className="card-image-wrapper aspect-[4/3] bg-gray-100">
-      <Link to={`/city/${pack.slug}`} className="block w-full h-full">
+      <Link to={`/guide/${pack.slug}`} className="block w-full h-full">
           <img 
             src={pack.heroImage || '/api/placeholder/400/300'} 
             alt={`${pack.city} travel guide`}
@@ -60,7 +60,7 @@ export function CityPackCard({ pack, status, onDownload, onRemove, isOnline, ind
       <div className="flex justify-between items-start gap-6 mt-1">
         <div className="flex flex-col min-w-0 flex-1 gap-[3px]">
           {/* Title Row */}
-          <Link to={`/city/${pack.slug}`} className="hover:opacity-70 transition-opacity">
+          <Link to={`/guide/${pack.slug}`} className="hover:opacity-70 transition-opacity">
             <h3 className="!m-0 !p-0 text-[15px] font-bold text-[#222222] leading-[1.15] truncate">
               {pack.city}, {pack.country}
             </h3>

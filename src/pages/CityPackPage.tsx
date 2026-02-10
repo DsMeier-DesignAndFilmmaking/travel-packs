@@ -1,12 +1,14 @@
-// /src/features/city-pack/CityPackPage.tsx
+// /src/pages/CityPackPage.tsx — Guide path wrapper (bypass cache deadlock)
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CityPackDetailView } from '@/features/city-pack/CityPackDetailView';
+import { CityGuideView } from '@/pages/CityGuideView';
 import { cityPackRepository } from '@/services/content/cityPackRepository';
 import { ROUTES } from '@/config/routes';
 import type { CityPack } from '@/types/cityPack';
 
-export function CityPackPage() {
+console.log('!!! MOUNTING NEW GUIDE PATH !!!');
+
+export function CityGuidePage() {
   const { slug } = useParams<{ slug: string }>();
   const [pack, setPack] = useState<CityPack | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -85,5 +87,5 @@ export function CityPackPage() {
   }
 
   // 4. Loaded Pack
-  return <CityPackDetailView pack={pack} />;
+  return <CityGuideView pack={pack} />;
 }

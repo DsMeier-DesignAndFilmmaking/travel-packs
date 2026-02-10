@@ -28,7 +28,7 @@ for (const file of files) {
     continue;
   }
 
-  const cityPath = `/city/${slug}`;
+  const cityPath = `/guide/${slug}`;
   const manifest = {
     id: cityPath,
     name: `${cityName} Travel Pack`,
