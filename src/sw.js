@@ -73,7 +73,7 @@ if (Array.isArray(wbManifest) && wbManifest.length > 0) {
   precacheAndRoute(wbManifest);
 }
 cleanupOutdatedCaches();
-// skipWaiting is not called here so new SW waits until user clicks Update (ReloadPrompt); config has skipWaiting: false.
+self.skipWaiting();
 clientsClaim();
 
 // ——— 2a. /city/* document: NetworkFirst so UI changes are pulled from Vercel before falling back to cache ———
@@ -91,9 +91,9 @@ registerRoute(
   'GET'
 );
 
-// Install: do not skipWaiting here; new SW stays waiting until ReloadPrompt calls updateServiceWorker(true).
+// Install: Kill Switch — new SW takes over immediately so old version does not stay active (fixes stale UI).
 self.addEventListener('install', function(event) {
-  event.waitUntil(Promise.resolve());
+  event.waitUntil(self.skipWaiting());
 });
 
 // Activate: delete old city-pack-data-* caches from previous builds so new deploys get fresh data after SW update.

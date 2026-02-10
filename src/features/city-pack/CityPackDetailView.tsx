@@ -104,8 +104,7 @@ function SectionCard({ section }: { section: VersionedSection }) {
 
 /**
  * CityPackDetailView
- * Injects manifest link only when slug from the route is present and not "undefined"
- * to prevent requests to /manifests/city-undefined.json (which would return HTML and cause Syntax Error).
+ * Refactored for PWA UI stability and Dynamic Manifest Injection.
  */
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const { slug } = useParams<{ slug: string }>();
@@ -113,9 +112,12 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
 
   useEffect(() => {
+    // 1. Critical Guard: Prevents /manifests/city-undefined.json error in console
     if (!slug || slug === 'undefined') return;
 
-    const manifestHref = '/manifests/city-' + slug + '.json?v=' + Date.now();
+    // 2. Point to the Dynamic API via Vercel Rewrite
+    // The timestamp (?t=) forces the Service Worker to bypass its stale internal cache
+    const manifestHref = `/manifests/city-${slug}.json?t=${Date.now()}`;
     let link = document.querySelector<HTMLLinkElement>("link[rel='manifest']");
 
     if (link) {
@@ -127,20 +129,27 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
       document.head.appendChild(link);
     }
 
+    // 3. Resolve Identity: Fallback to slug formatting if data hasn't loaded yet
     const cityName = pack?.city ?? slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-    document.title = `${cityName} Travel Pack`;
+    const displayTitle = `${cityName} Travel Pack`;
+    
+    document.title = displayTitle;
+
+    // 4. iOS specific identity for "Add to Home Screen" bookmark names
     let meta = document.querySelector<HTMLMetaElement>('meta[name="apple-mobile-web-app-title"]');
-    if (meta) meta.content = `${cityName} Travel Pack`;
-    else {
+    if (!meta) {
       meta = document.createElement('meta');
       meta.name = 'apple-mobile-web-app-title';
-      meta.content = `${cityName} Travel Pack`;
       document.head.appendChild(meta);
     }
+    meta.content = displayTitle;
 
+    // 5. Cleanup logic:
+    // We REMOVE the el.remove() code. Deleting the manifest link during transitions 
+    // causes mobile browsers to lose the PWA context. We simply reset the root head 
+    // on unmount.
     return () => {
-      document.querySelectorAll('link[rel="manifest"]').forEach((el) => el.remove());
-      setHomeHead();
+      setHomeHead(); 
     };
   }, [slug, pack?.city]);
 
@@ -160,7 +169,7 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
         <div className="pack-header-content home-view-container relative z-10">
           <div className="w-full max-w-full md:max-w-6xl">
-            {/* Header Identity Stack — editorial vertical rhythm, gap-24 only (no extra margins). */}
+            {/* Header Identity Stack */}
             <div className="flex flex-col gap-24 mb-28 md:mb-36">
               <div className="h-[2px] w-20 bg-air-accent !m-0" />
               
@@ -183,10 +192,9 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
               </p>
             </div>
 
-            {/* Manifest Footer: bottom-axis alignment across breakpoints */}
+            {/* Manifest Footer */}
             <div className="border-t border-air-border pt-20 mt-20">
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-20">
-                {/* Data Grid - items-start for column, lg:aligns to row bottom */}
                 <div className="flex flex-wrap items-start gap-x-16 gap-y-10">
                   {[
                     { label: 'Local Currency', value: `${pack.currency.symbol} ${pack.currency.code}` },
@@ -204,7 +212,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
                   ))}
                 </div>
 
-                {/* Primary Actions - align bottom with data grid on lg */}
                 <div className="flex flex-wrap items-center lg:items-end gap-6">
                   <button
                     onClick={() => setShowMobileOverlay(true)}
@@ -227,7 +234,6 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
         </div>
       </header>
 
-      {/* Main Content Sections - home-view-container for horizontal alignment */}
       <div className="home-view-container pb-48">
         <div className="w-full max-w-full md:max-w-6xl flex flex-col gap-20">
           {sections.map((section, idx) => (
@@ -237,14 +243,14 @@ export function CityPackDetailView({ pack }: { pack: CityPack }) {
 
         <footer className="mt-32 py-40 border-t border-air-border flex flex-col items-center overflow-x-hidden">
           <div className="home-view-container flex flex-col items-center w-full">
-          <div className="opacity-[0.03] select-none text-center mb-16">
-            <span className="text-[20vw] font-black tracking-tighter text-air-black uppercase leading-none">
-              {pack.city}
-            </span>
-          </div>
-          <p className="text-[11px] font-black text-air-gray uppercase tracking-[0.6em]">
-            End of Travel Pack <span className="mx-4 opacity-20">//</span> {pack.city} Edition
-          </p>
+            <div className="opacity-[0.03] select-none text-center mb-16">
+              <span className="text-[20vw] font-black tracking-tighter text-air-black uppercase leading-none">
+                {pack.city}
+              </span>
+            </div>
+            <p className="text-[11px] font-black text-air-gray uppercase tracking-[0.6em]">
+              End of Travel Pack <span className="mx-4 opacity-20">//</span> {pack.city} Edition
+            </p>
           </div>
         </footer>
       </div>

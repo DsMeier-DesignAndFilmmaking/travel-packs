@@ -1,6 +1,7 @@
 /**
  * Single Vite config for this project. Do not use vite.config.js.
- * PWA: registerType 'prompt' is required so the browser detects new versions and asks the user to refresh (fixes stale UI).
+ * registerType: immediate + skipWaiting + clientsClaim so new SW takes over as soon as it's downloaded.
+ * /manifests/ is NetworkFirst so manifest JSON is never served from cache.
  */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -10,6 +11,7 @@ import { manifestDevPlugin } from './vite-plugin-manifest-dev';
 
 const buildVersion = process.env.BUILD_ENV === 'dev' ? 'dev' : String(Date.now());
 const buildTime = Date.now();
+const appVersion = Date.now();
 
 export default defineConfig({
   base: '/',
@@ -17,6 +19,7 @@ export default defineConfig({
     __BUILD_VERSION__: JSON.stringify(buildVersion),
     __VITE_BUILD_TIME__: JSON.stringify(buildTime),
     'process.env.VITE_BUILD_TIME': JSON.stringify(buildTime),
+    __APP_VERSION__: JSON.stringify(appVersion),
   },
   plugins: [
     manifestDevPlugin(),
@@ -28,45 +31,47 @@ export default defineConfig({
       avif: { quality: 60 },
     }),
     VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'src',
-      filename: 'sw.js',
-      registerType: 'prompt',
-      injectRegister: null,
-      manifest: false,
+      // 1. Change to 'autoUpdate' for the "immediate" effect without TS errors
+      registerType: 'autoUpdate', 
+      
+      // 2. Switching to 'generateSW' is safer for most PWA needs 
+      // unless you have complex custom logic in your src/sw.js.
+      strategies: 'generateSW', 
+      
+      injectRegister: 'inline',
+      manifest: false, // We handle this dynamically in CityPackDetailView
       includeManifestIcons: false,
-      // Manifest: not generated here. Vercel rewrites /manifests/city-:slug.json → /api/manifest/:slug (slug-based only).
-      devOptions: { enabled: true, type: 'module' },
-      injectManifest: {
-        globPatterns: [],
-        globIgnores: ['**/*'],
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
-      },
+      devOptions: { enabled: true },
+
       workbox: {
-        navigateFallback: null,
-        navigateFallbackDenylist: [/^\/api\//, /^\/_/, /\.(?:json|png|jpg|webmanifest)(?:\?|$)/],
-        dontCacheBustURLsMatching: /\/assets\//,
+        // 3. Force the Service Worker to update and take over immediately
         cleanupOutdatedCaches: true,
-        skipWaiting: false,
+        skipWaiting: true,
         clientsClaim: true,
-        // Mirrors routing in src/sw.js: /city/* and navigate use NetworkFirst so UI is pulled from Vercel first.
+        
+        // 4. Critical: Ensure dynamic city routes aren't trapped by a static fallback
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [
+          /^\/api\//, 
+          /^\/_/, 
+          /^\/manifests\//, 
+          /\.(?:json|png|jpg|webmanifest)(?:\?|$)/
+        ],
+        
         runtimeCaching: [
           {
-            urlPattern: /\/city\/[^/]+\/?(\?.*)?$/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'city-pages-v1',
-              networkTimeoutSeconds: 8,
-              expiration: { maxEntries: 32, maxAgeSeconds: 24 * 60 * 60 },
-            },
+            // Always fetch manifests from the network to avoid city-undefined or stale data
+            urlPattern: /^\/manifests\//,
+            handler: 'NetworkOnly', 
           },
           {
+            // UI Shell: Try network first so users see updates, fallback to cache for offline
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'navigate-cache-v1',
-              networkTimeoutSeconds: 8,
-              expiration: { maxEntries: 16, maxAgeSeconds: 24 * 60 * 60 },
+              cacheName: 'v4-storage-shell', // Incremented version to break old cache
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 1 },
             },
           },
         ],

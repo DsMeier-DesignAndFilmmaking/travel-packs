@@ -1,31 +1,21 @@
 {
   "rewrites": [
-    {
-      "source": "/manifests/city-:slug.json",
-      "destination": "/api/manifest/:slug"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/manifests/city-:slug.json", "destination": "/api/manifest/:slug" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
-      "source": "/manifests/(.*)",
+      "source": "/(sw.js|workbox-.*.js)",
       "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/manifest+json"
-        }
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
       ]
     },
     {
-      "source": "/sw.js",
+      "source": "/manifests/(.*)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
   ]
