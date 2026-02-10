@@ -73,20 +73,27 @@ if (Array.isArray(wbManifest) && wbManifest.length > 0) {
   precacheAndRoute(wbManifest);
 }
 cleanupOutdatedCaches();
-self.skipWaiting();
+// skipWaiting is not called here so new SW waits until user clicks Update (ReloadPrompt); config has skipWaiting: false.
 clientsClaim();
 
-// ——— 2. NAVIGATION = NETWORK ONLY (no SPA runtime reuse) ———
-// Every document request goes to network. No cached HTML, no fallback. Launch URL = document URL.
+// ——— 2a. /city/* document: NetworkFirst so UI changes are pulled from Vercel before falling back to cache ———
+const CITY_PAGES_CACHE = 'city-pages-v1';
+registerRoute(
+  ({ request, url }) => request.mode === 'navigate' && url.pathname.startsWith('/city/'),
+  new NetworkFirst({ cacheName: CITY_PAGES_CACHE, networkTimeoutSeconds: 8 }),
+  'GET'
+);
+
+// ——— 2b. All other navigations: network only (no HTML cache). ———
 registerRoute(
   ({ request }) => request.mode === 'navigate',
   new NetworkOnly(),
   'GET'
 );
 
-// Install: do not redirect or override the client URL. First launch uses the document's start_url (from manifest) as-is.
+// Install: do not skipWaiting here; new SW stays waiting until ReloadPrompt calls updateServiceWorker(true).
 self.addEventListener('install', function(event) {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(Promise.resolve());
 });
 
 // Activate: delete old city-pack-data-* caches from previous builds so new deploys get fresh data after SW update.
@@ -112,11 +119,17 @@ registerRoute(
   new CacheFirst({ cacheName: 'city-assets-v1' })
 );
 
-// 5. MESSAGE HANDLING (Manual Trigger from "Get" Button)
+// 5. MESSAGE HANDLING
 self.addEventListener('message', (event) => {
   if (!event.data || !event.data.type) return;
 
-  // Logic to "pre-warm" a specific city pack
+  // ReloadPrompt calls updateServiceWorker(true) → workbox-window sends SKIP_WAITING; then we activate and reload.
+  if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+    return;
+  }
+
+  // Pre-warm a specific city pack (Download button)
   const cacheCityPack = async (cityId, assets = []) => {
     try {
       const dataCache = await caches.open(CITY_PACK_CACHE);

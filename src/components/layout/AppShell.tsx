@@ -3,6 +3,7 @@ import { useEffect, useState, type PropsWithChildren } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { ReloadPrompt } from '@/components/pwa/ReloadPrompt';
 
 /** Only /city/:slug is installable; homepage must never show Install. */
 function useIsInstallableRoute(): boolean {
@@ -72,6 +73,8 @@ export function AppShell({ children }: PropsWithChildren) {
       <main className="flex-1 min-h-0 overflow-auto !p-0 !pt-0 !pb-0">
         {children}
       </main>
+
+      <ReloadPrompt />
 
       {/* Footer - home-view-container for horizontal alignment sync */}
       <footer className="w-full border-t border-[#F0F0F0] pt-16 md:pt-24 pb-12 md:pb-16 bg-white">

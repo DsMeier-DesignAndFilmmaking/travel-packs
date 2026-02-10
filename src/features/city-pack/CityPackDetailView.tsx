@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
-import { usePwaManifest } from '@/hooks/usePwaManifest';
+import { setHomeHead } from '@/utils/dynamicManifest';
 import { InstallOverlay } from '@/components/city/InstallOverlay';
 import type { CityPack, VersionedSection } from '@/types/cityPack';
 
@@ -103,12 +104,45 @@ function SectionCard({ section }: { section: VersionedSection }) {
 
 /**
  * CityPackDetailView
+ * Injects manifest link only when slug from the route is present and not "undefined"
+ * to prevent requests to /manifests/city-undefined.json (which would return HTML and cause Syntax Error).
  */
 export function CityPackDetailView({ pack }: { pack: CityPack }) {
+  const { slug } = useParams<{ slug: string }>();
   const { installPrompt, isInstalled, handleInstall } = usePWAInstall();
   const [showMobileOverlay, setShowMobileOverlay] = useState(false);
-  const cityPath = `/city/${pack.slug}`;
-  usePwaManifest({ title: `${pack.city} Travel Pack`, path: cityPath });
+
+  useEffect(() => {
+    if (!slug || slug === 'undefined') return;
+
+    const manifestPath = `/manifests/city-${slug}.json`;
+    let link = document.querySelector<HTMLLinkElement>("link[rel='manifest']");
+
+    if (link) {
+      link.href = manifestPath;
+    } else {
+      link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = manifestPath;
+      document.head.appendChild(link);
+    }
+
+    const cityName = pack?.city ?? slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    document.title = `${cityName} Travel Pack`;
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="apple-mobile-web-app-title"]');
+    if (meta) meta.content = `${cityName} Travel Pack`;
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'apple-mobile-web-app-title';
+      meta.content = `${cityName} Travel Pack`;
+      document.head.appendChild(meta);
+    }
+
+    return () => {
+      document.querySelectorAll('link[rel="manifest"]').forEach((el) => el.remove());
+      setHomeHead();
+    };
+  }, [slug, pack?.city]);
 
   const sections = useMemo(() => Object.values(pack.sections || {}), [pack.sections]);
 

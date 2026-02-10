@@ -5,7 +5,7 @@ import { ROUTES } from '@/config/routes';
 import { CityPackPage } from '@/pages/CityPackPage';
 import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { injectCityManifest, setHomeHead } from '@/utils/dynamicManifest';
+import { setHomeHead } from '@/utils/dynamicManifest';
 
 /**
  * ROUTER BOOT SAFETY — SPA initializes from the launch URL only.
@@ -33,30 +33,15 @@ function RouterLandingLogger() {
 }
 
 /**
- * ManifestManager — Dynamic manifest per city route only.
- * - When route === "/": no manifest link (setHomeHead removes any and sets canonical/title).
- * - When route === "/city/:slug": inject city-scoped manifest with start_url and scope for that city.
+ * ManifestManager — Home only. City pages use Blob manifest in CityPackDetailView (start_url = window.location.href).
  */
 function ManifestManager() {
   const location = useLocation();
 
   useEffect(() => {
     const path = location.pathname || '/';
-
-    if (path === '/') {
-      setHomeHead();
-      return;
-    }
-
-    const cityMatch = path.match(/^\/city\/([^/]+)$/);
-    const slug = cityMatch?.[1];
-    if (slug) {
-      const cityName = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-      injectCityManifest({ citySlug: slug, cityName });
-    } else {
-      setHomeHead();
-    }
-  }, [location.pathname, location.search]);
+    if (path === '/') setHomeHead();
+  }, [location.pathname]);
 
   return null;
 }
